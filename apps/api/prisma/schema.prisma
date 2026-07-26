@@ -34,6 +34,35 @@ enum ProductUnit {
   BOX
 }
 
+enum PaymentMethod {
+  WALLET
+  UPI
+  CARD
+  COD
+}
+
+enum PaymentStatus {
+  NOT_APPLICABLE
+  PENDING
+  CAPTURED
+  FAILED
+  REFUNDED
+}
+
+enum OrderStatus {
+  PENDING_PAYMENT
+  CONFIRMED
+  DISPATCHED
+  OUT_FOR_DELIVERY
+  DELIVERED
+  CANCELLED
+}
+
+enum WalletTxnType {
+  CREDIT
+  DEBIT
+}
+
 // ═══════════════════════════════════════════════════════════════════════════
 // Part 1 — Auth & Shop (B1-04)
 // ═══════════════════════════════════════════════════════════════════════════
@@ -55,9 +84,10 @@ model User {
   agentProfile  AgentProfile?
   deviceTokens  DeviceToken[]
   refreshTokens RefreshToken[]
-  // Relations to Part 2/3/4 models are added in their respective schema tasks
-  // (B2-01, B3-01, B3-02): cartItems, orders, wallet, ratings, tickets,
-  // referralCode, referralsMade, referralsRecv, auditLogs.
+  orders        Order[]
+  wallet        BuyerWallet?
+  // Part 4 relations (B3-02): cartItems, ratings, tickets, referralCode,
+  // referralsMade, referralsRecv, auditLogs.
 
   @@index([phone])
 }
@@ -175,7 +205,8 @@ model Product {
   createdAt    DateTime          @default(now())
   updatedAt    DateTime          @updatedAt
   inventory    ProductInventory?
-  // cartItems / orderItems relations added in B2-05 (cart) and B3-01 (orders).
+  orderItems   OrderItem[]
+  // cartItems relation added in B2-05 (cart).
 
   @@index([categoryId])
 }
@@ -187,4 +218,86 @@ model ProductInventory {
   quantityReserved  Int      @default(0)
   lowStockThreshold Int      @default(10)
   updatedAt         DateTime @updatedAt
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// Part 3 — Orders & Payments (B3-01)
+// ═══════════════════════════════════════════════════════════════════════════
+
+model Order {
+  id                 String        @id @default(uuid())
+  buyerId            String
+  buyer              User          @relation(fields: [buyerId], references: [id])
+  agentId            String?
+  status             OrderStatus   @default(PENDING_PAYMENT)
+  paymentMethod      PaymentMethod
+  paymentStatus      PaymentStatus @default(NOT_APPLICABLE)
+  subtotalAmount     Decimal       @db.Decimal(10, 2)
+  deliveryFee        Decimal       @default(0) @db.Decimal(10, 2)
+  discountAmount     Decimal       @default(0) @db.Decimal(10, 2)
+  totalAmount        Decimal       @db.Decimal(10, 2)
+  deliveryAddress    Json // snapshot of ShopProfile address at order time
+  version            Int           @default(1)
+  placedAt           DateTime      @default(now())
+  confirmedAt        DateTime?
+  dispatchedAt       DateTime?
+  deliveredAt        DateTime?
+  cancelledAt        DateTime?
+  cancellationReason String?
+
+  items    OrderItem[]
+  payment  Payment?
+  // Part 4 relations (B3-02): rating, tracking, locationLogs, settlement.
+
+  @@index([buyerId])
+  @@index([status])
+  @@index([agentId])
+}
+
+model OrderItem {
+  id              String  @id @default(uuid())
+  orderId         String
+  order           Order   @relation(fields: [orderId], references: [id])
+  productId       String
+  product         Product @relation(fields: [productId], references: [id])
+  productNameSnap String
+  unitPriceSnap   Decimal @db.Decimal(10, 2)
+  quantity        Int
+  lineTotal       Decimal @db.Decimal(10, 2)
+
+  @@index([orderId])
+}
+
+model Payment {
+  id                String        @id @default(uuid())
+  orderId           String        @unique
+  order             Order         @relation(fields: [orderId], references: [id])
+  razorpayOrderId   String?
+  razorpayPaymentId String?       @unique
+  razorpaySignature String?
+  amount            Decimal       @db.Decimal(10, 2)
+  status            PaymentStatus @default(PENDING)
+  capturedAt        DateTime?
+  createdAt         DateTime      @default(now())
+}
+
+model BuyerWallet {
+  buyerId      String              @id
+  buyer        User                @relation(fields: [buyerId], references: [id])
+  balance      Decimal             @default(0) @db.Decimal(10, 2)
+  updatedAt    DateTime            @updatedAt
+  transactions WalletTransaction[]
+}
+
+model WalletTransaction {
+  id               String        @id @default(uuid())
+  buyerId          String
+  wallet           BuyerWallet   @relation(fields: [buyerId], references: [buyerId])
+  type             WalletTxnType
+  amount           Decimal       @db.Decimal(10, 2)
+  balanceAfter     Decimal       @db.Decimal(10, 2)
+  referenceOrderId String?
+  createdAt        DateTime      @default(now())
+
+  @@index([buyerId])
 }
