@@ -1,0 +1,15 @@
+// Storefiller — Prisma schema. Source of truth: storefiller-architecture.md §2.1.
+// Extensions (pg_trgm, postgis) are Prisma-managed so CREATE EXTENSION is emitted
+// in-order before any geography column. GIN/GIST indexes + append-only grants are
+// raw-SQL supplements (§2.2) applied via hand-edited migration files.
+
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [postgis, pg_trgm]
+}
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
