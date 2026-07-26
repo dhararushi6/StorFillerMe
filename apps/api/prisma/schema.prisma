@@ -41,14 +41,33 @@ model User {
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
 
-  shopProfile  ShopProfile?
-  agentProfile AgentProfile?
-  deviceTokens DeviceToken[]
+  shopProfile   ShopProfile?
+  agentProfile  AgentProfile?
+  deviceTokens  DeviceToken[]
+  refreshTokens RefreshToken[]
   // Relations to Part 2/3/4 models are added in their respective schema tasks
   // (B2-01, B3-01, B3-02): cartItems, orders, wallet, ratings, tickets,
   // referralCode, referralsMade, referralsRecv, auditLogs.
 
   @@index([phone])
+}
+
+// Refresh-token rotation with family reuse-detection (B1-05). Opaque tokens are
+// stored only as sha256 hashes; presenting an already-rotated token outside the
+// grace window revokes the whole familyId. (Extends the base 22-model schema.)
+model RefreshToken {
+  id          String    @id @default(uuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
+  familyId    String
+  hashedToken String    @unique
+  usedAt      DateTime?
+  revokedAt   DateTime?
+  expiresAt   DateTime
+  createdAt   DateTime  @default(now())
+
+  @@index([userId])
+  @@index([familyId])
 }
 
 model ShopProfile {

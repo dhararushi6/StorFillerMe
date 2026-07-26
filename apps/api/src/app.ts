@@ -3,7 +3,10 @@ import helmet from 'helmet';
 import { pinoHttp } from 'pino-http';
 import { logger } from './lib/logger';
 import { healthRouter } from './modules/health/health.routes';
+import { authRouter } from './modules/auth/auth.routes';
 import { errorHandler, notFoundHandler } from './middleware/error-handler.middleware';
+
+const API = '/api/v1';
 
 export function createApp(): Express {
   const app = express();
@@ -41,6 +44,7 @@ function registerRawBodyRoutes(_app: express.Express) {
 }
 
 /** Routes that consume parsed JSON (registered after express.json). Filled in Weeks 1-4. */
-function registerJsonRoutes(_app: express.Express) {
-  // Auth, shop, catalog, cart, orders, payments, wallet, delivery, admin, etc.
+function registerJsonRoutes(app: express.Express) {
+  app.use(`${API}/auth`, authRouter);
+  // shop, catalog, cart, orders, payments, wallet, delivery, admin, etc. — added per task.
 }

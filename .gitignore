@@ -21,3 +21,5 @@ apps/api/src/generated/
 # scratch pdf extracts
 arch.txt
 handbook.txt
+
+.secrets/
