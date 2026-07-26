@@ -1,0 +1,92 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-test:
+    name: Lint · Typecheck · Test · Build
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgis/postgis:16-3.4
+        env:
+          POSTGRES_USER: storefiller
+          POSTGRES_PASSWORD: storefiller
+          POSTGRES_DB: storefiller_test
+        ports:
+          - 5433:5432
+        options: >-
+          --health-cmd "pg_isready -U storefiller"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      DATABASE_URL: postgresql://storefiller:storefiller@localhost:5433/storefiller_test?schema=public
+      NODE_ENV: test
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.16.1
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Build shared packages
+        run: pnpm --filter ./packages/** run build
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Prisma generate + migrate (test DB)
+        run: pnpm --filter @storefiller/api exec prisma migrate deploy
+
+      - name: Apply raw SQL extensions/index migration
+        run: pnpm --filter @storefiller/api exec tsx prisma/apply-raw-sql.ts
+
+      - name: Test
+        run: pnpm test
+
+      - name: Build
+        run: pnpm --filter @storefiller/api run build
+
+  deploy:
+    name: Deploy to Railway (production)
+    needs: build-test
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Railway CLI
+        run: npm i -g @railway/cli
+
+      # RAILWAY_TOKEN is a GitHub Secret — never echoed. Railway injects the
+      # service env (DATABASE_URL, JWT_PRIVATE_KEY, FIREBASE_SERVICE_ACCOUNT, ...)
+      # from the dashboard; nothing secret is printed in the workflow log.
+      - name: Deploy
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        run: railway up --service api --detach
+
+      - name: Smoke test — /api/health
+        run: |
+          for i in $(seq 1 20); do
+            if curl -fsS "${{ secrets.PRODUCTION_URL }}/api/health" | grep -q '"status":"ok"'; then
+              echo "health check passed"; exit 0
+            fi
+            echo "waiting for deploy... ($i)"; sleep 10
+          done
+          echo "health check failed"; exit 1
