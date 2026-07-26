@@ -6,6 +6,7 @@ import { healthRouter } from './modules/health/health.routes';
 import { authRouter } from './modules/auth/auth.routes';
 import { shopRouter } from './modules/shop/shop.routes';
 import { productImageWebhook } from './modules/catalog/product-webhook.controller';
+import { paymentsRouter } from './modules/payments/payments.routes';
 import { errorHandler, notFoundHandler } from './middleware/error-handler.middleware';
 
 const API = '/api/v1';
@@ -50,5 +51,6 @@ function registerRawBodyRoutes(app: express.Express) {
 function registerJsonRoutes(app: express.Express) {
   app.use(`${API}/auth`, authRouter);
   app.use(`${API}/shop`, shopRouter);
-  // catalog, cart, orders, payments, wallet, delivery, admin, etc. — added per task.
+  app.use(`${API}/payments`, paymentsRouter);
+  // catalog, cart, orders, wallet, delivery, admin, etc. — added per task.
 }
