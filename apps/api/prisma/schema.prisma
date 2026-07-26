@@ -13,3 +13,84 @@ generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["postgresqlExtensions"]
 }
+
+// ═══════════════════════════════════════════════════════════════════════════
+// Enums
+// ═══════════════════════════════════════════════════════════════════════════
+
+enum Role {
+  BUYER
+  AGENT
+  ADMIN
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// Part 1 — Auth & Shop (B1-04)
+// ═══════════════════════════════════════════════════════════════════════════
+
+model User {
+  id                String   @id @default(uuid())
+  phone             String   @unique
+  email             String?  @unique
+  role              Role
+  firebaseUid       String?  @unique
+  isActive          Boolean  @default(true)
+  pushEnabled       Boolean  @default(true)
+  orderUpdatesOptIn Boolean  @default(true)
+  promoOptIn        Boolean  @default(false)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  shopProfile  ShopProfile?
+  agentProfile AgentProfile?
+  deviceTokens DeviceToken[]
+  // Relations to Part 2/3/4 models are added in their respective schema tasks
+  // (B2-01, B3-01, B3-02): cartItems, orders, wallet, ratings, tickets,
+  // referralCode, referralsMade, referralsRecv, auditLogs.
+
+  @@index([phone])
+}
+
+model ShopProfile {
+  id           String  @id @default(uuid())
+  userId       String  @unique
+  user         User    @relation(fields: [userId], references: [id])
+  shopName     String
+  ownerName    String
+  shopPhotoUrl String?
+  addressLine  String
+  city         String
+  state        String
+  pincode      String
+  latitude     Float
+  longitude    Float
+  // Kept in sync with latitude/longitude on every write from the app layer.
+  // GIST index added via raw SQL supplement in B3-02.
+  location     Unsupported("geography(Point,4326)")?
+  createdAt    DateTime                              @default(now())
+  updatedAt    DateTime                              @updatedAt
+}
+
+model AgentProfile {
+  id            String   @id @default(uuid())
+  userId        String   @unique
+  user          User     @relation(fields: [userId], references: [id])
+  vehicleType   String?
+  isAvailable   Boolean  @default(true)
+  lastLatitude  Float?
+  lastLongitude Float?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model DeviceToken {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  token     String   @unique
+  platform  String
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
