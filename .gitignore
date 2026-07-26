@@ -1,0 +1,23 @@
+node_modules/
+dist/
+build/
+coverage/
+*.log
+.env
+.env.*
+!.env.example
+.DS_Store
+
+# secrets — never commit
+*.pem
+*-private.pem
+firebase-service-account.json
+jwt-private.pem
+jwt-public.pem
+
+# prisma generated client
+apps/api/src/generated/
+
+# scratch pdf extracts
+arch.txt
+handbook.txt

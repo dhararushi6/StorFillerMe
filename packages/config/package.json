@@ -1,0 +1,12 @@
+{
+  "name": "@storefiller/config",
+  "version": "1.0.0",
+  "private": true,
+  "files": [
+    "tsconfig.base.json"
+  ],
+  "scripts": {
+    "build": "echo 'no build for config' && exit 0",
+    "typecheck": "echo 'no typecheck for config' && exit 0"
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "name": "storefiller",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Storefiller — B2B wholesale restocking marketplace (zero-budget modular monolith)",
+  "engines": {
+    "node": ">=20"
+  },
+  "packageManager": "pnpm@10.16.1",
+  "scripts": {
+    "build": "pnpm -r --filter ./packages/** run build && pnpm --filter @storefiller/api run build",
+    "typecheck": "pnpm -r run typecheck",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "dev": "pnpm --filter @storefiller/api run dev",
+    "test": "pnpm --filter @storefiller/api run test",
+    "prepare": "husky || true"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.13.0",
+    "eslint": "^9.13.0",
+    "eslint-config-prettier": "^9.1.0",
+    "husky": "^9.1.6",
+    "lint-staged": "^15.2.10",
+    "prettier": "^3.3.3",
+    "typescript": "^5.6.3",
+    "typescript-eslint": "^8.11.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@prisma/client",
+      "@prisma/engines",
+      "prisma",
+      "esbuild",
+      "protobufjs"
+    ]
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,yml,yaml}": [
+      "prettier --write"
+    ]
+  }
+}
