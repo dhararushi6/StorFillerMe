@@ -102,6 +102,20 @@ model AgentProfile {
   updatedAt     DateTime @updatedAt
 }
 
+// Email-OTP fallback storage (B1-06). OTPs are stored only as bcrypt hashes and
+// pruned hourly by cron. (Extends the base 22-model schema — no OTP table exists there.)
+model EmailOtp {
+  id         String    @id @default(uuid())
+  email      String
+  otpHash    String
+  expiresAt  DateTime
+  consumedAt DateTime?
+  attempts   Int       @default(0)
+  createdAt  DateTime  @default(now())
+
+  @@index([email])
+}
+
 model DeviceToken {
   id        String   @id @default(uuid())
   userId    String
