@@ -58,3 +58,24 @@ export function thumbnailUrl(publicId: string, width = 400, height = 300): strin
     secure: true,
   });
 }
+
+// Unsigned upload presets (B2-02) — created in the Cloudinary dashboard / via
+// scripts/cloudinary-presets.ts, each locked to its own folder.
+export const PRODUCT_UPLOAD_PRESET = 'storefiller_products';
+export const DELIVERY_UPLOAD_PRESET = 'storefiller_delivery';
+export const PRODUCT_UPLOAD_FOLDER = env.CLOUDINARY_PRODUCT_FOLDER;
+export const DELIVERY_UPLOAD_FOLDER = env.CLOUDINARY_DELIVERY_FOLDER;
+
+/** Product thumbnail: w_400,h_300,c_fill,f_webp (B2-02 transform pattern). */
+export function productThumbnailUrl(publicId: string): string {
+  return cloudinary.url(publicId, {
+    width: 400,
+    height: 300,
+    crop: 'fill',
+    format: 'webp',
+    quality: 'auto',
+    secure: true,
+  });
+}
+
+export { cloudinary };
