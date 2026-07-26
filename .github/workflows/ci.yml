@@ -50,11 +50,11 @@ jobs:
       - name: Typecheck
         run: pnpm typecheck
 
-      - name: Prisma generate + migrate (test DB)
-        run: pnpm --filter @storefiller/api exec prisma migrate deploy
+      - name: Prisma generate
+        run: pnpm --filter @storefiller/api exec prisma generate
 
-      - name: Apply raw SQL extensions/index migration
-        run: pnpm --filter @storefiller/api exec tsx prisma/apply-raw-sql.ts
+      - name: Migrate test DB (models + raw SQL extensions/indexes/triggers)
+        run: pnpm --filter @storefiller/api exec prisma migrate deploy
 
       - name: Test
         run: pnpm test

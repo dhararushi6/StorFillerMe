@@ -63,6 +63,18 @@ enum WalletTxnType {
   DEBIT
 }
 
+enum TicketStatus {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+}
+
+enum JobStatus {
+  PENDING
+  PROCESSED
+  FAILED
+}
+
 // ═══════════════════════════════════════════════════════════════════════════
 // Part 1 — Auth & Shop (B1-04)
 // ═══════════════════════════════════════════════════════════════════════════
@@ -86,8 +98,13 @@ model User {
   refreshTokens RefreshToken[]
   orders        Order[]
   wallet        BuyerWallet?
-  // Part 4 relations (B3-02): cartItems, ratings, tickets, referralCode,
-  // referralsMade, referralsRecv, auditLogs.
+  ratings       OrderRating[]
+  tickets       SupportTicket[]
+  referralCode  ReferralCode?
+  referralsMade Referral[]      @relation("Referrer")
+  referralsRecv Referral[]      @relation("Referred")
+  auditLogs     AuditLog[]
+  // cartItems relation added in B2-05 (cart).
 
   @@index([phone])
 }
@@ -245,9 +262,12 @@ model Order {
   cancelledAt        DateTime?
   cancellationReason String?
 
-  items    OrderItem[]
-  payment  Payment?
-  // Part 4 relations (B3-02): rating, tracking, locationLogs, settlement.
+  items        OrderItem[]
+  payment      Payment?
+  rating       OrderRating?
+  tracking     LiveTracking?
+  locationLogs DeliveryLocationLog[]
+  settlement   Settlement?
 
   @@index([buyerId])
   @@index([status])
@@ -300,4 +320,113 @@ model WalletTransaction {
   createdAt        DateTime      @default(now())
 
   @@index([buyerId])
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// Part 4 — Tracking & Ops (B3-02). GIST spatial index + AuditLog append-only
+// enforcement are raw-SQL supplements (§2.2).
+// ═══════════════════════════════════════════════════════════════════════════
+
+// Single row per order — cheap O(1) reads for the 15s polling endpoint.
+model LiveTracking {
+  orderId   String                                @id
+  order     Order                                 @relation(fields: [orderId], references: [id])
+  agentId   String
+  latitude  Float
+  longitude Float
+  location  Unsupported("geography(Point,4326)")?
+  updatedAt DateTime                              @updatedAt
+}
+
+// Append-only history, pruned by cron every 30 days — used for audit/replay.
+model DeliveryLocationLog {
+  id         String   @id @default(uuid())
+  orderId    String
+  order      Order    @relation(fields: [orderId], references: [id])
+  agentId    String
+  latitude   Float
+  longitude  Float
+  recordedAt DateTime @default(now())
+
+  @@index([orderId])
+}
+
+model Settlement {
+  id        String    @id @default(uuid())
+  orderId   String    @unique
+  order     Order     @relation(fields: [orderId], references: [id])
+  agentId   String
+  amount    Decimal   @db.Decimal(10, 2)
+  status    String    @default("PENDING") // PENDING | PAID
+  paidAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([agentId])
+}
+
+model OrderRating {
+  orderId   String   @id
+  order     Order    @relation(fields: [orderId], references: [id])
+  buyerId   String
+  buyer     User     @relation(fields: [buyerId], references: [id])
+  rating    Int
+  comment   String?
+  createdAt DateTime @default(now())
+}
+
+model SupportTicket {
+  id         String       @id @default(uuid())
+  buyerId    String
+  buyer      User         @relation(fields: [buyerId], references: [id])
+  subject    String
+  message    String
+  status     TicketStatus @default(OPEN)
+  createdAt  DateTime     @default(now())
+  resolvedAt DateTime?
+
+  @@index([buyerId])
+}
+
+model ReferralCode {
+  userId    String   @id
+  user      User     @relation(fields: [userId], references: [id])
+  code      String   @unique
+  createdAt DateTime @default(now())
+}
+
+model Referral {
+  id             String   @id @default(uuid())
+  referrerId     String
+  referrer       User     @relation("Referrer", fields: [referrerId], references: [id])
+  referredId     String   @unique
+  referred       User     @relation("Referred", fields: [referredId], references: [id])
+  rewardCredited Boolean  @default(false)
+  createdAt      DateTime @default(now())
+}
+
+// Restart-safety for in-memory node-cron: anything that must survive a server
+// restart is written here BEFORE the triggering action, and replayed on boot (§4.5).
+model JobRecovery {
+  id          String    @id @default(uuid())
+  jobType     String
+  referenceId String
+  status      JobStatus @default(PENDING)
+  payload     Json
+  createdAt   DateTime  @default(now())
+  processedAt DateTime?
+
+  @@index([status])
+}
+
+model AuditLog {
+  id         String   @id @default(uuid())
+  adminId    String
+  admin      User     @relation(fields: [adminId], references: [id])
+  action     String
+  entityType String
+  entityId   String
+  metadata   Json?
+  createdAt  DateTime @default(now())
+
+  @@index([entityType, entityId])
 }
