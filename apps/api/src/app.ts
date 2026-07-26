@@ -4,6 +4,7 @@ import { pinoHttp } from 'pino-http';
 import { logger } from './lib/logger';
 import { healthRouter } from './modules/health/health.routes';
 import { authRouter } from './modules/auth/auth.routes';
+import { shopRouter } from './modules/shop/shop.routes';
 import { errorHandler, notFoundHandler } from './middleware/error-handler.middleware';
 
 const API = '/api/v1';
@@ -46,5 +47,6 @@ function registerRawBodyRoutes(_app: express.Express) {
 /** Routes that consume parsed JSON (registered after express.json). Filled in Weeks 1-4. */
 function registerJsonRoutes(app: express.Express) {
   app.use(`${API}/auth`, authRouter);
-  // shop, catalog, cart, orders, payments, wallet, delivery, admin, etc. — added per task.
+  app.use(`${API}/shop`, shopRouter);
+  // catalog, cart, orders, payments, wallet, delivery, admin, etc. — added per task.
 }
