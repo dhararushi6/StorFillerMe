@@ -67,3 +67,19 @@ export const updateInventorySchema = z.object({
 });
 
 export type UpdateInventoryInput = z.infer<typeof updateInventorySchema>;
+
+// B2-06 — buyer product search (arch §3 GET /products). q is optional: empty/absent
+// returns all active products paginated; present runs the pg_trgm search. page/limit
+// are coerced (query strings arrive as strings) with defaults that flow through
+// validate({query}) via defineProperty, so callers see real numbers.
+export const productQuerySchema = z.object({
+  q: z.string().trim().optional(),
+  categoryId: z.string().uuid().optional(),
+  page: z.coerce.number().int().min(1).default(1),
+  limit: z.coerce.number().int().min(1).max(100).default(20),
+});
+
+export type ProductQuery = z.infer<typeof productQuerySchema>;
+
+// B2-06 — buyer product detail (arch §3 GET /products/:id).
+export type ProductDetailParams = z.infer<typeof productIdParamsSchema>;

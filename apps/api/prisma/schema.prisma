@@ -104,7 +104,7 @@ model User {
   referralsMade Referral[]      @relation("Referrer")
   referralsRecv Referral[]      @relation("Referred")
   auditLogs     AuditLog[]
-  // cartItems relation added in B2-05 (cart).
+  cartItems     CartItem[] // B2-06: server-side cart
 
   @@index([phone])
 }
@@ -223,7 +223,7 @@ model Product {
   updatedAt    DateTime          @updatedAt
   inventory    ProductInventory?
   orderItems   OrderItem[]
-  // cartItems relation added in B2-05 (cart).
+  cartItems    CartItem[] // B2-06: server-side cart
 
   @@index([categoryId])
 }
@@ -235,6 +235,22 @@ model ProductInventory {
   quantityReserved  Int      @default(0)
   lowStockThreshold Int      @default(10)
   updatedAt         DateTime @updatedAt
+}
+
+// B2-06 — server-side cart (arch §3 Cart). @@unique([buyerId, productId]) makes
+// add-item an upsert (re-adding a product increments quantity, no dup row) and its
+// leftmost prefix (buyerId) doubles as the index for "load this buyer's cart".
+model CartItem {
+  id        String   @id @default(uuid())
+  buyerId   String
+  buyer     User     @relation(fields: [buyerId], references: [id])
+  productId String
+  product   Product  @relation(fields: [productId], references: [id])
+  quantity  Int
+  addedAt   DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([buyerId, productId])
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
