@@ -10,6 +10,8 @@ import { adminCatalogRouter } from './modules/catalog/admin.routes';
 import { catalogRouter } from './modules/catalog/catalog.routes';
 import { paymentsRouter } from './modules/payments/payments.routes';
 import { notificationsRouter } from './modules/notifications/notifications.routes';
+import { supportRouter } from './modules/support/support.routes';
+import { referralRouter } from './modules/referral/referral.routes';
 import { errorHandler, notFoundHandler } from './middleware/error-handler.middleware';
 
 const API = '/api/v1';
@@ -56,6 +58,8 @@ function registerJsonRoutes(app: express.Express) {
   app.use(`${API}/shop`, shopRouter);
   app.use(`${API}/payments`, paymentsRouter);
   app.use(`${API}/users/me`, notificationsRouter); // B2-04: device tokens + notification prefs
+  app.use(`${API}/support`, supportRouter); // B2-05: support tickets
+  app.use(`${API}/referral`, referralRouter); // B2-05: referral code + history
   // admin MUST mount before the bare-`/api/v1` catalogRouter: catalog's router-level
   // BUYER guard otherwise intercepts /admin/* and 403s admins before they reach their
   // own routes. (ponytail: known minor ceiling — an unmatched /admin/* sub-path falls
