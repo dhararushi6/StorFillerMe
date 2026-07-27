@@ -13,6 +13,7 @@ import { notificationsRouter } from './modules/notifications/notifications.route
 import { supportRouter } from './modules/support/support.routes';
 import { referralRouter } from './modules/referral/referral.routes';
 import { cartRouter } from './modules/cart/cart.routes';
+import { walletRouter } from './modules/wallet/wallet.routes';
 import { errorHandler, notFoundHandler } from './middleware/error-handler.middleware';
 
 const API = '/api/v1';
@@ -68,6 +69,7 @@ function registerJsonRoutes(app: express.Express) {
   // admin paths are all known.)
   app.use(`${API}/admin`, adminCatalogRouter); // B1-08/B1-09: admin product + category CRUD
   app.use(`${API}/cart`, cartRouter); // B2-06: server-side cart (scoped prefix, before bare catalogRouter)
+  app.use(`${API}/wallet`, walletRouter); // B3-04: buyer wallet + transactions + topup order
   app.use(`${API}`, catalogRouter); // B1-09: GET /categories (buyer); /products in B2-06
   // cart, orders, wallet, delivery, etc. — added per task.
 }
