@@ -1,7 +1,11 @@
-import { Prisma } from '@prisma/client';
+import { Prisma, type Category } from '@prisma/client';
 import { prisma } from '../../lib/prisma';
 import { badRequest, conflict, notFound } from '../../lib/http-error';
-import type { CreateProductInput, UpdateProductInput } from './catalog.schemas';
+import type {
+  CreateProductInput,
+  UpdateProductInput,
+  CreateCategoryInput,
+} from './catalog.schemas';
 
 /** Shape returned to the admin client — always includes inventory row. */
 async function loadProduct(id: string) {
@@ -90,4 +94,53 @@ export async function updateProduct(id: string, input: UpdateProductInput) {
     }
     throw err;
   }
+}
+
+// B1-09 — create category; parentId (when set) must reference an existing category.
+export async function createCategory(input: CreateCategoryInput) {
+  if (input.parentId) {
+    const parent = await prisma.category.findUnique({ where: { id: input.parentId } });
+    if (!parent) throw badRequest(`Parent category ${input.parentId} does not exist`);
+  }
+
+  try {
+    return await prisma.category.create({
+      data: {
+        name: input.name,
+        slug: input.slug,
+        iconUrl: input.iconUrl,
+        parentId: input.parentId,
+        displayOrder: input.displayOrder ?? 0,
+      },
+    });
+  } catch (err) {
+    if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === 'P2002') {
+      throw conflict('Slug already exists');
+    }
+    throw err;
+  }
+}
+
+// B1-09 — flat fetch + in-memory nested tree by parentId (arch §3 GET /categories).
+// ponytail: single query + JS build; fine while category count stays small. If it
+// grows large, push the recursion into a recursive CTE.
+export type CategoryNode = Category & { subcategories: CategoryNode[] };
+
+export async function getCategoryTree(): Promise<CategoryNode[]> {
+  const all = await prisma.category.findMany({
+    orderBy: [{ displayOrder: 'asc' }, { name: 'asc' }],
+  });
+  const byParent = new Map<string | null, Category[]>();
+  for (const c of all) {
+    const key = c.parentId ?? null;
+    const list = byParent.get(key);
+    if (list) list.push(c);
+    else byParent.set(key, [c]);
+  }
+  const build = (parentId: string | null): CategoryNode[] =>
+    (byParent.get(parentId) ?? []).map((c) => ({
+      ...c,
+      subcategories: build(c.id),
+    }));
+  return build(null);
 }

@@ -7,6 +7,7 @@ import { authRouter } from './modules/auth/auth.routes';
 import { shopRouter } from './modules/shop/shop.routes';
 import { productImageWebhook } from './modules/catalog/product-webhook.controller';
 import { adminCatalogRouter } from './modules/catalog/admin.routes';
+import { catalogRouter } from './modules/catalog/catalog.routes';
 import { paymentsRouter } from './modules/payments/payments.routes';
 import { errorHandler, notFoundHandler } from './middleware/error-handler.middleware';
 
@@ -53,6 +54,12 @@ function registerJsonRoutes(app: express.Express) {
   app.use(`${API}/auth`, authRouter);
   app.use(`${API}/shop`, shopRouter);
   app.use(`${API}/payments`, paymentsRouter);
-  app.use(`${API}/admin`, adminCatalogRouter); // B1-08: admin product CRUD
-  // catalog, cart, orders, wallet, delivery, admin, etc. — added per task.
+  // admin MUST mount before the bare-`/api/v1` catalogRouter: catalog's router-level
+  // BUYER guard otherwise intercepts /admin/* and 403s admins before they reach their
+  // own routes. (ponytail: known minor ceiling — an unmatched /admin/* sub-path falls
+  // through to catalog's BUYER guard and returns 403 instead of 404; acceptable while
+  // admin paths are all known.)
+  app.use(`${API}/admin`, adminCatalogRouter); // B1-08/B1-09: admin product + category CRUD
+  app.use(`${API}`, catalogRouter); // B1-09: GET /categories (buyer); /products in B2-06
+  // cart, orders, wallet, delivery, etc. — added per task.
 }

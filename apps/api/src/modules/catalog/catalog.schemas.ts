@@ -44,3 +44,16 @@ export const productIdParamsSchema = z.object({
 
 export type CreateProductInput = z.infer<typeof createProductSchema>;
 export type UpdateProductInput = z.infer<typeof updateProductSchema>;
+
+// B1-09 — Admin Category CRUD. arch §3 POST /admin/categories body: { name, slug,
+// parentId?, iconUrl? }. displayOrder is an optional extra (DB has the column and
+// the tree sorts by it) so admins can order siblings; defaults to 0.
+export const createCategorySchema = z.object({
+  name: z.string().min(1).max(100),
+  slug: z.string().min(1).max(100),
+  parentId: z.string().uuid().optional(),
+  iconUrl: z.string().url().optional(),
+  displayOrder: z.number().int().min(0).optional(),
+});
+
+export type CreateCategoryInput = z.infer<typeof createCategorySchema>;
