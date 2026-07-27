@@ -1,5 +1,11 @@
 import type { RequestHandler } from 'express';
-import { createProduct, updateProduct, updateInventory, createCategory } from './catalog.service';
+import {
+  createProduct,
+  updateProduct,
+  updateInventory,
+  createCategory,
+  listMissingImageProducts,
+} from './catalog.service';
 
 // B1-08 — admin product CRUD handlers.
 
@@ -23,4 +29,10 @@ export const createCategoryHandler: RequestHandler = async (req, res) => {
 export const updateInventoryHandler: RequestHandler = async (req, res) => {
   const inventory = await updateInventory(req.params.id as string, req.body);
   res.json({ inventory });
+};
+
+// B3-04/M1-05 — admin review surface for the missing-image cron: GET /admin/products/missing-image.
+export const listMissingImageHandler: RequestHandler = async (_req, res) => {
+  const products = await listMissingImageProducts();
+  res.json({ products });
 };

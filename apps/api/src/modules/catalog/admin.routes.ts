@@ -14,6 +14,7 @@ import {
   updateProductHandler,
   createCategoryHandler,
   updateInventoryHandler,
+  listMissingImageHandler,
 } from './admin.controller';
 
 // B1-08/B1-09 — admin catalog routes, mounted at /api/v1/admin.
@@ -22,6 +23,9 @@ export const adminCatalogRouter: Router = Router();
 adminCatalogRouter.use(requireAuth, requireRole('ADMIN'));
 
 adminCatalogRouter.post('/products', validate({ body: createProductSchema }), createProductHandler);
+// B3-04/M1-05 — must precede /products/:id so the static segment isn't captured
+// as a product UUID.
+adminCatalogRouter.get('/products/missing-image', listMissingImageHandler);
 adminCatalogRouter.patch(
   '/products/:id',
   validate({ params: productIdParamsSchema, body: updateProductSchema }),

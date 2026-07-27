@@ -36,6 +36,9 @@ const EnvSchema = z.object({
   CLOUDINARY_SHOP_FOLDER: z.string().default('shop_photos'),
   CLOUDINARY_PRODUCT_FOLDER: z.string().default('products'),
   CLOUDINARY_DELIVERY_FOLDER: z.string().default('delivery_photos'),
+  // Cloudinary upload-notification webhook HMAC secret (B3-04/05). Absent → stub
+  // mode (webhook accepted with a warning). Set in prod to enforce the signature.
+  CLOUDINARY_WEBHOOK_SECRET: z.string().optional(),
 
   // Razorpay
   RAZORPAY_KEY_ID: z.string().optional(),

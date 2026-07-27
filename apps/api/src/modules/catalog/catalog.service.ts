@@ -277,3 +277,13 @@ export async function getProductById(id: string) {
   const { inventory } = product;
   return { product, inventory };
 }
+
+// B3-04/M1-05 — admin review surface for the missing-image cron. Returns ACTIVE
+// products with no imageUrl, oldest first (same predicate the 5min cron flags).
+export async function listMissingImageProducts() {
+  return prisma.product.findMany({
+    where: { isActive: true, imageUrl: null },
+    select: { id: true, name: true, sku: true, createdAt: true },
+    orderBy: { createdAt: 'asc' },
+  });
+}
