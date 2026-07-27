@@ -6,6 +6,7 @@ import { healthRouter } from './modules/health/health.routes';
 import { authRouter } from './modules/auth/auth.routes';
 import { shopRouter } from './modules/shop/shop.routes';
 import { productImageWebhook } from './modules/catalog/product-webhook.controller';
+import { adminCatalogRouter } from './modules/catalog/admin.routes';
 import { paymentsRouter } from './modules/payments/payments.routes';
 import { errorHandler, notFoundHandler } from './middleware/error-handler.middleware';
 
@@ -52,5 +53,6 @@ function registerJsonRoutes(app: express.Express) {
   app.use(`${API}/auth`, authRouter);
   app.use(`${API}/shop`, shopRouter);
   app.use(`${API}/payments`, paymentsRouter);
+  app.use(`${API}/admin`, adminCatalogRouter); // B1-08: admin product CRUD
   // catalog, cart, orders, wallet, delivery, admin, etc. — added per task.
 }
