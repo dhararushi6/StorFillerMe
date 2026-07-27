@@ -9,6 +9,7 @@ import { productImageWebhook } from './modules/catalog/product-webhook.controlle
 import { adminCatalogRouter } from './modules/catalog/admin.routes';
 import { catalogRouter } from './modules/catalog/catalog.routes';
 import { paymentsRouter } from './modules/payments/payments.routes';
+import { notificationsRouter } from './modules/notifications/notifications.routes';
 import { errorHandler, notFoundHandler } from './middleware/error-handler.middleware';
 
 const API = '/api/v1';
@@ -54,6 +55,7 @@ function registerJsonRoutes(app: express.Express) {
   app.use(`${API}/auth`, authRouter);
   app.use(`${API}/shop`, shopRouter);
   app.use(`${API}/payments`, paymentsRouter);
+  app.use(`${API}/users/me`, notificationsRouter); // B2-04: device tokens + notification prefs
   // admin MUST mount before the bare-`/api/v1` catalogRouter: catalog's router-level
   // BUYER guard otherwise intercepts /admin/* and 403s admins before they reach their
   // own routes. (ponytail: known minor ceiling — an unmatched /admin/* sub-path falls
