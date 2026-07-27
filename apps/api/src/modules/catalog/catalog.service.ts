@@ -5,6 +5,7 @@ import type {
   CreateProductInput,
   UpdateProductInput,
   CreateCategoryInput,
+  UpdateInventoryInput,
 } from './catalog.schemas';
 
 /** Shape returned to the admin client — always includes inventory row. */
@@ -94,6 +95,33 @@ export async function updateProduct(id: string, input: UpdateProductInput) {
     }
     throw err;
   }
+}
+
+// B1-10 — admin inventory update. Optimistic version lock on Product.version
+// (ProductInventory has no version col): updateMany WHERE id+version bumps version,
+// 0 rows → 404 vs 409 disambiguate via findUnique; then upsert inventory quantity in
+// the same tx so the version bump and the quantity write commit atomically.
+export async function updateInventory(id: string, input: UpdateInventoryInput) {
+  return prisma.$transaction(async (tx) => {
+    const result = await tx.product.updateMany({
+      where: { id, version: input.version },
+      data: { version: { increment: 1 } },
+    });
+    if (result.count === 0) {
+      const existing = await tx.product.findUnique({
+        where: { id },
+        select: { version: true },
+      });
+      if (!existing) throw notFound(`Product ${id} not found`);
+      throw conflict('Stale version — reload the product and retry');
+    }
+    // Inventory row is seeded on product create; upsert guards a missing row.
+    return tx.productInventory.upsert({
+      where: { productId: id },
+      create: { productId: id, quantityAvailable: input.quantityAvailable },
+      update: { quantityAvailable: input.quantityAvailable },
+    });
+  });
 }
 
 // B1-09 — create category; parentId (when set) must reference an existing category.

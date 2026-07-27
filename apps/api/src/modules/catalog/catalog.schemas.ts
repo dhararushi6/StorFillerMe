@@ -57,3 +57,13 @@ export const createCategorySchema = z.object({
 });
 
 export type CreateCategoryInput = z.infer<typeof createCategorySchema>;
+
+// B1-10 — Admin inventory update. arch §3 PATCH /admin/products/:id/inventory
+// body: { quantityAvailable, version }. version is the Product.version optimistic
+// token (ProductInventory has no version column), so the lock guards the product row.
+export const updateInventorySchema = z.object({
+  quantityAvailable: z.number().int().min(0),
+  version: z.number().int().min(1),
+});
+
+export type UpdateInventoryInput = z.infer<typeof updateInventorySchema>;

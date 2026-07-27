@@ -7,11 +7,13 @@ import {
   updateProductSchema,
   productIdParamsSchema,
   createCategorySchema,
+  updateInventorySchema,
 } from './catalog.schemas';
 import {
   createProductHandler,
   updateProductHandler,
   createCategoryHandler,
+  updateInventoryHandler,
 } from './admin.controller';
 
 // B1-08/B1-09 — admin catalog routes, mounted at /api/v1/admin.
@@ -29,4 +31,11 @@ adminCatalogRouter.post(
   '/categories',
   validate({ body: createCategorySchema }),
   createCategoryHandler,
+);
+// B1-10 — admin inventory update. { quantityAvailable, version } → { inventory };
+// 409 on stale version (guarded in service via updateMany WHERE id+version).
+adminCatalogRouter.patch(
+  '/products/:id/inventory',
+  validate({ params: productIdParamsSchema, body: updateInventorySchema }),
+  updateInventoryHandler,
 );
