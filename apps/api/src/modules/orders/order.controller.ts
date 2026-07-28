@@ -1,5 +1,6 @@
 import type { RequestHandler } from 'express';
 import { OrderService } from './order.service';
+import { AgentService } from '../agent/agent.service';
 import type {
   CreateOrderInput,
   ListOrdersQuery,
@@ -31,5 +32,11 @@ export const getOrderHandler: RequestHandler = async (req, res) => {
 export const cancelOrderHandler: RequestHandler = async (req, res) => {
   const { id } = req.params as unknown as OrderIdParams;
   const result = await OrderService.cancelOrder(req.user!.id, id, req.body as CancelOrderInput);
+  res.json(result);
+};
+
+export const getTrackingHandler: RequestHandler = async (req, res) => {
+  const { id } = req.params as unknown as OrderIdParams;
+  const result = await AgentService.getTracking(id);
   res.json(result);
 };

@@ -13,6 +13,7 @@ import {
   listOrdersHandler,
   getOrderHandler,
   cancelOrderHandler,
+  getTrackingHandler,
 } from './order.controller';
 
 // B3-06/07 — order routes, mounted at /api/v1/orders. Buyer auth at router level.
@@ -27,4 +28,5 @@ orderRouter.patch(
   validate({ params: orderIdParamsSchema, body: cancelOrderSchema }),
   cancelOrderHandler,
 );
+orderRouter.get('/:id/tracking', validate({ params: orderIdParamsSchema }), getTrackingHandler);
 orderRouter.get('/:id', validate({ params: orderIdParamsSchema }), getOrderHandler);
