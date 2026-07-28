@@ -5,6 +5,7 @@ import { logger } from './lib/logger';
 import { healthRouter } from './modules/health/health.routes';
 import { authRouter } from './modules/auth/auth.routes';
 import { shopRouter } from './modules/shop/shop.routes';
+import { razorpayWebhookHandler } from './modules/payments/payments.webhook';
 import { productImageWebhook } from './modules/catalog/product-webhook.controller';
 import { adminCatalogRouter } from './modules/catalog/admin.routes';
 import { catalogRouter } from './modules/catalog/catalog.routes';
@@ -52,7 +53,12 @@ export function createApp(): Express {
 function registerRawBodyRoutes(app: express.Express) {
   // Cloudinary product image webhook (B2-02 skeleton, B2-06 full) — raw body.
   app.post(`${API}/products/image-confirm`, express.raw({ type: '*/*' }), productImageWebhook);
-  // Week 3: Razorpay payment webhook (raw) — see modules/payments.
+  // Razorpay payment webhook (B3-07) — HMAC over raw body; MUST be before express.json().
+  app.post(
+    `${API}/payments/razorpay/webhook`,
+    express.raw({ type: '*/*' }),
+    razorpayWebhookHandler,
+  );
 }
 
 /** Routes that consume parsed JSON (registered after express.json). Filled in Weeks 1-4. */
