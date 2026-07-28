@@ -10,6 +10,7 @@ import {
   confirmOrderHandler,
   assignAgentHandler,
   listAuditLogsHandler,
+  cleanupDeliveryLogsHandler,
   getDashboardHandler,
 } from './admin.controller';
 
@@ -44,6 +45,13 @@ adminOrderRouter.patch(
 
 // GET /admin/audit-logs
 adminOrderRouter.get('/audit-logs', validate({ query: auditLogQuerySchema }), listAuditLogsHandler);
+
+// POST /admin/delivery-logs/cleanup — manual trigger for the 30-day prune (B2-08)
+adminOrderRouter.post(
+  '/delivery-logs/cleanup',
+  writeAuditLog({ action: 'DELIVERY_LOG_CLEANUP', entityType: 'System' }),
+  cleanupDeliveryLogsHandler,
+);
 
 // GET /admin/dashboard — summary counts
 adminOrderRouter.get('/dashboard', getDashboardHandler);

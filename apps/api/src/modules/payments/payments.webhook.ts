@@ -43,9 +43,10 @@ export const razorpayWebhookHandler: RequestHandler = async (req, res) => {
     }
   }
 
-  const body: RpPayload = razorpayStubbed
-    ? (req.body as RpPayload) // stub: raw body IS the JSON payload
-    : JSON.parse(req.body.toString('utf-8'));
+  // Both modes registered with express.raw() → req.body is always a Buffer.
+  // (The earlier stub branch read req.body as already-parsed JSON, which 400'd
+  // every stub call — Buffer has no .payload.)
+  const body: RpPayload = JSON.parse(req.body.toString('utf-8'));
 
   const payload = body.payload?.payment?.entity;
   if (!payload) {

@@ -1,6 +1,7 @@
 import { prisma } from '../../lib/prisma';
 import { badRequest, notFound } from '../../lib/http-error';
 import { assertTransition } from '../orders/order.fsm';
+import { runDeliveryLogCleanup } from '../../jobs/delivery-log-cleanup.job';
 import type { AdminOrdersQuery, AssignAgentInput } from './admin.schemas';
 import type { AuditLogQuery } from './audit-log.schemas';
 
@@ -97,6 +98,12 @@ export const AdminService = {
     return { data, total };
   },
 
+  /** POST /admin/delivery-logs/cleanup — manual trigger of the 30-day prune.
+   *  Delegates to the same cron logic (B2-08) so behavior is identical. */
+  async cleanupDeliveryLogs() {
+    return runDeliveryLogCleanup();
+  },
+
   /** GET /admin/dashboard — summary counts. */
   async getDashboard() {
     const [pendingOrders, lowStock] = await Promise.all([
@@ -114,5 +121,13 @@ export const AdminService = {
     ]);
 
     return { pendingOrders, lowStock };
+  },
+
+  /** POST /admin/delivery-log-cleanup — manual trigger of the nightly 30-day
+   *  prune. Delegates to the job's exported runner so the logic stays in one
+   *  place (handbook: "Cleanup cron removes rows older than 30 days on manual
+   *  trigger"). */
+  async runDeliveryLogCleanup() {
+    return runDeliveryLogCleanup();
   },
 };

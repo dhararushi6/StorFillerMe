@@ -18,3 +18,9 @@ export const updateLocationHandler: RequestHandler = async (req, res) => {
   );
   res.json(result);
 };
+
+export const deliverOrderHandler: RequestHandler = async (req, res) => {
+  const { id } = req.params as unknown as OrderIdParams;
+  const result = await AgentService.deliverOrder(req.user!.id, id, req.body as LocationUpdateInput);
+  res.json(result);
+};

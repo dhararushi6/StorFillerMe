@@ -272,8 +272,26 @@ export const OrderService = {
           data: { quantityReserved: { decrement: item.quantity } },
         });
       }
-      // Initiate refund if paid online (wallet/UPI/card).
-      if (order.paymentMethod !== 'COD' && order.paymentStatus !== 'NOT_APPLICABLE') {
+      // Refund. WALLET is refunded inline (money lives in our own DB — inverse
+      // of the createOrder debit). UPI/CARD stays deferred to B3-08 (real
+      // Razorpay refund API), logged for the reconciliation cron.
+      if (order.paymentMethod === 'WALLET') {
+        const wallet = await tx.buyerWallet.findUnique({ where: { buyerId } });
+        const balanceAfter = (wallet?.balance ?? new Prisma.Decimal(0)).add(order.totalAmount);
+        await tx.buyerWallet.update({
+          where: { buyerId },
+          data: { balance: balanceAfter },
+        });
+        await tx.walletTransaction.create({
+          data: {
+            buyerId,
+            type: 'CREDIT',
+            amount: order.totalAmount,
+            balanceAfter,
+            referenceOrderId: order.id,
+          },
+        });
+      } else if (order.paymentMethod !== 'COD' && order.paymentStatus !== 'NOT_APPLICABLE') {
         // ponytail: refund is a stub here — real Razorpay refund API call
         // lands in B3-07 (webhook) or B3-08 (reconciliation). For now we
         // mark the payment as FAILED and let the reconciliation cron correct

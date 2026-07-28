@@ -27,6 +27,11 @@ export const listAuditLogsHandler: RequestHandler = async (req, res) => {
   res.json(result);
 };
 
+export const cleanupDeliveryLogsHandler: RequestHandler = async (_req, res) => {
+  const result = await AdminService.cleanupDeliveryLogs();
+  res.json(result);
+};
+
 export const getDashboardHandler: RequestHandler = async (_req, res) => {
   const result = await AdminService.getDashboard();
   res.json(result);

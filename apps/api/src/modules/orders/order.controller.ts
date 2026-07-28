@@ -37,6 +37,6 @@ export const cancelOrderHandler: RequestHandler = async (req, res) => {
 
 export const getTrackingHandler: RequestHandler = async (req, res) => {
   const { id } = req.params as unknown as OrderIdParams;
-  const result = await AgentService.getTracking(id);
+  const result = await AgentService.getTracking(req.user!.id, id);
   res.json(result);
 };

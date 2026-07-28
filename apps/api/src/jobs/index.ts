@@ -4,9 +4,10 @@ import { env, isTest } from '../lib/env';
 import { logger } from '../lib/logger';
 import { otpCleanupJob } from './otp-cleanup.job';
 import { productImageCleanupJob } from './product-image-cleanup.job';
+import { deliveryLogCleanupJob } from './delivery-log-cleanup.job';
 
 /** All cron jobs. Schedules are staggered to avoid overlap (audited in B2-10/B3-09). */
-export const cronJobs: CronJob[] = [otpCleanupJob, productImageCleanupJob];
+export const cronJobs: CronJob[] = [otpCleanupJob, productImageCleanupJob, deliveryLogCleanupJob];
 
 /** Registers every cron job. Relies on Railway replicas:1 so each fires once (§6). */
 export function registerCronJobs(): void {
