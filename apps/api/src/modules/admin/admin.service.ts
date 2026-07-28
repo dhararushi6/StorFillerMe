@@ -2,6 +2,7 @@ import { prisma } from '../../lib/prisma';
 import { badRequest, notFound } from '../../lib/http-error';
 import { assertTransition } from '../orders/order.fsm';
 import type { AdminOrdersQuery, AssignAgentInput } from './admin.schemas';
+import type { AuditLogQuery } from './audit-log.schemas';
 
 // B1-11 — Admin order operations (arch §3: GET /admin/orders, PATCH confirm,
 // PATCH assign-agent, GET /admin/dashboard).
@@ -71,6 +72,29 @@ export const AdminService = {
         dispatchedAt: new Date(),
       },
     });
+  },
+
+  /** GET /admin/audit-logs — recent audit log entries, optional filters. */
+  async listAuditLogs(query: AuditLogQuery) {
+    const where: Record<string, unknown> = {};
+    if (query.action) where.action = query.action;
+    if (query.from || query.to) {
+      const createdAt: Record<string, Date> = {};
+      if (query.from) createdAt.gte = query.from;
+      if (query.to) createdAt.lte = query.to;
+      where.createdAt = createdAt;
+    }
+    const [data, total] = await Promise.all([
+      prisma.auditLog.findMany({
+        where,
+        include: { admin: { select: { id: true, phone: true } } },
+        orderBy: { createdAt: 'desc' },
+        skip: (query.page - 1) * query.limit,
+        take: query.limit,
+      }),
+      prisma.auditLog.count({ where }),
+    ]);
+    return { data, total };
   },
 
   /** GET /admin/dashboard — summary counts. */

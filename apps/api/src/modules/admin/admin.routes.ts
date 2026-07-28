@@ -2,11 +2,14 @@ import { Router } from 'express';
 import { validate } from '../../middleware/validate.middleware';
 import { requireAuth } from '../../middleware/auth.middleware';
 import { requireRole } from '../../middleware/role-guard.middleware';
+import { writeAuditLog } from '../../middleware/audit-log.middleware';
 import { adminOrdersQuerySchema, orderIdParamsSchema, assignAgentSchema } from './admin.schemas';
+import { auditLogQuerySchema } from './audit-log.schemas';
 import {
   listAdminOrdersHandler,
   confirmOrderHandler,
   assignAgentHandler,
+  listAuditLogsHandler,
   getDashboardHandler,
 } from './admin.controller';
 
@@ -27,6 +30,7 @@ adminOrderRouter.get(
 adminOrderRouter.patch(
   '/orders/:id/confirm',
   validate({ params: orderIdParamsSchema }),
+  writeAuditLog({ action: 'ORDER_CONFIRM', entityType: 'Order', paramKey: 'id' }),
   confirmOrderHandler,
 );
 
@@ -34,8 +38,12 @@ adminOrderRouter.patch(
 adminOrderRouter.patch(
   '/orders/:id/assign-agent',
   validate({ params: orderIdParamsSchema, body: assignAgentSchema }),
+  writeAuditLog({ action: 'ORDER_ASSIGN', entityType: 'Order', paramKey: 'id' }),
   assignAgentHandler,
 );
+
+// GET /admin/audit-logs
+adminOrderRouter.get('/audit-logs', validate({ query: auditLogQuerySchema }), listAuditLogsHandler);
 
 // GET /admin/dashboard — summary counts
 adminOrderRouter.get('/dashboard', getDashboardHandler);
