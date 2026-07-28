@@ -16,6 +16,7 @@ import { referralRouter } from './modules/referral/referral.routes';
 import { cartRouter } from './modules/cart/cart.routes';
 import { walletRouter } from './modules/wallet/wallet.routes';
 import { orderRouter } from './modules/orders/order.routes';
+import { adminOrderRouter } from './modules/admin/admin.routes';
 import { errorHandler, notFoundHandler } from './middleware/error-handler.middleware';
 
 const API = '/api/v1';
@@ -75,6 +76,7 @@ function registerJsonRoutes(app: express.Express) {
   // through to catalog's BUYER guard and returns 403 instead of 404; acceptable while
   // admin paths are all known.)
   app.use(`${API}/admin`, adminCatalogRouter); // B1-08/B1-09: admin product + category CRUD
+  app.use(`${API}/admin`, adminOrderRouter); // B1-11: admin order ops + dashboard
   app.use(`${API}/cart`, cartRouter); // B2-06: server-side cart (scoped prefix, before bare catalogRouter)
   app.use(`${API}/wallet`, walletRouter); // B3-04: buyer wallet + transactions + topup order
   app.use(`${API}/orders`, orderRouter); // B3-06/07: order FSM + inventory lock
