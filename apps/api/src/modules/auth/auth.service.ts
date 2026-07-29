@@ -123,11 +123,20 @@ export async function refreshSession(refreshToken: string): Promise<SessionResul
   return issuePair(user, record.familyId);
 }
 
-/** POST /auth/logout — revoke every active refresh token for the user. */
+/** POST /auth/logout — revoke every active refresh token for the user, and stop
+ *  push to their devices. Logout already ends every session (all families are
+ *  revoked), so the device tokens go with them: otherwise order notifications
+ *  keep arriving on a signed-out phone, which on a shared device leaks another
+ *  user's order activity onto the lock screen. Re-registered on next login by
+ *  POST /users/me/device-token (upsert flips isActive back on). */
 export async function logout(userId: string): Promise<void> {
   await prisma.refreshToken.updateMany({
     where: { userId, revokedAt: null },
     data: { revokedAt: new Date() },
+  });
+  await prisma.deviceToken.updateMany({
+    where: { userId, isActive: true },
+    data: { isActive: false },
   });
 }
 

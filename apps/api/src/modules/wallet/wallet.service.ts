@@ -42,33 +42,42 @@ export const WalletService = {
 
   /**
    * POST /wallet/topup/razorpay-order { amount } → { razorpayOrderId, amount,
-   * currency, keyId }. Creates a Razorpay order for the top-up amount. The
-   * actual balance credit happens in the Razorpay webhook (B3-07) when the
-   * payment is captured — top-up here only reserves the order. Stub mode
-   * (no Razorpay keys) returns a deterministic fake order id so the flow is
-   * testable end-to-end without a live Razorpay account.
+   * currency, keyId }. Creates a Razorpay order for the top-up amount plus the
+   * PENDING Payment row the capture webhook (B3-07) matches on. The balance
+   * credit happens there, not here. Stub mode (no Razorpay keys) returns a
+   * deterministic fake order id so the flow is testable end-to-end without a
+   * live Razorpay account — the Payment row is written either way.
    */
   async createTopupOrder(buyerId: string, input: TopupInput) {
     const amount = new Prisma.Decimal(input.amount);
     const currency = 'INR';
+    const amountPaise = Number(amount.mul(100).toFixed(0));
 
+    let razorpayOrderId: string;
     if (razorpayStubbed || !razorpay) {
-      // ponytail: deterministic stub id; the webhook (B3-07) will also run in
-      // stub mode and credit the wallet off a simulated capture. Replace with
-      // razorpay.orders.create() output when keys are present.
-      const razorpayOrderId = `order_stub_${buyerId}_${input.amount}_${Date.now()}`;
+      // Date.now() keeps repeat top-ups of the same amount distinct — razorpayOrderId
+      // is unique, and two live top-ups are genuinely two payments.
+      razorpayOrderId = `order_stub_topup_${buyerId}_${amountPaise}_${Date.now()}`;
       logger.warn(
         { razorpayOrderId },
         'wallet topup in STUB mode — no real Razorpay order created',
       );
-      return { razorpayOrderId, amount, currency, keyId: razorpayKeyId };
+    } else {
+      const order = await razorpay.orders.create({
+        amount: amountPaise, // Razorpay expects paise
+        currency,
+        notes: { buyerId, purpose: 'wallet_topup' },
+      });
+      razorpayOrderId = order.id;
     }
 
-    const order = await razorpay.orders.create({
-      amount: input.amount * 100, // Razorpay expects paise
-      currency,
-      notes: { buyerId, purpose: 'wallet_topup' },
+    // Without this row the capture arrives, matches nothing, 404s — and the buyer
+    // is charged for a balance that never moves. kind + buyerId are what tell the
+    // webhook to credit a wallet instead of confirming an order.
+    await prisma.payment.create({
+      data: { kind: 'WALLET_TOPUP', buyerId, razorpayOrderId, amount, status: 'PENDING' },
     });
-    return { razorpayOrderId: order.id, amount, currency, keyId: razorpayKeyId };
+
+    return { razorpayOrderId, amount, currency, keyId: razorpayKeyId };
   },
 };

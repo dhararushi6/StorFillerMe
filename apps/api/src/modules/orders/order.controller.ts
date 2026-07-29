@@ -11,7 +11,10 @@ import type {
 // B3-06/07 — order handlers. Buyer identity from req.user (requireAuth).
 
 export const createOrderHandler: RequestHandler = async (req, res) => {
-  const result = await OrderService.createOrder(req.user!.id, req.body as CreateOrderInput);
+  // Idempotency-Key is optional; capped so a hostile client can't write huge
+  // keys, and blank-trimmed so a header of spaces is treated as absent.
+  const key = req.header('Idempotency-Key')?.trim().slice(0, 128) || undefined;
+  const result = await OrderService.createOrder(req.user!.id, req.body as CreateOrderInput, key);
   res.status(201).json(result);
 };
 
