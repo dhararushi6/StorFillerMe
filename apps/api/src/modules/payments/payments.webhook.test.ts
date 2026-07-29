@@ -3,6 +3,7 @@ import request from 'supertest';
 import crypto from 'node:crypto';
 import { prisma } from '../../lib/prisma';
 import { razorpayWebhookHandler } from './payments.webhook';
+import { WalletService } from '../wallet/wallet.service';
 import { Prisma } from '@prisma/client';
 import { createUser, createShopProfile, createCategory, createProduct } from '../../test/helpers';
 
@@ -155,5 +156,83 @@ describe('razorpay webhook (stub mode — no HMAC secret set)', () => {
       .set('Content-Type', 'application/json')
       .send(JSON.stringify({ event: 'payment.captured', payload: {} }));
     expect(res.status).toBe(400);
+  });
+});
+
+describe('razorpay webhook — wallet top-up', () => {
+  // The bug this guards: createTopupOrder used to create a Razorpay order and no
+  // Payment row, so the capture matched nothing, 404'd, and the buyer was charged
+  // for a balance that never moved.
+  async function seedTopup(amount: number) {
+    const buyer = await createUser({ role: 'BUYER' });
+    const topup = await WalletService.createTopupOrder(buyer.id, { amount });
+    return { buyer, razorpayOrderId: topup.razorpayOrderId };
+  }
+
+  it('credits the wallet and writes one CREDIT ledger row', async () => {
+    const { buyer, razorpayOrderId } = await seedTopup(500);
+    const app = buildApp();
+
+    const res = await request(app)
+      .post('/webhook')
+      .set('Content-Type', 'application/json')
+      .send(payload({ orderId: razorpayOrderId, amountPaise: 50000 }));
+    expect(res.status).toBe(200);
+
+    const wallet = await prisma.buyerWallet.findUnique({ where: { buyerId: buyer.id } });
+    expect(Number(wallet?.balance)).toBe(500);
+
+    const txns = await prisma.walletTransaction.findMany({ where: { buyerId: buyer.id } });
+    expect(txns).toHaveLength(1);
+    expect(txns[0].type).toBe('CREDIT');
+    expect(Number(txns[0].amount)).toBe(500);
+    expect(Number(txns[0].balanceAfter)).toBe(500);
+
+    const p = await prisma.payment.findUnique({ where: { razorpayOrderId } });
+    expect(p?.status).toBe('CAPTURED');
+    expect(p?.kind).toBe('WALLET_TOPUP');
+    expect(p?.orderId).toBeNull();
+  });
+
+  it('does not double-credit on a duplicate delivery', async () => {
+    const { buyer, razorpayOrderId } = await seedTopup(200);
+    const app = buildApp();
+    const body = payload({
+      orderId: razorpayOrderId,
+      amountPaise: 20000,
+      paymentId: 'pay_topup_dup',
+    });
+
+    await request(app).post('/webhook').set('Content-Type', 'application/json').send(body);
+    // Same capture again — and a different payment id for the same order, which the
+    // razorpayPaymentId unique index would NOT catch. The status guard does.
+    await request(app).post('/webhook').set('Content-Type', 'application/json').send(body);
+    const third = await request(app)
+      .post('/webhook')
+      .set('Content-Type', 'application/json')
+      .send(payload({ orderId: razorpayOrderId, amountPaise: 20000, paymentId: 'pay_other' }));
+    expect(third.status).toBe(200);
+
+    const wallet = await prisma.buyerWallet.findUnique({ where: { buyerId: buyer.id } });
+    expect(Number(wallet?.balance)).toBe(200);
+    expect(await prisma.walletTransaction.count({ where: { buyerId: buyer.id } })).toBe(1);
+  });
+
+  it('credits an existing balance on top rather than replacing it', async () => {
+    const { buyer, razorpayOrderId } = await seedTopup(300);
+    await prisma.buyerWallet.create({
+      data: { buyerId: buyer.id, balance: new Prisma.Decimal(150) },
+    });
+    const app = buildApp();
+
+    await request(app)
+      .post('/webhook')
+      .set('Content-Type', 'application/json')
+      .send(payload({ orderId: razorpayOrderId, amountPaise: 30000 }));
+
+    const wallet = await prisma.buyerWallet.findUnique({ where: { buyerId: buyer.id } });
+    expect(Number(wallet?.balance)).toBe(450);
+    const txn = await prisma.walletTransaction.findFirst({ where: { buyerId: buyer.id } });
+    expect(Number(txn?.balanceAfter)).toBe(450);
   });
 });

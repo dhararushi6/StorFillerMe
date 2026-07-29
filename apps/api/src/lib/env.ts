@@ -54,6 +54,26 @@ const EnvSchema = z.object({
 
   // Timezone for cron jobs.
   CRON_TZ: z.string().default('Asia/Kolkata'),
+
+  // ── Mobile app control plane (GET /app-config) ────────────────────────────
+  // Without these the only way to stop a broken release is a store submission
+  // plus user upgrade lag — days to weeks. The version gate and the flag list
+  // are server-side so a bad build can be blocked or a feature disabled now.
+  MIN_APP_VERSION_IOS: z.string().default('1.0.0'),
+  MIN_APP_VERSION_ANDROID: z.string().default('1.0.0'),
+  LATEST_APP_VERSION_IOS: z.string().default('1.0.0'),
+  LATEST_APP_VERSION_ANDROID: z.string().default('1.0.0'),
+  IOS_STORE_URL: z.string().default('https://apps.apple.com/app/storefiller/id000000000'),
+  ANDROID_STORE_URL: z
+    .string()
+    .default('https://play.google.com/store/apps/details?id=in.storefiller.app'),
+  // 'true' puts every client into a read-only maintenance screen.
+  MAINTENANCE_MODE: z
+    .string()
+    .default('false')
+    .transform((v) => v === 'true'),
+  // Comma-separated kill switches, e.g. "wallet_topup,referral".
+  DISABLED_FEATURES: z.string().default(''),
 });
 
 const parsed = EnvSchema.safeParse(process.env);

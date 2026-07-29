@@ -15,6 +15,14 @@ export const logger = pino({
       'req.body.otp',
       'req.body.firebaseIdToken',
       'req.body.token',
+      'req.body.refreshToken',
+      // FCM device tokens are send-credentials: anyone holding one can push to
+      // that device. notifications.service logs the token on a failed send.
+      'token',
+      '*.token',
+      '*.deviceToken',
+      '*.hashedToken',
+      '*.otpHash',
       '*.phone',
       '*.email',
       '*.accessToken',

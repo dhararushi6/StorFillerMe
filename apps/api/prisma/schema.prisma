@@ -49,6 +49,13 @@ enum PaymentStatus {
   REFUNDED
 }
 
+// What a Payment is settling. A wallet top-up has no order behind it, so the
+// webhook needs this to know whether to confirm an order or credit a wallet.
+enum PaymentKind {
+  ORDER
+  WALLET_TOPUP
+}
+
 enum OrderStatus {
   PENDING_PAYMENT
   CONFIRMED
@@ -89,6 +96,10 @@ model User {
   pushEnabled       Boolean  @default(true)
   orderUpdatesOptIn Boolean  @default(true)
   promoOptIn        Boolean  @default(false)
+  // Set by DELETE /users/me (MOB store requirement). PII is anonymised in place
+  // rather than row-deleted: Order/Payment/Settlement are financial records that
+  // must survive (GST retention), and every one of them FKs to User.
+  deletedAt         DateTime?
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
 
@@ -105,6 +116,7 @@ model User {
   referralsRecv Referral[]      @relation("Referred")
   auditLogs     AuditLog[]
   cartItems     CartItem[] // B2-06: server-side cart
+  payments      Payment[] // wallet top-ups (order payments reach the user via Order)
 
   @@index([phone])
 }
@@ -262,6 +274,10 @@ model Order {
   buyerId            String
   buyer              User          @relation(fields: [buyerId], references: [id])
   agentId            String?
+  // Idempotency key from the mobile client's Idempotency-Key header. A retry of
+  // the same checkout (flaky network, app relaunch, queued offline write) hits
+  // the unique index and returns the original order instead of double-charging.
+  clientRequestId    String?       @unique
   status             OrderStatus   @default(PENDING_PAYMENT)
   paymentMethod      PaymentMethod
   paymentStatus      PaymentStatus @default(NOT_APPLICABLE)
@@ -306,15 +322,25 @@ model OrderItem {
 
 model Payment {
   id                String        @id @default(uuid())
-  orderId           String        @unique
-  order             Order         @relation(fields: [orderId], references: [id])
-  razorpayOrderId   String?
+  kind              PaymentKind   @default(ORDER)
+  // Nullable because a WALLET_TOPUP payment has nothing to point at. Unique still
+  // holds for ORDER payments — Postgres allows many NULLs in a unique index.
+  orderId           String?       @unique
+  order             Order?        @relation(fields: [orderId], references: [id], onDelete: Restrict)
+  // Owner of a top-up. For ORDER payments the buyer comes off the order.
+  buyerId           String?
+  buyer             User?         @relation(fields: [buyerId], references: [id])
+  // Unique: one Razorpay order maps to exactly one Payment, and the webhook
+  // matches on it. Without the constraint two rows could claim one capture.
+  razorpayOrderId   String?       @unique
   razorpayPaymentId String?       @unique
   razorpaySignature String?
   amount            Decimal       @db.Decimal(10, 2)
   status            PaymentStatus @default(PENDING)
   capturedAt        DateTime?
   createdAt         DateTime      @default(now())
+
+  @@index([buyerId])
 }
 
 model BuyerWallet {

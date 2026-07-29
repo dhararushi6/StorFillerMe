@@ -59,11 +59,49 @@ async function loadCart(buyerId: string): Promise<CartRow[]> {
   }));
 }
 
+/** Replay lookup for an Idempotency-Key. Scoped to the buyer so one buyer's key
+ *  can never surface another buyer's order. */
+async function findByIdempotencyKey(buyerId: string, key: string) {
+  return prisma.order.findFirst({
+    where: { buyerId, clientRequestId: key },
+    include: { items: true },
+  });
+}
+
 // ── service ────────────────────────────────────────────────────────────────
 
 export const OrderService = {
-  /** POST /orders — create order from cart with inventory locking. */
-  async createOrder(buyerId: string, input: CreateOrderInput) {
+  /**
+   * POST /orders — create order from cart with inventory locking.
+   *
+   * `idempotencyKey` (Idempotency-Key header) makes the call safe to retry: a
+   * mobile client whose connection drops mid-request cannot tell "order created
+   * but response lost" from "order never created", so it retries — and without a
+   * key that is a second order, a second inventory reservation and a second
+   * wallet debit. With a key, the replay returns the original order.
+   *
+   * Two guards, because a pre-check alone loses the race between two concurrent
+   * retries: look the key up first (cheap, covers the common sequential retry),
+   * and if the insert still collides on the unique index (P2002), re-read and
+   * return the winner instead of surfacing a 409 to the client.
+   */
+  async createOrder(buyerId: string, input: CreateOrderInput, idempotencyKey?: string) {
+    if (!idempotencyKey) return this.createOrderTx(buyerId, input);
+    const prior = await findByIdempotencyKey(buyerId, idempotencyKey);
+    if (prior) return prior;
+    try {
+      return await this.createOrderTx(buyerId, input, idempotencyKey);
+    } catch (err) {
+      if ((err as { code?: string }).code === 'P2002') {
+        const winner = await findByIdempotencyKey(buyerId, idempotencyKey);
+        if (winner) return winner;
+      }
+      throw err;
+    }
+  },
+
+  /** Inner transaction — always creates. Call createOrder, not this. */
+  async createOrderTx(buyerId: string, input: CreateOrderInput, idempotencyKey?: string) {
     const cart = await loadCart(buyerId);
     const isCod = input.paymentMethod === 'COD';
     const isWallet = input.paymentMethod === 'WALLET';
@@ -146,6 +184,7 @@ export const OrderService = {
       const order = await tx.order.create({
         data: {
           buyerId,
+          clientRequestId: idempotencyKey,
           status,
           paymentMethod: input.paymentMethod,
           paymentStatus,

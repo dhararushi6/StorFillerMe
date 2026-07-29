@@ -1,8 +1,11 @@
 import express, { type Express } from 'express';
 import helmet from 'helmet';
+import rateLimit from 'express-rate-limit';
 import { pinoHttp } from 'pino-http';
 import { logger } from './lib/logger';
+import { isTest } from './lib/env';
 import { healthRouter } from './modules/health/health.routes';
+import { appConfigRouter } from './modules/app-config/app-config.routes';
 import { authRouter } from './modules/auth/auth.routes';
 import { shopRouter } from './modules/shop/shop.routes';
 import { razorpayWebhookHandler } from './modules/payments/payments.webhook';
@@ -18,16 +21,46 @@ import { walletRouter } from './modules/wallet/wallet.routes';
 import { orderRouter } from './modules/orders/order.routes';
 import { adminOrderRouter } from './modules/admin/admin.routes';
 import { agentRouter } from './modules/agent/agent.routes';
+import { accountRouter } from './modules/users/account.routes';
 import { errorHandler, notFoundHandler } from './middleware/error-handler.middleware';
 
 const API = '/api/v1';
+
+/** Per-IP ceiling on everything. Mobile clients retry aggressively on flaky
+ *  networks, so this is set well above normal use — it exists to cap abuse and
+ *  runaway retry loops, not to shape traffic. Skipped in tests (a suite runs
+ *  hundreds of requests from one IP) and on /health (uptime monitor polls it). */
+const globalLimiter = rateLimit({
+  windowMs: 15 * 60_000,
+  limit: 600,
+  standardHeaders: true,
+  legacyHeaders: false,
+  skip: (req) => isTest || req.path === '/health' || req.path === '/api/health',
+  message: { error: { message: 'Too many requests — slow down' } },
+});
+
+/** Credential endpoints: tighter, because these are the ones worth guessing at.
+ *  /auth/logout is excluded — it needs a valid token already. */
+const authLimiter = rateLimit({
+  windowMs: 15 * 60_000,
+  limit: 40,
+  standardHeaders: true,
+  legacyHeaders: false,
+  skip: () => isTest,
+  message: { error: { message: 'Too many authentication attempts — try again later' } },
+});
 
 export function createApp(): Express {
   const app = express();
 
   app.disable('x-powered-by');
+  // Railway terminates TLS and forwards X-Forwarded-For. Without this, every
+  // request looks like it comes from the proxy and the limiters above become one
+  // shared bucket for all users.
+  app.set('trust proxy', 1);
   app.use(helmet());
   app.use(pinoHttp({ logger }));
+  app.use(globalLimiter);
 
   // ── Health (mounted at root AND under /api so both /health and /api/health work) ──
   app.use('/api', healthRouter);
@@ -65,10 +98,13 @@ function registerRawBodyRoutes(app: express.Express) {
 
 /** Routes that consume parsed JSON (registered after express.json). Filled in Weeks 1-4. */
 function registerJsonRoutes(app: express.Express) {
-  app.use(`${API}/auth`, authRouter);
+  // Version gate / kill switch — unauthenticated, checked on every cold start.
+  app.use(`${API}`, appConfigRouter);
+  app.use(`${API}/auth`, authLimiter, authRouter);
   app.use(`${API}/shop`, shopRouter);
   app.use(`${API}/payments`, paymentsRouter);
   app.use(`${API}/users/me`, notificationsRouter); // B2-04: device tokens + notification prefs
+  app.use(`${API}/users/me`, accountRouter); // DELETE /users/me — in-app account deletion
   app.use(`${API}/support`, supportRouter); // B2-05: support tickets
   app.use(`${API}/referral`, referralRouter); // B2-05: referral code + history
   // admin MUST mount before the bare-`/api/v1` catalogRouter: catalog's router-level

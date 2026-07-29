@@ -1,4 +1,5 @@
 import type { RequestHandler } from 'express';
+import { Prisma } from '@prisma/client';
 import { prisma } from '../../lib/prisma';
 import { logger } from '../../lib/logger';
 import { verifyWebhookSignature, razorpayStubbed } from '../../lib/razorpay';
@@ -64,13 +65,13 @@ export const razorpayWebhookHandler: RequestHandler = async (req, res) => {
     return;
   }
 
+  const paidAmount = new Prisma.Decimal(amountPaise).div(100);
+
   try {
-    // Find Payment by razorpayOrderId (not unique, but one-to-one in practice
-    // — one Razorpay order maps to one Payment row). Use findFirst then update
-    // by Payment.id so the unique constraint on razorpayPaymentId catches dupes.
-    const existing = await prisma.payment.findFirst({
+    // razorpayOrderId is unique — exactly one Payment can claim a capture.
+    const existing = await prisma.payment.findUnique({
       where: { razorpayOrderId },
-      select: { id: true, orderId: true, amount: true },
+      select: { id: true, kind: true, orderId: true, buyerId: true, amount: true },
     });
     if (!existing) {
       logger.error(
@@ -81,34 +82,63 @@ export const razorpayWebhookHandler: RequestHandler = async (req, res) => {
       return;
     }
 
-    // Update Payment with the Razorpay payment details.
-    // razorpayPaymentId @unique → P2002 on duplicate webhook → idempotent 200.
-    const payment = await prisma.payment.update({
-      where: { id: existing.id },
-      data: {
-        razorpayPaymentId,
-        razorpaySignature: payload.status ?? undefined,
-        status: 'CAPTURED',
-        capturedAt: new Date(),
-      },
-    });
-
-    const paidAmount = amountPaise / 100;
-    // Sanity check: amount matched (DB stores Decimal(10,2), paise/100 is safe).
-    if (Number(payment.amount) !== paidAmount) {
+    if (!existing.amount.equals(paidAmount)) {
+      // Credit/confirm against what Razorpay actually captured, not what we asked
+      // for — but say so loudly, because the two disagreeing is a real incident.
       logger.warn(
-        { orderId: existing.orderId, dbAmount: payment.amount, rpAmount: paidAmount },
+        { paymentId: existing.id, dbAmount: existing.amount, rpAmount: paidAmount },
         'razorpay webhook amount mismatch',
       );
     }
 
-    // Transition order PENDING_PAYMENT → CONFIRMED.
-    const order = await prisma.order.update({
-      where: { id: payment.orderId },
-      data: { status: 'CONFIRMED', confirmedAt: new Date() },
-    });
-    logger.info({ orderId: order.id, razorpayPaymentId }, 'order confirmed via razorpay webhook');
+    const settled = await prisma.$transaction(async (tx) => {
+      // Claim the row. Guarding on status PENDING is what makes a duplicate or
+      // concurrent delivery a no-op instead of a second wallet credit — the
+      // razorpayPaymentId unique index only catches a replay of the same payment.
+      const { count } = await tx.payment.updateMany({
+        where: { id: existing.id, status: 'PENDING' },
+        data: { razorpayPaymentId, status: 'CAPTURED', capturedAt: new Date() },
+      });
+      if (count === 0) return false;
 
+      if (existing.kind === 'WALLET_TOPUP') {
+        if (!existing.buyerId) throw new Error(`top-up payment ${existing.id} has no buyerId`);
+        // upsert returns the post-increment row, so balanceAfter on the ledger
+        // entry is the real balance and the two can never disagree.
+        const wallet = await tx.buyerWallet.upsert({
+          where: { buyerId: existing.buyerId },
+          update: { balance: { increment: paidAmount } },
+          create: { buyerId: existing.buyerId, balance: paidAmount },
+        });
+        await tx.walletTransaction.create({
+          data: {
+            buyerId: existing.buyerId,
+            type: 'CREDIT',
+            amount: paidAmount,
+            balanceAfter: wallet.balance,
+          },
+        });
+        logger.info(
+          { buyerId: existing.buyerId, razorpayPaymentId },
+          'wallet credited via razorpay webhook',
+        );
+      } else {
+        if (!existing.orderId) throw new Error(`order payment ${existing.id} has no orderId`);
+        await tx.order.update({
+          where: { id: existing.orderId },
+          data: { status: 'CONFIRMED', paymentStatus: 'CAPTURED', confirmedAt: new Date() },
+        });
+        logger.info(
+          { orderId: existing.orderId, razorpayPaymentId },
+          'order confirmed via razorpay webhook',
+        );
+      }
+      return true;
+    });
+
+    if (!settled) {
+      logger.info({ razorpayOrderId, razorpayPaymentId }, 'razorpay webhook: already settled');
+    }
     res.status(200).end();
   } catch (err: unknown) {
     if (typeof err === 'object' && err !== null && (err as { code?: string }).code === 'P2002') {
