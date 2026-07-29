@@ -41,17 +41,22 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
+      # Quote the glob: CI bash has globstar off, so unquoted ./packages/**
+      # expands to two args and pnpm only filters the first (config), leaving
+      # @storefiller/types unbuilt. Quoting lets pnpm resolve the glob itself.
       - name: Build shared packages
-        run: pnpm --filter ./packages/** run build
+        run: pnpm --filter "./packages/**" run build
+
+      # Prisma client must exist BEFORE lint/typecheck — otherwise @prisma/client
+      # has no generated types (User, Prisma.Decimal, Prisma.sql, ...).
+      - name: Prisma generate
+        run: pnpm --filter @storefiller/api exec prisma generate
 
       - name: Lint
         run: pnpm lint
 
       - name: Typecheck
         run: pnpm typecheck
-
-      - name: Prisma generate
-        run: pnpm --filter @storefiller/api exec prisma generate
 
       - name: Migrate test DB (models + raw SQL extensions/indexes/triggers)
         run: pnpm --filter @storefiller/api exec prisma migrate deploy
