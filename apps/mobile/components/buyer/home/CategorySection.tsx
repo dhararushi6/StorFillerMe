@@ -3,7 +3,7 @@ import { Image, Pressable, StyleSheet, View } from 'react-native';
 
 import storeIllustration from '@/assets/images/home/store-illustration.png';
 import { AppText } from '@/components/common/AppText';
-import { COLORS, RADIUS, SPACING } from '@/theme';
+import { COLORS, SPACING, useResponsive } from '@/theme';
 
 import { CategoryCard } from './CategoryCard';
 
@@ -24,23 +24,39 @@ export function CategorySection({
   onCategoryPress,
   onViewAllPress,
 }: CategorySectionProps) {
+  const { home, horizontalPadding } = useResponsive();
+
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        {
+          paddingHorizontal: horizontalPadding,
+        },
+      ]}
+    >
       <View style={styles.headingRow}>
         <View style={styles.headingContent}>
-          <AppText variant="heading" color="inverse" style={styles.title}>
+          <AppText variant="subheading" color="inverse" style={styles.title}>
             Shop by Category
           </AppText>
 
           <AppText variant="caption" color="inverse" style={styles.subtitle}>
-            Find everything your store needs
+            Find everything you need for your store
           </AppText>
         </View>
 
-        <Image source={storeIllustration} style={styles.illustration} resizeMode="contain" />
+        <Image
+          source={storeIllustration}
+          style={{
+            width: home.categoryIllustrationSize,
+            height: home.categoryIllustrationSize,
+          }}
+          resizeMode="contain"
+        />
       </View>
 
-      <View style={styles.categoriesRow}>
+      <View style={styles.categoriesGrid}>
         {categories.map((category) => (
           <CategoryCard
             key={category.id}
@@ -73,13 +89,12 @@ export function CategorySection({
 const styles = StyleSheet.create({
   container: {
     backgroundColor: COLORS.orange.normal,
-    paddingHorizontal: SPACING.lg,
-    paddingTop: SPACING.lg,
-    paddingBottom: SPACING.xxl,
+    paddingTop: 0,
+    paddingBottom: SPACING.sm,
   },
 
   headingRow: {
-    minHeight: 92,
+    minHeight: 72,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -91,24 +106,19 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    fontSize: 22,
+    marginBottom: SPACING.xs,
   },
 
   subtitle: {
-    marginTop: SPACING.xs,
     opacity: 0.9,
   },
 
-  illustration: {
-    width: 92,
-    height: 92,
-  },
-
-  categoriesRow: {
+  categoriesGrid: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
     justifyContent: 'space-between',
-    gap: SPACING.sm,
-    marginTop: SPACING.md,
+    rowGap: SPACING.md,
+    marginTop: 0,
   },
 
   viewAllButton: {
@@ -116,11 +126,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: SPACING.lg,
-    paddingHorizontal: SPACING.md,
-    paddingVertical: SPACING.sm,
-    borderWidth: 1,
-    borderColor: COLORS.text.inverse,
-    borderRadius: RADIUS.pill,
   },
 
   arrow: {

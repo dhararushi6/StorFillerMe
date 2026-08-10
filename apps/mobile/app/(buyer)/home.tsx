@@ -17,10 +17,12 @@ import {
   HOME_POPULAR_PRODUCTS,
   HOME_PROMO,
 } from '@/constants/home';
-import { COLORS, RADIUS, SPACING } from '@/theme';
+import { COLORS, RADIUS, SPACING, useResponsive } from '@/theme';
 
 export default function BuyerHomeScreen() {
   const [searchQuery, setSearchQuery] = useState('');
+
+  const { horizontalPadding } = useResponsive();
 
   const handleCategoryPress = useCallback((categoryId: string) => {
     router.push({
@@ -64,7 +66,14 @@ export default function BuyerHomeScreen() {
             onCartPress={() => router.push('/(buyer)/cart')}
           />
 
-          <View style={styles.searchContainer}>
+          <View
+            style={[
+              styles.searchContainer,
+              {
+                paddingHorizontal: horizontalPadding,
+              },
+            ]}
+          >
             <HomeSearchBar
               value={searchQuery}
               onChangeText={setSearchQuery}
@@ -80,12 +89,26 @@ export default function BuyerHomeScreen() {
         </View>
 
         <View style={styles.contentSection}>
-          <SectionHeader title="Top Best Deal" />
+          <View
+            style={[
+              styles.sectionHeader,
+              {
+                paddingHorizontal: horizontalPadding,
+              },
+            ]}
+          >
+            <SectionHeader title="Top Best Deal" />
+          </View>
 
           <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.horizontalContent}
+            contentContainerStyle={[
+              styles.horizontalContent,
+              {
+                paddingHorizontal: horizontalPadding,
+              },
+            ]}
           >
             {HOME_BEST_DEALS.map((product) => (
               <ProductDealCard
@@ -101,7 +124,14 @@ export default function BuyerHomeScreen() {
             ))}
           </ScrollView>
 
-          <View style={styles.bannerSection}>
+          <View
+            style={[
+              styles.bannerSection,
+              {
+                paddingHorizontal: horizontalPadding,
+              },
+            ]}
+          >
             <PromoBanner
               title={HOME_PROMO.title}
               description={HOME_PROMO.description}
@@ -117,9 +147,25 @@ export default function BuyerHomeScreen() {
             </View>
           </View>
 
-          <SectionHeader title="Popular Products" />
+          <View
+            style={[
+              styles.sectionHeader,
+              {
+                paddingHorizontal: horizontalPadding,
+              },
+            ]}
+          >
+            <SectionHeader title="Popular Products" />
+          </View>
 
-          <View style={styles.popularGrid}>
+          <View
+            style={[
+              styles.popularGrid,
+              {
+                paddingHorizontal: horizontalPadding,
+              },
+            ]}
+          >
             {HOME_POPULAR_PRODUCTS.map((product) => (
               <PopularProductCard
                 key={product.id}
@@ -143,8 +189,8 @@ interface SectionHeaderProps {
 
 function SectionHeader({ title }: SectionHeaderProps) {
   return (
-    <View style={styles.sectionHeader}>
-      <AppText variant="subheading" color="primary">
+    <>
+      <AppText variant="subtitle" color="primary" style={styles.sectionTitle}>
         {title}
       </AppText>
 
@@ -153,7 +199,7 @@ function SectionHeader({ title }: SectionHeaderProps) {
           View All
         </AppText>
       </Pressable>
-    </View>
+    </>
   );
 }
 
@@ -172,30 +218,30 @@ const styles = StyleSheet.create({
   },
 
   searchContainer: {
-    paddingHorizontal: SPACING.lg,
-    paddingBottom: SPACING.lg,
+    paddingBottom: 0,
   },
 
   contentSection: {
-    paddingTop: SPACING.xxl,
+    paddingTop: SPACING.lg,
   },
 
   sectionHeader: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: SPACING.lg,
     marginBottom: SPACING.md,
   },
 
+  sectionTitle: {
+    fontWeight: '600',
+  },
+
   horizontalContent: {
-    paddingHorizontal: SPACING.lg,
     gap: SPACING.md,
   },
 
   bannerSection: {
-    marginTop: SPACING.xxl,
-    paddingHorizontal: SPACING.lg,
+    marginTop: SPACING.sm,
   },
 
   pagination: {
@@ -222,7 +268,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: SPACING.md,
-    paddingHorizontal: SPACING.lg,
   },
 
   bottomSpacing: {

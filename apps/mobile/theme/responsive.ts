@@ -17,7 +17,7 @@ export function useResponsive() {
   const wp = (percentage: number) => (width * percentage) / 100;
   const hp = (percentage: number) => (height * percentage) / 100;
 
-  const horizontalPadding = isTablet ? 24 : Math.min(Math.max(width * 0.04, 16), 24);
+  const horizontalPadding = isTablet ? 32 : Math.min(Math.max(width * 0.04, 16), 24);
 
   const home = {
     headerBottomSpacing: isSmall ? 4 : 6,
@@ -33,7 +33,7 @@ export function useResponsive() {
     categoryCardWidth: isSmall ? 92 : 104,
     categoryCardHeight: isSmall ? 116 : 124,
     categoryImageSize: isSmall ? 52 : 56,
-    categoryIllustrationSize: isSmall ? 82 : 92,
+    categoryIllustrationSize: isSmall ? 120 : 140,
   };
   return {
     width,

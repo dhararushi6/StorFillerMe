@@ -40,6 +40,7 @@ export const COLORS = {
     secondary: '#666666',
     muted: '#8A8A8A',
     inverse: '#FFFFFF',
+    inverseSecondary: '#DDDDDD',
     danger: '#D64545',
   },
 

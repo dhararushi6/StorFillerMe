@@ -1,8 +1,8 @@
 import React from 'react';
-import { Image, Pressable, StyleSheet, View } from 'react-native';
+import { Image, Pressable, StyleSheet } from 'react-native';
 
 import { AppText } from '@/components/common/AppText';
-import { COLORS, RADIUS, SIZES, SPACING } from '@/theme';
+import { COLORS, RADIUS, SPACING, useResponsive } from '@/theme';
 
 interface CategoryCardProps {
   title: string;
@@ -11,52 +11,52 @@ interface CategoryCardProps {
 }
 
 export function CategoryCard({ title, image, onPress }: CategoryCardProps) {
+  const { home } = useResponsive();
+
   return (
     <Pressable
-      style={({ pressed }) => [styles.container, pressed && styles.pressed]}
+      style={({ pressed }) => [
+        styles.container,
+        {
+          width: home.categoryCardWidth,
+          height: home.categoryCardHeight,
+        },
+        pressed && styles.pressed,
+      ]}
       onPress={onPress}
       accessibilityRole="button"
       accessibilityLabel={title.replace('\n', ' ')}
     >
-      <View style={styles.imageContainer}>
-        <Image source={image} style={styles.image} resizeMode="contain" />
-      </View>
-
-      <AppText variant="caption" color="primary" style={styles.title}>
+      <AppText variant="bodyMedium" color="primary" numberOfLines={2} style={styles.title}>
         {title}
       </AppText>
+
+      <Image
+        source={image}
+        style={{
+          width: home.categoryImageSize,
+          height: home.categoryImageSize,
+        }}
+        resizeMode="contain"
+      />
     </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    width: 96,
-    minHeight: 118,
     alignItems: 'center',
-    justifyContent: 'flex-start',
-    backgroundColor: COLORS.surface,
-    borderRadius: RADIUS.lg,
+    justifyContent: 'space-between',
+    backgroundColor: COLORS.orange.light,
+    borderRadius: RADIUS.md,
     paddingHorizontal: SPACING.sm,
     paddingTop: SPACING.sm,
-    paddingBottom: SPACING.md,
-  },
-
-  imageContainer: {
-    width: 72,
-    height: 72,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-
-  image: {
-    width: SIZES.avatarLarge,
-    height: SIZES.avatarLarge,
+    paddingBottom: SPACING.xs,
   },
 
   title: {
-    marginTop: SPACING.xs,
-    textAlign: 'center',
+    alignSelf: 'stretch',
+    textAlign: 'left',
   },
 
   pressed: {
