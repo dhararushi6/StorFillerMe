@@ -1,11 +1,12 @@
 import React from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import cartIcon from '@/assets/icons/cart.png';
 import walletIcon from '@/assets/icons/wallet.png';
 import { AppIcon } from '@/components/common/AppIcon';
 import { AppText } from '@/components/common/AppText';
-import { COLORS, RADIUS, SIZES, SPACING } from '@/theme';
+import { COLORS, RADIUS, SIZES, SPACING, useResponsive } from '@/theme';
 
 interface HomeHeaderProps {
   location?: string;
@@ -22,8 +23,20 @@ export function HomeHeader({
   onWalletPress,
   onCartPress,
 }: HomeHeaderProps) {
+  const insets = useSafeAreaInsets();
+  const { horizontalPadding, home } = useResponsive();
+
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        {
+          paddingHorizontal: horizontalPadding,
+          paddingTop: insets.top + SPACING.sm,
+          paddingBottom: home.headerBottomSpacing,
+        },
+      ]}
+    >
       <View style={styles.topRow}>
         <Pressable
           style={styles.locationButton}
@@ -32,22 +45,45 @@ export function HomeHeader({
           accessibilityLabel={`Delivery location: ${location}`}
           hitSlop={8}
         >
-          <AppText variant="caption" color="inverse">
+          <AppText
+            variant="body"
+            color="inverseSecondary"
+            numberOfLines={1}
+            style={{
+              fontSize: home.locationFontSize,
+            }}
+          >
             {location}
           </AppText>
 
-          <AppIcon name="chevronDown" size="sm" color={COLORS.text.inverse} />
+          <AppIcon name="chevronDown" size="md" color={COLORS.text.inverse} />
         </Pressable>
 
         <View style={styles.actions}>
           <Pressable
-            style={styles.walletButton}
+            style={[
+              styles.walletButton,
+              {
+                minHeight: home.walletHeight,
+                paddingHorizontal: home.walletHorizontalPadding,
+              },
+            ]}
             onPress={onWalletPress}
             accessibilityRole="button"
-            accessibilityLabel="Wallet"
+            accessibilityLabel={`Wallet balance ₹${walletBalance}`}
             hitSlop={8}
           >
-            <Image source={walletIcon} style={styles.walletIcon} resizeMode="contain" />
+            <Image
+              source={walletIcon}
+              style={[
+                styles.walletIcon,
+                {
+                  width: home.walletIconSize,
+                  height: home.walletIconSize,
+                },
+              ]}
+              resizeMode="contain"
+            />
 
             <AppText variant="caption" color="inverse">
               ₹{walletBalance}
@@ -55,12 +91,23 @@ export function HomeHeader({
           </Pressable>
 
           <Pressable
+            style={styles.cartButton}
             onPress={onCartPress}
             accessibilityRole="button"
             accessibilityLabel="Cart"
             hitSlop={8}
           >
-            <Image source={cartIcon} style={styles.cartIcon} resizeMode="contain" />
+            <Image
+              source={cartIcon}
+              style={[
+                styles.cartIcon,
+                {
+                  width: home.cartIconSize,
+                  height: home.cartIconSize,
+                },
+              ]}
+              resizeMode="contain"
+            />
           </Pressable>
         </View>
       </View>
@@ -70,9 +117,6 @@ export function HomeHeader({
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: SPACING.lg,
-    paddingTop: SPACING.sm,
-    paddingBottom: SPACING.md,
     backgroundColor: COLORS.orange.normal,
   },
 
@@ -84,35 +128,39 @@ const styles = StyleSheet.create({
   },
 
   locationButton: {
+    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     gap: SPACING.xs,
+    marginRight: SPACING.md,
   },
 
   actions: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: SPACING.md,
+    gap: SPACING.sm,
   },
 
   walletButton: {
-    minHeight: 32,
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
     gap: SPACING.xs,
-    paddingHorizontal: SPACING.sm,
     borderWidth: 1,
     borderColor: COLORS.text.inverse,
     borderRadius: RADIUS.sm,
   },
 
   walletIcon: {
-    width: 16,
-    height: 16,
+    resizeMode: 'contain',
+  },
+
+  cartButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 
   cartIcon: {
-    width: 24,
-    height: 24,
+    resizeMode: 'contain',
   },
 });
