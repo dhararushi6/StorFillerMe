@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "StoreFiller",
+    "slug": "storefiller",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "scheme": "storefiller",
+    "userInterfaceStyle": "automatic",
+    "plugins": ["expo-router", "expo-secure-store"]
+  }
+}

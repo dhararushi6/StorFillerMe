@@ -1,0 +1,54 @@
+export const COLORS = {
+  orange: {
+    light: '#FAEFEA',
+    lightHover: '#F7E7DF',
+    lightActive: '#EFCDBC',
+
+    normal: '#CC5D28',
+    normalHover: '#B85424',
+    normalActive: '#A34A20',
+
+    dark: '#99461E',
+    darkHover: '#7A3818',
+    darkActive: '#5C2A12',
+
+    darker: '#47210E',
+  },
+
+  yellow: {
+    light: '#FEFEFD',
+    lightHover: '#FDFDFB',
+    lightActive: '#FCFBF8',
+
+    normal: '#F6F2E7',
+    normalHover: '#DDDAD0',
+    normalActive: '#C5C2B9',
+
+    dark: '#B9B6AD',
+    darkHover: '#94918B',
+    darkActive: '#6F6D68',
+
+    darker: '#565551',
+  },
+
+  background: '#F6F2E7',
+
+  surface: '#FFFFFF',
+
+  text: {
+    primary: '#111111',
+    secondary: '#666666',
+    muted: '#8A8A8A',
+    inverse: '#FFFFFF',
+    danger: '#D64545',
+  },
+
+  border: '#E5DED2',
+
+  success: '#3A9D23',
+  warning: '#F2A900',
+  danger: '#D64545',
+
+  white: '#FFFFFF',
+  black: '#000000',
+} as const;
