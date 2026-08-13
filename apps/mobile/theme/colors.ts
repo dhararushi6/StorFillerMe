@@ -47,8 +47,13 @@ export const COLORS = {
   border: '#E5DED2',
 
   success: '#3A9D23',
+  successLight: '#E9F6E4',
   warning: '#F2A900',
   danger: '#D64545',
+
+  rating: '#F2A900',
+
+  overlay: 'rgba(17, 17, 17, 0.55)',
 
   white: '#FFFFFF',
   black: '#000000',

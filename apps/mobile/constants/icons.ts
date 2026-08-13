@@ -11,6 +11,15 @@ export const ICONS = {
   heart: 'heart-outline',
   heartFilled: 'heart',
 
+  star: 'star',
+  starHalf: 'star-half',
+  starOutline: 'star-outline',
+
+  thumbsUp: 'thumbs-up-outline',
+  thumbsDown: 'thumbs-down-outline',
+
+  more: 'ellipsis-vertical',
+
   location: 'location-outline',
   notification: 'notifications-outline',
   settings: 'settings-outline',
@@ -25,6 +34,7 @@ export const ICONS = {
   edit: 'create-outline',
   delete: 'trash-outline',
   share: 'share-outline',
+  shareSocial: 'share-social-outline',
 
   calendar: 'calendar-outline',
   clock: 'time-outline',

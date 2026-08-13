@@ -35,6 +35,36 @@ export function useResponsive() {
     categoryImageSize: isSmall ? 52 : 56,
     categoryIllustrationSize: isSmall ? 120 : 140,
   };
+
+  const product = {
+    cartIconSize: isSmall ? 21 : 22,
+
+    galleryHeight: isSmall ? 252 : 288,
+    galleryImageWidth: isSmall ? 62 : 66,
+    paginationDotSize: isSmall ? 5 : 6,
+    paginationActiveDotWidth: isSmall ? 16 : 18,
+
+    titleFontSize: isSmall ? 20 : 22,
+    priceFontSize: isSmall ? 18 : 20,
+    oldPriceFontSize: isSmall ? 12 : 13,
+    starSize: isSmall ? 12 : 13,
+    summaryActionSize: isSmall ? 20 : 22,
+
+    quantityChipHeight: isSmall ? 38 : 42,
+    quantityChipMinWidth: isSmall ? 54 : 60,
+
+    detailRowHeight: isSmall ? 42 : 46,
+
+    similarCardWidth: isSmall ? 128 : 142,
+    similarImageHeight: isSmall ? 88 : 98,
+    similarAddButtonSize: isSmall ? 24 : 26,
+
+    ratingValueFontSize: isSmall ? 26 : 30,
+    ratingFilterSize: isSmall ? 20 : 22,
+    reviewPhotoSize: isSmall ? 68 : 76,
+    reviewActionSize: isSmall ? 16 : 18,
+  };
+
   return {
     width,
     height,
@@ -46,5 +76,6 @@ export function useResponsive() {
     hp,
     horizontalPadding,
     home,
+    product,
   };
 }
