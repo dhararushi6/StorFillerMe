@@ -7,7 +7,9 @@ import parleProductsImage from '@/assets/images/home/parle-products.png';
 
 import snacksImage from '@/assets/images/home/snacks-biscuits.png';
 import tataSampannToorDalImage from '@/assets/images/home/tata-sampann-toor-dal.png';
-
+import booksImage from '@/assets/images/home/books.png';
+import penMarkersImage from '@/assets/images/home/pen-markers.png';
+import pencilsImage from '@/assets/images/home/pencils.png';
 export const HOME_CATEGORIES = [
   {
     id: 'grocery',
@@ -74,3 +76,23 @@ export const HOME_PROMO = {
   image: parleProductsImage,
   buttonTitle: 'Shop Parle Products',
 };
+export const HOME_STATIONERY_CATEGORIES = [
+  {
+    id: 'pens-markers',
+    title: 'Pen &\nmarkers',
+    image: penMarkersImage,
+    backgroundColor: '#D8DEFF',
+  },
+  {
+    id: 'pencils',
+    title: 'Pencils',
+    image: pencilsImage,
+    backgroundColor: '#FFF0D8',
+  },
+  {
+    id: 'books',
+    title: 'Books',
+    image: booksImage,
+    backgroundColor: '#D8DEFF',
+  },
+] as const;

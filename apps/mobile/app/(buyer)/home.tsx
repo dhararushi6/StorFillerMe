@@ -5,6 +5,7 @@ import { router } from 'expo-router';
 import { AppText } from '@/components/common/AppText';
 import {
   CategorySection,
+  CategoryShowcase,
   HomeHeader,
   HomeSearchBar,
   ProductDealCard,
@@ -15,6 +16,7 @@ import {
   HOME_CATEGORIES,
   HOME_POPULAR_PRODUCTS,
   HOME_PROMO,
+  HOME_STATIONERY_CATEGORIES,
 } from '@/constants/home';
 import { COLORS, FONT_SIZE, LINE_HEIGHT, RADIUS, SPACING, useResponsive } from '@/theme';
 
@@ -195,7 +197,15 @@ export default function BuyerHomeScreen() {
               ))}
             </ScrollView>
           </View>
-
+          {/* Stationery Categories */}
+          <View style={[styles.showcaseSection, { paddingHorizontal: horizontalPadding }]}>
+            <CategoryShowcase
+              title="Stationery Categories"
+              description="Everything you need, All in one place!"
+              categories={HOME_STATIONERY_CATEGORIES}
+              onCategoryPress={handleCategoryPress}
+            />
+          </View>
           <View style={styles.bottomSpacing} />
         </View>
       </ScrollView>
@@ -323,5 +333,8 @@ const styles = StyleSheet.create({
 
   bottomSpacing: {
     height: SPACING.section,
+  },
+  showcaseSection: {
+    marginTop: SPACING.lg,
   },
 });

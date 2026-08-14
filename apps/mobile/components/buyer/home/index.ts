@@ -1,5 +1,7 @@
 export * from './CategoryCard';
 export * from './CategorySection';
+export * from './CategoryShowcase';
+
 export * from './HomeHeader';
 export * from './HomeSearchBar';
 export * from './PopularProductCard';
