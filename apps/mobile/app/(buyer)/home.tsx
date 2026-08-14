@@ -258,7 +258,7 @@ const styles = StyleSheet.create({
 
   sectionTitle: {
     fontWeight: '600',
-    fontSize: FONT_SIZE.xxl,
+    fontSize: FONT_SIZE.xl,
     lineHeight: LINE_HEIGHT.xxl,
   },
 

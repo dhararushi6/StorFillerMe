@@ -74,13 +74,12 @@ export function ProductDealCard({
 
 const styles = StyleSheet.create({
   container: {
-    width: 168,
-    minHeight: 250,
+    width: 150,
+    minHeight: 235,
     backgroundColor: COLORS.deal.card,
     borderRadius: RADIUS.xl,
-    padding: SPACING.md,
+    padding: SPACING.sm,
   },
-
   productContent: {
     flex: 1,
   },
