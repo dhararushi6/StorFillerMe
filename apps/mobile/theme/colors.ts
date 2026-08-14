@@ -43,7 +43,14 @@ export const COLORS = {
     inverseSecondary: '#DDDDDD',
     danger: '#D64545',
   },
+  deal: {
+    card: '#FFF1CC',
+    inner: '#CC5D281A',
+  },
 
+  green: {
+    light: '#56973F1A',
+  },
   border: '#E5DED2',
 
   success: '#3A9D23',

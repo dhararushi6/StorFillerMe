@@ -17,7 +17,7 @@ import {
   HOME_POPULAR_PRODUCTS,
   HOME_PROMO,
 } from '@/constants/home';
-import { COLORS, RADIUS, SPACING, useResponsive } from '@/theme';
+import { COLORS, FONT_SIZE, LINE_HEIGHT, RADIUS, SPACING, useResponsive } from '@/theme';
 
 export default function BuyerHomeScreen() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -97,7 +97,7 @@ export default function BuyerHomeScreen() {
               },
             ]}
           >
-            <SectionHeader title="Top Best Deal" />
+            <SectionHeader title="Top Best Deal" showViewAll={false} />
           </View>
 
           <ScrollView
@@ -185,20 +185,23 @@ export default function BuyerHomeScreen() {
 
 interface SectionHeaderProps {
   title: string;
+  showViewAll?: boolean;
 }
 
-function SectionHeader({ title }: SectionHeaderProps) {
+function SectionHeader({ title, showViewAll = true }: SectionHeaderProps) {
   return (
     <>
       <AppText variant="subtitle" color="primary" style={styles.sectionTitle}>
         {title}
       </AppText>
 
-      <Pressable accessibilityRole="button" accessibilityLabel={`View all ${title}`} hitSlop={8}>
-        <AppText variant="caption" color="secondary">
-          View All
-        </AppText>
-      </Pressable>
+      {showViewAll && (
+        <Pressable accessibilityRole="button" accessibilityLabel={`View all ${title}`} hitSlop={8}>
+          <AppText variant="caption" color="secondary">
+            View All
+          </AppText>
+        </Pressable>
+      )}
     </>
   );
 }
@@ -223,6 +226,7 @@ const styles = StyleSheet.create({
 
   contentSection: {
     paddingTop: SPACING.lg,
+    backgroundColor: COLORS.orange.light,
   },
 
   sectionHeader: {
@@ -234,6 +238,8 @@ const styles = StyleSheet.create({
 
   sectionTitle: {
     fontWeight: '600',
+    fontSize: FONT_SIZE.xxl,
+    lineHeight: LINE_HEIGHT.xxl,
   },
 
   horizontalContent: {
