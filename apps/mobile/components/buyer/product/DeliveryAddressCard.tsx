@@ -21,16 +21,16 @@ export function DeliveryAddressCard({
   onChangePress,
 }: DeliveryAddressCardProps) {
   return (
-    <View style={styles.card}>
-      <View style={styles.addressRow}>
+    <View style={styles.wrapper}>
+      <View style={styles.addressBox}>
         <AppIcon name="location" size="md" color={COLORS.orange.normal} />
 
         <View style={styles.addressText}>
-          <AppText variant="bodyMedium" color="primary" numberOfLines={1}>
+          <AppText variant="bodyMedium" color="primary" style={styles.nameText}>
             {name}
           </AppText>
 
-          <AppText variant="body" color="muted" numberOfLines={1} style={styles.addressLine}>
+          <AppText variant="caption" color="secondary" numberOfLines={1} style={styles.addressLine}>
             {address}
           </AppText>
         </View>
@@ -41,7 +41,7 @@ export function DeliveryAddressCard({
           accessibilityLabel="Change delivery address"
           hitSlop={8}
         >
-          <AppText variant="caption" style={styles.changeLabel}>
+          <AppText variant="caption" color="primary" style={styles.changeLabel}>
             {changeLabel}
           </AppText>
         </Pressable>
@@ -57,27 +57,31 @@ export function DeliveryAddressCard({
 }
 
 const styles = StyleSheet.create({
-  card: {
-    overflow: 'hidden',
-    borderWidth: 1,
-    borderColor: COLORS.border,
-    borderRadius: RADIUS.md,
-    backgroundColor: COLORS.surface,
+  wrapper: {
+    gap: SPACING.sm,
   },
 
-  addressRow: {
+  addressBox: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: SPACING.sm,
     paddingHorizontal: SPACING.md,
-    paddingVertical: SPACING.md,
+    paddingVertical: SPACING.md - 2,
+    borderWidth: 1,
+    borderColor: COLORS.cart.couponBorder,
+    borderRadius: RADIUS.md,
+    backgroundColor: COLORS.surface,
   },
 
   addressText: {
     flex: 1,
     flexDirection: 'row',
-    alignItems: 'baseline',
+    alignItems: 'center',
     gap: SPACING.sm,
+  },
+
+  nameText: {
+    fontWeight: '700',
   },
 
   addressLine: {
@@ -85,16 +89,22 @@ const styles = StyleSheet.create({
   },
 
   changeLabel: {
-    color: COLORS.orange.normal,
+    fontWeight: '500',
+    textDecorationLine: 'underline',
   },
 
   deliveryBanner: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: SPACING.sm - 1,
     paddingHorizontal: SPACING.md,
-    paddingVertical: SPACING.sm,
-    backgroundColor: COLORS.successLight,
+    backgroundColor: COLORS.product.deliveryBg,
+    borderRadius: RADIUS.sm,
   },
 
   deliveryText: {
-    color: COLORS.success,
+    fontWeight: '700',
+    color: COLORS.product.deliveryText,
+    textAlign: 'center',
   },
 });

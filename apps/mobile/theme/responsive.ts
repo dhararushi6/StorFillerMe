@@ -65,6 +65,16 @@ export function useResponsive() {
     reviewActionSize: isSmall ? 16 : 18,
   };
 
+  const cart = {
+    headerPaddingTop: isSmall ? 8 : 12,
+    headerBottomRadius: isSmall ? 24 : 28,
+    itemImageSize: isSmall ? 68 : 76,
+    qtyButtonWidth: isSmall ? 68 : 76,
+    qtyButtonHeight: isSmall ? 28 : 32,
+    similarCardWidth: isSmall ? 120 : 132,
+    similarImageHeight: isSmall ? 80 : 90,
+  };
+
   return {
     width,
     height,
@@ -77,5 +87,6 @@ export function useResponsive() {
     horizontalPadding,
     home,
     product,
+    cart,
   };
 }

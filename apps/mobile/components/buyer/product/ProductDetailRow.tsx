@@ -30,7 +30,7 @@ export function ProductDetailRow({ label, onPress }: ProductDetailRowProps) {
         {label}
       </AppText>
 
-      <AppIcon name="chevronRight" size="md" color={COLORS.text.secondary} />
+      <AppIcon name="chevronRight" size="md" color={COLORS.text.primary} />
     </Pressable>
   );
 }

@@ -190,7 +190,7 @@ interface SectionHeaderProps {
 function SectionHeader({ title }: SectionHeaderProps) {
   return (
     <>
-      <AppText variant="subtitle" color="primary" style={styles.sectionTitle}>
+      <AppText variant="subheading" color="primary" style={styles.sectionTitle}>
         {title}
       </AppText>
 

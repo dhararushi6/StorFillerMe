@@ -55,6 +55,28 @@ export const COLORS = {
 
   overlay: 'rgba(17, 17, 17, 0.55)',
 
+  cart: {
+    headerBg: '#FDF0DC',
+    bannerBg: '#DE8B64',
+    billHeaderBg: '#FEF3D6',
+    billBodyBg: '#F8E0CC',
+    billBorder: '#E6C69E',
+    billDivider: '#E0BC94',
+    cancellationBg: '#FDEBD8',
+    walletBg: '#FDECC8',
+    couponBorder: '#E6A788',
+    progressBg: '#E8E0D2',
+    savingsBg: '#D8F6DA',
+    savingsText: '#188636',
+  },
+
+  product: {
+    cardBg: '#FDF1DF',
+    imageBg: '#FCE8D3',
+    deliveryBg: '#E2F7E1',
+    deliveryText: '#188636',
+  },
+
   white: '#FFFFFF',
   black: '#000000',
 } as const;
