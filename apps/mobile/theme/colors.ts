@@ -13,6 +13,9 @@ export const COLORS = {
     darkActive: '#5C2A12',
 
     darker: '#47210E',
+
+    promoText: '#9D3E11',
+    banner: '#EFA980',
   },
 
   yellow: {
@@ -43,6 +46,7 @@ export const COLORS = {
     inverseSecondary: '#DDDDDD',
     danger: '#D64545',
   },
+
   deal: {
     card: '#FFF1CC',
     inner: '#CC5D281A',
@@ -51,6 +55,7 @@ export const COLORS = {
   green: {
     light: '#56973F1A',
   },
+
   border: '#E5DED2',
 
   success: '#3A9D23',

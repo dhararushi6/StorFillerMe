@@ -16,71 +16,97 @@ export function PromoBanner({ title, description, image, buttonTitle, onPress }:
   return (
     <View style={styles.container}>
       <View style={styles.content}>
-        <AppText variant="heading" color="primary" style={styles.title}>
+        <AppText variant="subheading" style={styles.title}>
           {title}
         </AppText>
 
         {description && (
-          <AppText variant="caption" color="secondary" style={styles.description}>
+          <AppText variant="caption" style={styles.description}>
             {description}
           </AppText>
         )}
-
-        <Pressable
-          style={({ pressed }) => [styles.button, pressed && styles.pressed]}
-          onPress={onPress}
-          accessibilityRole="button"
-          accessibilityLabel={buttonTitle}
-        >
-          <AppText variant="button" color="inverse">
-            {buttonTitle}
-          </AppText>
-        </Pressable>
       </View>
 
-      <Image source={image} style={styles.image} resizeMode="contain" />
+      <Image source={image} resizeMode="contain" style={styles.image} />
+
+      <Pressable
+        style={({ pressed }) => [styles.button, pressed && styles.pressed]}
+        onPress={onPress}
+        accessibilityRole="button"
+        accessibilityLabel={buttonTitle}
+      >
+        <AppText variant="button" color="inverse">
+          {buttonTitle}
+        </AppText>
+
+        <AppText variant="button" color="inverse" style={styles.arrow}>
+          →
+        </AppText>
+      </Pressable>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    minHeight: 190,
-    flexDirection: 'row',
+    minHeight: 279,
+    position: 'relative',
     overflow: 'hidden',
-    backgroundColor: COLORS.orange.light,
+    backgroundColor: COLORS.orange.banner,
     borderRadius: RADIUS.xl,
+    marginTop: SPACING.lg,
   },
 
   content: {
-    flex: 1,
-    justifyContent: 'center',
-    paddingLeft: SPACING.lg,
-    paddingVertical: SPACING.lg,
-    paddingRight: SPACING.sm,
+    position: 'absolute',
+    top: SPACING.lg,
+    left: SPACING.lg,
+    right: SPACING.lg,
+    zIndex: 2,
   },
 
   title: {
+    maxWidth: '85%',
+    color: COLORS.orange.promoText,
     fontSize: 20,
-    lineHeight: 25,
+    lineHeight: 30,
   },
 
   description: {
     marginTop: SPACING.sm,
-  },
-
-  button: {
-    alignSelf: 'flex-start',
-    marginTop: SPACING.md,
-    paddingHorizontal: SPACING.md,
-    paddingVertical: SPACING.sm,
-    backgroundColor: COLORS.orange.normal,
-    borderRadius: RADIUS.md,
+    maxWidth: '90%',
+    color: COLORS.orange.darker,
   },
 
   image: {
-    width: '45%',
-    height: '100%',
+    position: 'absolute',
+    width: '100%',
+    height: '65%',
+    left: '0%',
+    bottom: '3%',
+    zIndex: 1,
+  },
+
+  button: {
+    position: 'absolute',
+    alignSelf: 'center',
+    bottom: SPACING.sm,
+
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+
+    paddingHorizontal: SPACING.md,
+    paddingVertical: SPACING.xs,
+
+    backgroundColor: COLORS.orange.normal,
+    borderRadius: RADIUS.lg,
+
+    zIndex: 3,
+  },
+
+  arrow: {
+    marginLeft: SPACING.xs,
   },
 
   pressed: {
