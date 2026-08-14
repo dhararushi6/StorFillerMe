@@ -10,6 +10,17 @@ import tataSampannToorDalImage from '@/assets/images/home/tata-sampann-toor-dal.
 import booksImage from '@/assets/images/home/books.png';
 import penMarkersImage from '@/assets/images/home/pen-markers.png';
 import pencilsImage from '@/assets/images/home/pencils.png';
+
+import attaImage from '@/assets/images/home/atta.png';
+import riceImage from '@/assets/images/home/rice.png';
+import oilImage from '@/assets/images/home/oil.png';
+import gheeImage from '@/assets/images/home/ghee.png';
+
+import cerealsImage from '@/assets/images/home/cereals.png';
+import dryFruitImage from '@/assets/images/home/dry-fruit.png';
+import instantFoodImage from '@/assets/images/home/instant-food.png';
+import frozenFoodImage from '@/assets/images/home/frozen-food.png';
+
 export const HOME_CATEGORIES = [
   {
     id: 'grocery',
@@ -94,5 +105,27 @@ export const HOME_STATIONERY_CATEGORIES = [
     title: 'Books',
     image: booksImage,
     backgroundColor: '#D8DEFF',
+  },
+] as const;
+export const HOME_GROCERY_CATEGORIES = [
+  {
+    id: 'atta-rice-dal',
+    title: 'Atta, rice\n& Dal',
+    images: [attaImage, riceImage],
+  },
+  {
+    id: 'oil-ghee-masala',
+    title: 'Oil, Ghee\n& Masala',
+    images: [oilImage, gheeImage],
+  },
+  {
+    id: 'cereals-dry-fruit',
+    title: 'Cereals &\nDry fruit',
+    images: [cerealsImage, dryFruitImage],
+  },
+  {
+    id: 'instant-frozen-food',
+    title: 'Instant &\nFrozen Food',
+    images: [instantFoodImage, frozenFoodImage],
   },
 ] as const;

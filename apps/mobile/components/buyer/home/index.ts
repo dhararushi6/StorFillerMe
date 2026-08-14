@@ -7,3 +7,5 @@ export * from './HomeSearchBar';
 export * from './PopularProductCard';
 export * from './ProductDealCard';
 export * from './PromoBanner';
+export * from './ProductImageGroup';
+export * from './GroceryCategorySection';

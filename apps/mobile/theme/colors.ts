@@ -17,6 +17,7 @@ export const COLORS = {
     promoText: '#9D3E11',
     banner: '#EFA980',
     showcase: '#FECA7A',
+    card: '#FAE2BB',
   },
 
   yellow: {

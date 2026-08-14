@@ -6,6 +6,7 @@ import { AppText } from '@/components/common/AppText';
 import {
   CategorySection,
   CategoryShowcase,
+  GroceryCategorySection,
   HomeHeader,
   HomeSearchBar,
   ProductDealCard,
@@ -14,6 +15,7 @@ import {
 import {
   HOME_BEST_DEALS,
   HOME_CATEGORIES,
+  HOME_GROCERY_CATEGORIES,
   HOME_POPULAR_PRODUCTS,
   HOME_PROMO,
   HOME_STATIONERY_CATEGORIES,
@@ -206,6 +208,13 @@ export default function BuyerHomeScreen() {
               onCategoryPress={handleCategoryPress}
             />
           </View>
+          <View style={[styles.categorySection, { paddingHorizontal: horizontalPadding }]}>
+            <GroceryCategorySection
+              title="Grocery"
+              categories={HOME_GROCERY_CATEGORIES}
+              onCategoryPress={handleCategoryPress}
+            />
+          </View>
           <View style={styles.bottomSpacing} />
         </View>
       </ScrollView>
@@ -335,6 +344,9 @@ const styles = StyleSheet.create({
     height: SPACING.section,
   },
   showcaseSection: {
+    marginTop: SPACING.lg,
+  },
+  categorySection: {
     marginTop: SPACING.lg,
   },
 });
