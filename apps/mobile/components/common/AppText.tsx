@@ -4,8 +4,15 @@ import { StyleProp, StyleSheet, Text, TextProps, TextStyle } from 'react-native'
 import { COLORS, FONT_FAMILY, FONT_SIZE, LINE_HEIGHT } from '@/theme';
 
 type TextVariant =
-  'display' | 'title' | 'heading' | 'subheading' | 'body' | 'bodyMedium' | 'caption' | 'button';
-
+  | 'display'
+  | 'title'
+  | 'heading'
+  | 'subheading'
+  | 'body'
+  | 'bodyMedium'
+  | 'caption'
+  | 'button'
+  | 'category';
 type TextColor = keyof typeof COLORS.text;
 
 interface AppTextProps extends TextProps {
@@ -21,7 +28,12 @@ const VARIANT_STYLES: Record<TextVariant, TextStyle> = {
     fontSize: FONT_SIZE.display,
     lineHeight: LINE_HEIGHT.display,
   },
-
+  category: {
+    fontFamily: FONT_FAMILY.semiBold,
+    fontSize: FONT_SIZE.sm,
+    lineHeight: LINE_HEIGHT.category,
+    textAlign: 'center',
+  },
   title: {
     fontFamily: FONT_FAMILY.bold,
     fontSize: FONT_SIZE.xxxl,

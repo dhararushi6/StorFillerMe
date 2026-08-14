@@ -1,32 +1,46 @@
 import ashivaadMpAttaImage from '@/assets/images/home/ashirvaad-mp-atta.png';
 import booksImage from '@/assets/images/home/books.png';
 import fortuneSunliteOilImage from '@/assets/images/home/fortune-sunlite-oil.png';
-import groceryStaplesImage from '@/assets/images/home/grocery-staples.png';
+import groceryImage from '@/assets/images/home/grocery-staples.png';
 import homeCareImage from '@/assets/images/home/home-care.png';
 import parleProductsImage from '@/assets/images/home/parle-products.png';
 import penMarkersImage from '@/assets/images/home/pen-markers.png';
 import pencilsImage from '@/assets/images/home/pencils.png';
-import snacksBiscuitsImage from '@/assets/images/home/snacks-biscuits.png';
+import snacksImage from '@/assets/images/home/snacks-biscuits.png';
 import tataSampannToorDalImage from '@/assets/images/home/tata-sampann-toor-dal.png';
 
 export const HOME_CATEGORIES = [
   {
-    id: 'grocery-staples',
+    id: 'grocery',
     title: 'Grocery &\nStaples',
-    image: groceryStaplesImage,
+    image: groceryImage,
   },
   {
-    id: 'snacks-biscuits',
+    id: 'snacks',
     title: 'Snacks &\nBiscuits',
-    image: snacksBiscuitsImage,
+    image: snacksImage,
   },
   {
     id: 'home-care',
     title: 'Home Care',
     image: homeCareImage,
   },
-] as const;
-
+  {
+    id: 'personal-care',
+    title: 'Personal\nCare',
+    image: groceryImage,
+  },
+  {
+    id: 'beverages',
+    title: 'Beverages',
+    image: snacksImage,
+  },
+  {
+    id: 'household',
+    title: 'Household',
+    image: homeCareImage,
+  },
+];
 export const HOME_BEST_DEALS = [
   {
     id: 'ashirvaad-mp-atta',

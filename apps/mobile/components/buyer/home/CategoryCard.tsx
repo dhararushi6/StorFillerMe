@@ -27,7 +27,7 @@ export function CategoryCard({ title, image, onPress }: CategoryCardProps) {
       accessibilityRole="button"
       accessibilityLabel={title.replace('\n', ' ')}
     >
-      <AppText variant="bodyMedium" color="primary" numberOfLines={2} style={styles.title}>
+      <AppText variant="category" color="primary" numberOfLines={2} style={styles.title}>
         {title}
       </AppText>
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
 
 import storeIllustration from '@/assets/images/home/store-illustration.png';
@@ -16,15 +16,18 @@ interface CategoryItem {
 interface CategorySectionProps {
   categories: readonly CategoryItem[];
   onCategoryPress?: (categoryId: string) => void;
-  onViewAllPress?: () => void;
 }
 
-export function CategorySection({
-  categories,
-  onCategoryPress,
-  onViewAllPress,
-}: CategorySectionProps) {
+export function CategorySection({ categories, onCategoryPress }: CategorySectionProps) {
   const { home, horizontalPadding } = useResponsive();
+
+  const [expanded, setExpanded] = useState(false);
+
+  const visibleCategories = expanded ? categories.slice(0, 6) : categories.slice(0, 3);
+
+  const handleViewToggle = () => {
+    setExpanded((previous) => !previous);
+  };
 
   return (
     <View
@@ -57,7 +60,7 @@ export function CategorySection({
       </View>
 
       <View style={styles.categoriesGrid}>
-        {categories.map((category) => (
+        {visibleCategories.map((category) => (
           <CategoryCard
             key={category.id}
             title={category.title}
@@ -67,21 +70,27 @@ export function CategorySection({
         ))}
       </View>
 
-      <Pressable
-        style={styles.viewAllButton}
-        onPress={onViewAllPress}
-        accessibilityRole="button"
-        accessibilityLabel="View all categories"
-        hitSlop={8}
-      >
-        <AppText variant="button" color="inverse">
-          View All
-        </AppText>
+      {categories.length > 3 && (
+        <Pressable
+          style={styles.viewAllButton}
+          onPress={handleViewToggle}
+          accessibilityRole="button"
+          accessibilityLabel={expanded ? 'View less categories' : 'View all categories'}
+          hitSlop={8}
+        >
+          <AppText variant="button" color="inverse">
+            {expanded ? 'View Less' : 'View All'}
+          </AppText>
 
-        <AppText variant="button" color="inverse" style={styles.arrow}>
-          →
-        </AppText>
-      </Pressable>
+          <AppText
+            variant="button"
+            color="inverse"
+            style={[styles.arrow, expanded && styles.arrowUp]}
+          >
+            →
+          </AppText>
+        </Pressable>
+      )}
     </View>
   );
 }
@@ -130,5 +139,9 @@ const styles = StyleSheet.create({
 
   arrow: {
     marginLeft: SPACING.xs,
+  },
+
+  arrowUp: {
+    transform: [{ rotate: '270deg' }],
   },
 });
