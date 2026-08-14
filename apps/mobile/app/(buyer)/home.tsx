@@ -144,6 +144,7 @@ export default function BuyerHomeScreen() {
               <View style={[styles.dot, styles.activeDot]} />
               <View style={styles.dot} />
               <View style={styles.dot} />
+              <View style={styles.dot} />
             </View>
           </View>
 

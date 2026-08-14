@@ -35,11 +35,11 @@ export function PromoBanner({ title, description, image, buttonTitle, onPress }:
         accessibilityRole="button"
         accessibilityLabel={buttonTitle}
       >
-        <AppText variant="button" color="inverse">
+        <AppText variant="body" color="inverse" style={styles.buttonText}>
           {buttonTitle}
         </AppText>
 
-        <AppText variant="button" color="inverse" style={styles.arrow}>
+        <AppText variant="body" color="inverse" style={styles.arrow}>
           →
         </AppText>
       </Pressable>
@@ -100,13 +100,14 @@ const styles = StyleSheet.create({
     paddingVertical: SPACING.xs,
 
     backgroundColor: COLORS.orange.normal,
-    borderRadius: RADIUS.lg,
+    borderRadius: RADIUS.xxl,
 
     zIndex: 3,
   },
 
   arrow: {
     marginLeft: SPACING.xs,
+    fontSize: 20,
   },
 
   pressed: {
