@@ -7,7 +7,6 @@ import {
   CategorySection,
   HomeHeader,
   HomeSearchBar,
-  PopularProductCard,
   ProductDealCard,
   PromoBanner,
 } from '@/components/buyer/home';
@@ -58,6 +57,7 @@ export default function BuyerHomeScreen() {
   return (
     <View style={styles.screen}>
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
+        {/* Hero Section */}
         <View style={styles.heroSection}>
           <HomeHeader
             location="Kolar, Karnataka"
@@ -88,7 +88,9 @@ export default function BuyerHomeScreen() {
           />
         </View>
 
+        {/* Main Content */}
         <View style={styles.contentSection}>
+          {/* Top Best Deal */}
           <View
             style={[
               styles.sectionHeader,
@@ -124,6 +126,7 @@ export default function BuyerHomeScreen() {
             ))}
           </ScrollView>
 
+          {/* Promo Banner */}
           <View
             style={[
               styles.bannerSection,
@@ -148,33 +151,49 @@ export default function BuyerHomeScreen() {
             </View>
           </View>
 
+          {/* Popular Products */}
           <View
             style={[
-              styles.sectionHeader,
+              styles.popularSection,
               {
                 paddingHorizontal: horizontalPadding,
               },
             ]}
           >
-            <SectionHeader title="Popular Products" />
-          </View>
+            <View style={styles.popularHeader}>
+              <AppText variant="subtitle" style={styles.popularTitle}>
+                Popular Products
+              </AppText>
 
-          <View
-            style={[
-              styles.popularGrid,
-              {
-                paddingHorizontal: horizontalPadding,
-              },
-            ]}
-          >
-            {HOME_POPULAR_PRODUCTS.map((product) => (
-              <PopularProductCard
-                key={product.id}
-                name={product.name}
-                image={product.image}
-                onPress={() => handleProductPress(product.id)}
-              />
-            ))}
+              <Pressable
+                accessibilityRole="button"
+                accessibilityLabel="View all Popular Products"
+                hitSlop={8}
+              >
+                <AppText variant="caption" style={styles.popularViewAll}>
+                  View All
+                </AppText>
+              </Pressable>
+            </View>
+
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={styles.popularContent}
+            >
+              {HOME_POPULAR_PRODUCTS.map((product) => (
+                <ProductDealCard
+                  key={product.id}
+                  name={product.name}
+                  unit={product.unit}
+                  price={product.price}
+                  oldPrice={product.oldPrice}
+                  image={product.image}
+                  onPress={() => handleProductPress(product.id)}
+                  onAddPress={() => handleAddToCart(product.id)}
+                />
+              ))}
+            </ScrollView>
           </View>
 
           <View style={styles.bottomSpacing} />
@@ -271,9 +290,34 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.orange.normal,
   },
 
-  popularGrid: {
+  /* Popular Products */
+
+  popularSection: {
+    marginTop: SPACING.lg,
+    paddingTop: SPACING.lg,
+    paddingBottom: SPACING.lg,
+    backgroundColor: COLORS.orange.banner,
+  },
+
+  popularHeader: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: SPACING.md,
+  },
+
+  popularTitle: {
+    color: COLORS.orange.promoText,
+    fontSize: FONT_SIZE.lg,
+    lineHeight: LINE_HEIGHT.xl,
+    fontWeight: '500',
+  },
+
+  popularViewAll: {
+    color: COLORS.text.inverse,
+  },
+
+  popularContent: {
     gap: SPACING.md,
   },
 
