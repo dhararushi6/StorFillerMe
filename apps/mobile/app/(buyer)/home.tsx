@@ -20,6 +20,7 @@ import {
   HOME_PROMO,
   HOME_SNACKS_CATEGORIES,
   HOME_STATIONERY_CATEGORIES,
+  HOME_BEAUTY_CATEGORIES,
 } from '@/constants/home';
 import { COLORS, FONT_SIZE, LINE_HEIGHT, RADIUS, SPACING, useResponsive } from '@/theme';
 
@@ -223,6 +224,13 @@ export default function BuyerHomeScreen() {
               onCategoryPress={handleCategoryPress}
             />
           </View>
+          <View style={[styles.categorySection, { paddingHorizontal: horizontalPadding }]}>
+            <GroceryCategorySection
+              title="Beauty & personal care"
+              categories={HOME_BEAUTY_CATEGORIES}
+              onCategoryPress={handleCategoryPress}
+            />
+          </View>
           <View style={styles.bottomSpacing} />
         </View>
       </ScrollView>
@@ -355,6 +363,6 @@ const styles = StyleSheet.create({
     marginTop: SPACING.lg,
   },
   categorySection: {
-    marginTop: SPACING.lg,
+    marginTop: SPACING.xs,
   },
 });

@@ -186,3 +186,35 @@ export const HOME_SNACKS_CATEGORIES = [
     images: [sauceImage, spreadImage],
   },
 ] as const;
+export const HOME_BEAUTY_CATEGORIES = [
+  {
+    id: 'bath-body',
+    title: 'Bath &\nBody',
+    images: [attaImage, riceImage],
+  },
+  {
+    id: 'baby-care',
+    title: 'Baby\ncare',
+    images: [oilImage, gheeImage],
+  },
+  {
+    id: 'hair-care',
+    title: 'Hair Care',
+    images: [cerealsImage, dryFruitImage],
+  },
+  {
+    id: 'sanitary-pads',
+    title: 'Sanitary\npads',
+    images: [instantFoodImage, frozenFoodImage],
+  },
+  {
+    id: 'soaps',
+    title: 'Soaps',
+    images: [attaImage, riceImage],
+  },
+  {
+    id: 'healthcare-pharma',
+    title: 'Healthcare\n& Pharma',
+    images: [oilImage, gheeImage],
+  },
+] as const;

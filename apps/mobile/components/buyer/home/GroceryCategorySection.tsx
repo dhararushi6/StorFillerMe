@@ -29,10 +29,14 @@ export function GroceryCategorySection({
       </AppText>
 
       <View style={styles.grid}>
-        {categories.map((category) => (
+        {categories.map((category, index) => (
           <Pressable
             key={category.id}
-            style={({ pressed }) => [styles.card, pressed && styles.pressed]}
+            style={({ pressed }) => [
+              styles.card,
+              index % 4 !== 3 && styles.cardSpacing,
+              pressed && styles.pressed,
+            ]}
             onPress={() => onCategoryPress?.(category.id)}
             accessibilityRole="button"
             accessibilityLabel={category.title}
@@ -55,9 +59,7 @@ export function GroceryCategorySection({
 }
 
 const styles = StyleSheet.create({
-  container: {
-    marginTop: SPACING.lg,
-  },
+  container: {},
 
   title: {
     fontFamily: FONT_FAMILY.semiBold,
@@ -69,7 +71,7 @@ const styles = StyleSheet.create({
   grid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     marginTop: SPACING.md,
   },
 
@@ -77,6 +79,10 @@ const styles = StyleSheet.create({
     width: '22%',
     alignItems: 'center',
     marginBottom: SPACING.lg,
+  },
+
+  cardSpacing: {
+    marginRight: '4%',
   },
 
   imageContainer: {
