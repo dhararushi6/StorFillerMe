@@ -248,6 +248,53 @@ export default function BuyerHomeScreen() {
               onCategoryPress={handleCategoryPress}
             />
           </View>
+
+          {/* Household Cleaning Needs */}
+          <View
+            style={[
+              styles.productSection,
+              {
+                paddingHorizontal: horizontalPadding,
+              },
+            ]}
+          >
+            <View style={styles.productSectionHeader}>
+              <AppText variant="subtitle" color="primary" style={styles.productSectionTitle}>
+                Household cleaning needs
+              </AppText>
+
+              <Pressable
+                accessibilityRole="button"
+                accessibilityLabel="View all Household cleaning needs"
+                hitSlop={8}
+                onPress={handleViewAllCategories}
+              >
+                <AppText variant="caption" color="secondary">
+                  View All
+                </AppText>
+              </Pressable>
+            </View>
+
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={styles.productSectionContent}
+            >
+              {HOME_BEST_DEALS.map((product) => (
+                <ProductDealCard
+                  key={product.id}
+                  name={product.name}
+                  unit={product.unit}
+                  price={product.price}
+                  oldPrice={product.oldPrice}
+                  image={product.image}
+                  onPress={() => handleProductPress(product.id)}
+                  onAddPress={() => handleAddToCart(product.id)}
+                />
+              ))}
+            </ScrollView>
+          </View>
+
           <View style={styles.bottomSpacing} />
         </View>
       </ScrollView>
@@ -381,5 +428,25 @@ const styles = StyleSheet.create({
   },
   categorySection: {
     marginTop: SPACING.xs,
+  },
+  productSection: {
+    marginTop: SPACING.lg,
+  },
+
+  productSectionHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: SPACING.md,
+  },
+
+  productSectionTitle: {
+    fontSize: FONT_SIZE.xl,
+    lineHeight: LINE_HEIGHT.xxl,
+    fontWeight: '500',
+  },
+
+  productSectionContent: {
+    gap: SPACING.md,
   },
 });
