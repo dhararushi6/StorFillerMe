@@ -218,3 +218,48 @@ export const HOME_BEAUTY_CATEGORIES = [
     images: [oilImage, gheeImage],
   },
 ] as const;
+export const HOME_STATIONARY_GRID_CATEGORIES = [
+  {
+    id: 'pen-pencils',
+    title: 'Pen &\nPencils',
+    images: [penMarkersImage, pencilsImage],
+  },
+  {
+    id: 'notebooks-pads',
+    title: 'Notebooks\n& pads',
+    images: [booksImage, pencilsImage],
+  },
+  {
+    id: 'files-folders',
+    title: 'Files &\nFolders',
+    images: [booksImage, penMarkersImage],
+  },
+  {
+    id: 'erasers-sharpeners',
+    title: 'Erasers &\nSharpeners',
+    images: [pencilsImage, booksImage],
+  },
+  {
+    id: 'markers-highlighters',
+    title: 'Markers &\nHighlighters',
+    images: [penMarkersImage, pencilsImage],
+  },
+  {
+    id: 'tapes-glue',
+    title: 'Tapes &\nGlue',
+    images: [pencilsImage, penMarkersImage],
+  },
+] as const;
+
+export const HOME_OTHER_CATEGORIES = [
+  {
+    id: 'pooja-essentials',
+    title: 'Pooja\nEssentials',
+    images: [attaImage, riceImage],
+  },
+  {
+    id: 'cleaning-essentials',
+    title: 'Cleaning\nEssentials',
+    images: [oilImage, gheeImage],
+  },
+] as const;

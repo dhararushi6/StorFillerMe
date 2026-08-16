@@ -21,6 +21,8 @@ import {
   HOME_SNACKS_CATEGORIES,
   HOME_STATIONERY_CATEGORIES,
   HOME_BEAUTY_CATEGORIES,
+  HOME_STATIONARY_GRID_CATEGORIES,
+  HOME_OTHER_CATEGORIES,
 } from '@/constants/home';
 import { COLORS, FONT_SIZE, LINE_HEIGHT, RADIUS, SPACING, useResponsive } from '@/theme';
 
@@ -228,6 +230,21 @@ export default function BuyerHomeScreen() {
             <GroceryCategorySection
               title="Beauty & personal care"
               categories={HOME_BEAUTY_CATEGORIES}
+              onCategoryPress={handleCategoryPress}
+            />
+          </View>
+          <View style={[styles.categorySection, { paddingHorizontal: horizontalPadding }]}>
+            <GroceryCategorySection
+              title="Stationary"
+              categories={HOME_STATIONARY_GRID_CATEGORIES}
+              onCategoryPress={handleCategoryPress}
+            />
+          </View>
+
+          <View style={[styles.categorySection, { paddingHorizontal: horizontalPadding }]}>
+            <GroceryCategorySection
+              title="Other"
+              categories={HOME_OTHER_CATEGORIES}
               onCategoryPress={handleCategoryPress}
             />
           </View>

@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
   image: {
     position: 'absolute',
     width: '72%',
-    height: '82%',
+    height: '70%',
   },
 
   // FIRST IMAGE → BACK
