@@ -36,6 +36,10 @@ import spreadImage from '@/assets/images/home/spread.png';
 import cupCakeImage from '@/assets/images/home/cup_cake.png';
 import parlegImage from '@/assets/images/home/parleg.png';
 import coneImage from '@/assets/images/home/cone.png';
+
+import rawRiceImage from '@/assets/images/home/raw-rice.png';
+import indiaGateClassicBasmatiImage from '@/assets/images/home/india-gate-classic-basmati.png';
+import daawatTraditionalBasmatiImage from '@/assets/images/home/daawat-traditional-basmati.png';
 export const HOME_CATEGORIES = [
   {
     id: 'grocery',
@@ -268,3 +272,55 @@ export const HOME_PERSONAL_CARE_PRODUCTS = HOME_BEST_DEALS;
 export const HOME_DRINKS_PRODUCTS = HOME_BEST_DEALS;
 
 export const HOME_GHEE_PRODUCTS = HOME_BEST_DEALS;
+export const HOME_RICE_VARIETIES = [
+  {
+    id: 'basmati',
+    title: 'Basmati',
+    image: rawRiceImage,
+  },
+  {
+    id: 'sona-masoori',
+    title: 'Sona masoori',
+    image: rawRiceImage,
+  },
+  {
+    id: 'raw-rice',
+    title: 'Raw Rice',
+    image: rawRiceImage,
+  },
+  {
+    id: 'ponni',
+    title: 'Ponni',
+    image: rawRiceImage,
+  },
+  {
+    id: 'brown-rice',
+    title: 'Brown Rice',
+    image: rawRiceImage,
+  },
+] as const;
+
+export const HOME_RICE_PRODUCTS = [
+  {
+    id: 'india-gate-classic-basmati',
+    name: 'India Gate Classic Basmati',
+    unit: '1 Kg',
+    price: 242,
+    image: indiaGateClassicBasmatiImage,
+  },
+  {
+    id: 'daawat-traditional-basmati',
+    name: 'Daawat Traditional',
+    unit: '1 Kg',
+    price: 239,
+    image: daawatTraditionalBasmatiImage,
+  },
+  {
+    id: 'fortune-rice',
+    name: 'Fortune Rice',
+    unit: '1 Kg',
+    price: 154,
+    oldPrice: 190,
+    image: indiaGateClassicBasmatiImage,
+  },
+] as const;

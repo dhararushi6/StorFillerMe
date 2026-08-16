@@ -11,6 +11,7 @@ import {
   HomeSearchBar,
   ProductDealList,
   PromoBanner,
+  RiceVarietySection,
 } from '@/components/buyer/home';
 import {
   HOME_BEST_DEALS,
@@ -26,6 +27,8 @@ import {
   HOME_PERSONAL_CARE_PRODUCTS,
   HOME_DRINKS_PRODUCTS,
   HOME_GHEE_PRODUCTS,
+  HOME_RICE_VARIETIES,
+  HOME_RICE_PRODUCTS,
 } from '@/constants/home';
 import { COLORS, FONT_SIZE, LINE_HEIGHT, RADIUS, SPACING, useResponsive } from '@/theme';
 
@@ -252,6 +255,17 @@ export default function BuyerHomeScreen() {
               onAddPress={handleAddToCart}
             />
           </View>
+          <RiceVarietySection
+            title="Rice Varieties"
+            varieties={HOME_RICE_VARIETIES}
+            products={HOME_RICE_PRODUCTS}
+            weightLabel="1 KG"
+            exploreLabel="Explore All"
+            horizontalPadding={horizontalPadding}
+            onProductPress={handleProductPress}
+            onAddPress={handleAddToCart}
+            onExplorePress={handleViewAllCategories}
+          />
           {/* Personal Care & More */}
           <View
             style={[
