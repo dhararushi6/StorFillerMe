@@ -23,6 +23,9 @@ import {
   HOME_BEAUTY_CATEGORIES,
   HOME_STATIONARY_GRID_CATEGORIES,
   HOME_OTHER_CATEGORIES,
+  HOME_PERSONAL_CARE_PRODUCTS,
+  HOME_DRINKS_PRODUCTS,
+  HOME_GHEE_PRODUCTS,
 } from '@/constants/home';
 import { COLORS, FONT_SIZE, LINE_HEIGHT, RADIUS, SPACING, useResponsive } from '@/theme';
 
@@ -249,7 +252,104 @@ export default function BuyerHomeScreen() {
               onAddPress={handleAddToCart}
             />
           </View>
+          {/* Personal Care & More */}
+          <View
+            style={[
+              styles.productSection,
+              {
+                paddingHorizontal: horizontalPadding,
+              },
+            ]}
+          >
+            <View style={styles.productSectionHeader}>
+              <AppText variant="subtitle" color="primary" style={styles.productSectionTitle}>
+                Personal care & more
+              </AppText>
 
+              <Pressable
+                accessibilityRole="button"
+                accessibilityLabel="View all Personal care & more"
+                hitSlop={8}
+                onPress={handleViewAllCategories}
+              >
+                <AppText variant="caption" style={styles.viewAll}>
+                  View All
+                </AppText>
+              </Pressable>
+            </View>
+
+            <ProductDealList
+              products={HOME_PERSONAL_CARE_PRODUCTS}
+              onProductPress={handleProductPress}
+              onAddPress={handleAddToCart}
+            />
+          </View>
+
+          {/* Drinks */}
+          <View
+            style={[
+              styles.productSection,
+              {
+                paddingHorizontal: horizontalPadding,
+              },
+            ]}
+          >
+            <View style={styles.productSectionHeader}>
+              <AppText variant="subtitle" color="primary" style={styles.productSectionTitle}>
+                Drinks
+              </AppText>
+
+              <Pressable
+                accessibilityRole="button"
+                accessibilityLabel="View all Drinks"
+                hitSlop={8}
+                onPress={handleViewAllCategories}
+              >
+                <AppText variant="caption" style={styles.viewAll}>
+                  View All
+                </AppText>
+              </Pressable>
+            </View>
+
+            <ProductDealList
+              products={HOME_DRINKS_PRODUCTS}
+              onProductPress={handleProductPress}
+              onAddPress={handleAddToCart}
+            />
+          </View>
+
+          {/* Ghee */}
+          <View
+            style={[
+              styles.productSection,
+              {
+                paddingHorizontal: horizontalPadding,
+              },
+            ]}
+          >
+            <View style={styles.productSectionHeader}>
+              <AppText variant="subtitle" color="primary" style={styles.productSectionTitle}>
+                Ghee
+              </AppText>
+
+              <Pressable
+                accessibilityRole="button"
+                accessibilityLabel="View all Ghee"
+                hitSlop={8}
+                onPress={handleViewAllCategories}
+              >
+                <AppText variant="caption" style={styles.viewAll}>
+                  View All
+                </AppText>
+              </Pressable>
+            </View>
+
+            <ProductDealList
+              products={HOME_GHEE_PRODUCTS}
+              onProductPress={handleProductPress}
+              onAddPress={handleAddToCart}
+            />
+          </View>
           <View style={styles.bottomSpacing} />
         </View>
       </ScrollView>

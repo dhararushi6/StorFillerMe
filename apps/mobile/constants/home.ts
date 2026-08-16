@@ -263,3 +263,8 @@ export const HOME_OTHER_CATEGORIES = [
     images: [oilImage, gheeImage],
   },
 ] as const;
+export const HOME_PERSONAL_CARE_PRODUCTS = HOME_BEST_DEALS;
+
+export const HOME_DRINKS_PRODUCTS = HOME_BEST_DEALS;
+
+export const HOME_GHEE_PRODUCTS = HOME_BEST_DEALS;
