@@ -9,3 +9,4 @@ export * from './ProductDealCard';
 export * from './PromoBanner';
 export * from './ProductImageGroup';
 export * from './GroceryCategorySection';
+export { ProductDealList } from './ProductDealList';

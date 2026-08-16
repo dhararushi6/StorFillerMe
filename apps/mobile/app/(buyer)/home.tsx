@@ -9,7 +9,7 @@ import {
   GroceryCategorySection,
   HomeHeader,
   HomeSearchBar,
-  ProductDealCard,
+  ProductDealList,
   PromoBanner,
 } from '@/components/buyer/home';
 import {
@@ -110,30 +110,12 @@ export default function BuyerHomeScreen() {
             <SectionHeader title="Top Best Deal" showViewAll={false} />
           </View>
 
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={[
-              styles.horizontalContent,
-              {
-                paddingHorizontal: horizontalPadding,
-              },
-            ]}
-          >
-            {HOME_BEST_DEALS.map((product) => (
-              <ProductDealCard
-                key={product.id}
-                name={product.name}
-                unit={product.unit}
-                price={product.price}
-                oldPrice={product.oldPrice}
-                image={product.image}
-                onPress={() => handleProductPress(product.id)}
-                onAddPress={() => handleAddToCart(product.id)}
-              />
-            ))}
-          </ScrollView>
-
+          <ProductDealList
+            products={HOME_BEST_DEALS}
+            horizontalPadding={horizontalPadding}
+            onProductPress={handleProductPress}
+            onAddPress={handleAddToCart}
+          />
           {/* Promo Banner */}
           <View
             style={[
@@ -184,24 +166,11 @@ export default function BuyerHomeScreen() {
               </Pressable>
             </View>
 
-            <ScrollView
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={styles.popularContent}
-            >
-              {HOME_POPULAR_PRODUCTS.map((product) => (
-                <ProductDealCard
-                  key={product.id}
-                  name={product.name}
-                  unit={product.unit}
-                  price={product.price}
-                  oldPrice={product.oldPrice}
-                  image={product.image}
-                  onPress={() => handleProductPress(product.id)}
-                  onAddPress={() => handleAddToCart(product.id)}
-                />
-              ))}
-            </ScrollView>
+            <ProductDealList
+              products={HOME_POPULAR_PRODUCTS}
+              onProductPress={handleProductPress}
+              onAddPress={handleAddToCart}
+            />
           </View>
           {/* Stationery Categories */}
           <View style={[styles.showcaseSection, { paddingHorizontal: horizontalPadding }]}>
@@ -269,30 +238,16 @@ export default function BuyerHomeScreen() {
                 hitSlop={8}
                 onPress={handleViewAllCategories}
               >
-                <AppText variant="caption" color="secondary">
+                <AppText variant="caption" style={styles.viewAll}>
                   View All
                 </AppText>
               </Pressable>
             </View>
-
-            <ScrollView
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={styles.productSectionContent}
-            >
-              {HOME_BEST_DEALS.map((product) => (
-                <ProductDealCard
-                  key={product.id}
-                  name={product.name}
-                  unit={product.unit}
-                  price={product.price}
-                  oldPrice={product.oldPrice}
-                  image={product.image}
-                  onPress={() => handleProductPress(product.id)}
-                  onAddPress={() => handleAddToCart(product.id)}
-                />
-              ))}
-            </ScrollView>
+            <ProductDealList
+              products={HOME_BEST_DEALS}
+              onProductPress={handleProductPress}
+              onAddPress={handleAddToCart}
+            />
           </View>
 
           <View style={styles.bottomSpacing} />
@@ -361,10 +316,6 @@ const styles = StyleSheet.create({
     lineHeight: LINE_HEIGHT.xxl,
   },
 
-  horizontalContent: {
-    gap: SPACING.md,
-  },
-
   bannerSection: {
     marginTop: SPACING.sm,
   },
@@ -416,10 +367,6 @@ const styles = StyleSheet.create({
     color: COLORS.text.inverse,
   },
 
-  popularContent: {
-    gap: SPACING.md,
-  },
-
   bottomSpacing: {
     height: SPACING.section,
   },
@@ -430,7 +377,7 @@ const styles = StyleSheet.create({
     marginTop: SPACING.xs,
   },
   productSection: {
-    marginTop: SPACING.lg,
+    marginTop: SPACING.xs,
   },
 
   productSectionHeader: {
@@ -445,8 +392,7 @@ const styles = StyleSheet.create({
     lineHeight: LINE_HEIGHT.xxl,
     fontWeight: '500',
   },
-
-  productSectionContent: {
-    gap: SPACING.md,
+  viewAll: {
+    color: COLORS.orange.normal,
   },
 });
