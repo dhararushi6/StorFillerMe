@@ -21,6 +21,21 @@ import dryFruitImage from '@/assets/images/home/dry-fruit.png';
 import instantFoodImage from '@/assets/images/home/instant-food.png';
 import frozenFoodImage from '@/assets/images/home/frozen-food.png';
 
+import drinksImage from '@/assets/images/home/drinks.png';
+import bakeryImage from '@/assets/images/home/bakery.png';
+import biscuitsImage from '@/assets/images/home/biscuits.png';
+import chipsImage from '@/assets/images/home/chips.png';
+import namkeenImage from '@/assets/images/home/namkeen.png';
+import chocolateImage from '@/assets/images/home/chocolate.png';
+import candyImage from '@/assets/images/home/candy.png';
+import iceCreamImage from '@/assets/images/home/ice-cream.png';
+import teaImage from '@/assets/images/home/tea.png';
+import coffeeImage from '@/assets/images/home/coffee.png';
+import sauceImage from '@/assets/images/home/sauce.png';
+import spreadImage from '@/assets/images/home/spread.png';
+import cupCakeImage from '@/assets/images/home/cup_cake.png';
+import parlegImage from '@/assets/images/home/parleg.png';
+import coneImage from '@/assets/images/home/cone.png';
 export const HOME_CATEGORIES = [
   {
     id: 'grocery',
@@ -127,5 +142,47 @@ export const HOME_GROCERY_CATEGORIES = [
     id: 'instant-frozen-food',
     title: 'Instant &\nFrozen Food',
     images: [instantFoodImage, frozenFoodImage],
+  },
+] as const;
+export const HOME_SNACKS_CATEGORIES = [
+  {
+    id: 'drinks-juices',
+    title: 'Drinks &\nJuices',
+    images: [drinksImage],
+  },
+  {
+    id: 'bakery',
+    title: 'Bakery',
+    images: [bakeryImage, cupCakeImage],
+  },
+  {
+    id: 'biscuits',
+    title: 'Biscuits',
+    images: [parlegImage, biscuitsImage],
+  },
+  {
+    id: 'chips-namkeen',
+    title: 'Chips &\nNamkeen',
+    images: [chipsImage, namkeenImage],
+  },
+  {
+    id: 'chocolates-candies',
+    title: 'Chocolates\n& Candies',
+    images: [chocolateImage, candyImage],
+  },
+  {
+    id: 'ice-cream',
+    title: 'Ice\nCream',
+    images: [iceCreamImage, coneImage],
+  },
+  {
+    id: 'tea-coffee',
+    title: 'Tea &\nCoffee',
+    images: [teaImage, coffeeImage],
+  },
+  {
+    id: 'sauces-spreads',
+    title: 'Sauces &\nSpreads',
+    images: [sauceImage, spreadImage],
   },
 ] as const;

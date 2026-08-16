@@ -38,7 +38,10 @@ export function GroceryCategorySection({
             accessibilityLabel={category.title}
           >
             <View style={styles.imageContainer}>
-              <ProductImageGroup images={category.images} />
+              <ProductImageGroup
+                images={category.images}
+                centerSingleImage={category.images.length === 1}
+              />
             </View>
 
             <AppText variant="caption" color="primary" style={styles.categoryTitle}>

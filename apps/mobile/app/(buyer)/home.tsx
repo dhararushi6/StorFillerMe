@@ -18,6 +18,7 @@ import {
   HOME_GROCERY_CATEGORIES,
   HOME_POPULAR_PRODUCTS,
   HOME_PROMO,
+  HOME_SNACKS_CATEGORIES,
   HOME_STATIONERY_CATEGORIES,
 } from '@/constants/home';
 import { COLORS, FONT_SIZE, LINE_HEIGHT, RADIUS, SPACING, useResponsive } from '@/theme';
@@ -212,6 +213,13 @@ export default function BuyerHomeScreen() {
             <GroceryCategorySection
               title="Grocery"
               categories={HOME_GROCERY_CATEGORIES}
+              onCategoryPress={handleCategoryPress}
+            />
+          </View>
+          <View style={[styles.categorySection, { paddingHorizontal: horizontalPadding }]}>
+            <GroceryCategorySection
+              title="Snacks & drinks"
+              categories={HOME_SNACKS_CATEGORIES}
               onCategoryPress={handleCategoryPress}
             />
           </View>
