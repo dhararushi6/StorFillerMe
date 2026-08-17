@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: SPACING.md,
     paddingBottom: SPACING.md,
-    backgroundColor: COLORS.background,
+    backgroundColor: 'transparent',
   },
 
   searchSlot: {

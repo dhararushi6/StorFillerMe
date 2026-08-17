@@ -340,7 +340,7 @@ const styles = StyleSheet.create({
 
   progressTrack: {
     height: 6,
-    backgroundColor: COLORS.cart.progressBg,
+    backgroundColor: COLORS.border,
     borderRadius: RADIUS.pill,
     overflow: 'hidden',
   },
@@ -374,7 +374,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     backgroundColor: COLORS.orange.light,
     borderWidth: 1,
-    borderColor: COLORS.cart.couponBorder,
+    borderColor: COLORS.orange.lightActive,
     borderRadius: RADIUS.lg,
     paddingHorizontal: SPACING.lg,
     paddingVertical: SPACING.md,
@@ -390,7 +390,7 @@ const styles = StyleSheet.create({
   },
 
   recommendationsCard: {
-    backgroundColor: COLORS.cart.bannerBg,
+    backgroundColor: COLORS.orange.lightActive,
     borderRadius: RADIUS.xl,
     padding: SPACING.md,
     marginVertical: SPACING.md,

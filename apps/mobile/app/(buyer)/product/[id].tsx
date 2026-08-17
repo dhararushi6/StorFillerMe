@@ -72,28 +72,37 @@ export default function BuyerProductScreen() {
   return (
     <View style={styles.screen}>
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
-        <ProductTopBar
-          searchQuery={searchQuery}
-          onSearchQueryChange={setSearchQuery}
-          onSearchSubmit={handleSearchSubmit}
-          onCartPress={() => router.push('/(buyer)/cart')}
-        />
+        {/* Curved Hero Section */}
+        <View style={styles.heroSection}>
+          <ProductTopBar
+            searchQuery={searchQuery}
+            onSearchQueryChange={setSearchQuery}
+            onSearchSubmit={handleSearchSubmit}
+            onCartPress={() => router.push('/(buyer)/cart')}
+          />
 
-        <View style={sidePadding}>
-          <ProductGallery images={productDetail.gallery} expiryLabel={productDetail.expiryLabel} />
-
-          <View style={styles.summary}>
-            <ProductSummary
-              name={productDetail.name}
-              rating={productDetail.rating}
-              reviewsLabel={productDetail.reviewsLabel}
-              price={productDetail.price}
-              oldPrice={productDetail.oldPrice}
-              isWishlisted={isWishlisted}
-              onWishlistPress={() => setIsWishlisted((wishlisted) => !wishlisted)}
+          <View style={sidePadding}>
+            <ProductGallery
+              images={productDetail.gallery}
+              expiryLabel={productDetail.expiryLabel}
             />
-          </View>
 
+            <View style={styles.summary}>
+              <ProductSummary
+                name={productDetail.name}
+                rating={productDetail.rating}
+                reviewsLabel={productDetail.reviewsLabel}
+                price={productDetail.price}
+                oldPrice={productDetail.oldPrice}
+                isWishlisted={isWishlisted}
+                onWishlistPress={() => setIsWishlisted((wishlisted) => !wishlisted)}
+              />
+            </View>
+          </View>
+        </View>
+
+        {/* Lower Body Section */}
+        <View style={sidePadding}>
           <View style={styles.section}>
             <QuantitySelector
               title={PRODUCT_SECTION_TITLES.quantity}
@@ -241,6 +250,13 @@ const styles = StyleSheet.create({
 
   scrollContent: {
     flexGrow: 1,
+  },
+
+  heroSection: {
+    backgroundColor: COLORS.orange.light,
+    borderBottomLeftRadius: 32,
+    borderBottomRightRadius: 32,
+    paddingBottom: SPACING.xl,
   },
 
   summary: {

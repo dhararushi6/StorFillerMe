@@ -4,7 +4,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 
 import { AppIcon } from '@/components/common/AppIcon';
 import { AppText } from '@/components/common/AppText';
-import { COLORS, RADIUS, SPACING, useResponsive } from '@/theme';
+import { COLORS, FONT_FAMILY, RADIUS, SPACING, useResponsive } from '@/theme';
 import { ICONS } from '@/constants/icons';
 
 import { RatingStars } from './RatingStars';
@@ -35,7 +35,7 @@ export function ReviewCard({
   return (
     <View style={styles.container}>
       <View style={styles.headerRow}>
-        <AppText variant="bodyMedium" color="primary">
+        <AppText variant="bodyMedium" color="primary" style={styles.authorText}>
           {author}
         </AppText>
 
@@ -118,6 +118,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     gap: SPACING.md,
+  },
+
+  authorText: {
+    fontFamily: FONT_FAMILY.bold,
   },
 
   stars: {

@@ -3,7 +3,7 @@ import { Pressable, StyleSheet, View } from 'react-native';
 
 import { AppIcon } from '@/components/common/AppIcon';
 import { AppText } from '@/components/common/AppText';
-import { COLORS, RADIUS, SPACING } from '@/theme';
+import { COLORS, FONT_FAMILY, RADIUS, SPACING } from '@/theme';
 
 interface DeliveryAddressCardProps {
   name: string;
@@ -58,7 +58,7 @@ export function DeliveryAddressCard({
 
 const styles = StyleSheet.create({
   wrapper: {
-    gap: SPACING.sm,
+    gap: SPACING.xs,
   },
 
   addressBox: {
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: SPACING.md,
     paddingVertical: SPACING.md - 2,
     borderWidth: 1,
-    borderColor: COLORS.cart.couponBorder,
+    borderColor: COLORS.orange.lightActive,
     borderRadius: RADIUS.md,
     backgroundColor: COLORS.surface,
   },
@@ -81,30 +81,34 @@ const styles = StyleSheet.create({
   },
 
   nameText: {
-    fontWeight: '700',
+    fontFamily: FONT_FAMILY.bold,
   },
 
   addressLine: {
     flexShrink: 1,
+    fontFamily: FONT_FAMILY.regular,
+    color: COLORS.text.secondary,
   },
 
   changeLabel: {
-    fontWeight: '500',
+    fontFamily: FONT_FAMILY.medium,
     textDecorationLine: 'underline',
+    color: COLORS.text.primary,
   },
 
   deliveryBanner: {
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: SPACING.sm - 1,
+    paddingVertical: 6,
     paddingHorizontal: SPACING.md,
-    backgroundColor: COLORS.product.deliveryBg,
-    borderRadius: RADIUS.sm,
+    backgroundColor: COLORS.successLight,
+    borderRadius: RADIUS.xs,
   },
 
   deliveryText: {
-    fontWeight: '700',
-    color: COLORS.product.deliveryText,
+    fontFamily: FONT_FAMILY.bold,
+    color: COLORS.success,
     textAlign: 'center',
+    fontSize: 12,
   },
 });

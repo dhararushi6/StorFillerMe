@@ -45,7 +45,7 @@ export function ProductSummary({
       <View style={styles.ratingRow}>
         <RatingStars rating={rating} size={product.starSize} />
 
-        <AppText variant="caption" color="secondary">
+        <AppText variant="caption" color="primary" style={styles.reviewsLabel}>
           {reviewsLabel}
         </AppText>
       </View>
@@ -112,6 +112,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: SPACING.sm,
     marginTop: SPACING.sm,
+  },
+
+  reviewsLabel: {
+    fontWeight: '600',
   },
 
   priceRow: {

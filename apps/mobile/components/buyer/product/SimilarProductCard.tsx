@@ -96,7 +96,7 @@ export function SimilarProductCard({
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: COLORS.product.cardBg,
+    backgroundColor: COLORS.orange.light,
     borderRadius: RADIUS.lg,
     padding: SPACING.sm,
   },
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
   imageContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: COLORS.product.imageBg,
+    backgroundColor: COLORS.orange.lightHover,
     borderRadius: RADIUS.md,
   },
 

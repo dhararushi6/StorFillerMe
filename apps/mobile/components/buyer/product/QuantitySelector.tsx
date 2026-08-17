@@ -2,7 +2,7 @@ import React from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { AppText } from '@/components/common/AppText';
-import { COLORS, RADIUS, SPACING, useResponsive } from '@/theme';
+import { COLORS, FONT_FAMILY, RADIUS, SPACING, useResponsive } from '@/theme';
 
 interface QuantityOption {
   id: string;
@@ -29,11 +29,11 @@ export function QuantitySelector({
   return (
     <View>
       <View style={styles.titleRow}>
-        <AppText variant="bodyMedium" color="primary">
-          {title}
+        <AppText variant="bodyMedium" color="primary" style={styles.titleText}>
+          {title}:
         </AppText>
 
-        <AppText variant="body" color="muted">
+        <AppText variant="body" style={styles.selectedLabelText}>
           {selectedLabel}
         </AppText>
       </View>
@@ -59,7 +59,11 @@ export function QuantitySelector({
               accessibilityState={{ selected: isSelected }}
               accessibilityLabel={option.label}
             >
-              <AppText variant="bodyMedium" color={isSelected ? 'inverse' : 'secondary'}>
+              <AppText
+                variant="bodyMedium"
+                color={isSelected ? 'inverse' : 'secondary'}
+                style={isSelected ? styles.chipTextSelected : styles.chipTextUnselected}
+              >
                 {option.label}
               </AppText>
             </Pressable>
@@ -74,7 +78,16 @@ const styles = StyleSheet.create({
   titleRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: SPACING.sm,
+    gap: SPACING.xs,
+  },
+
+  titleText: {
+    fontFamily: FONT_FAMILY.bold,
+  },
+
+  selectedLabelText: {
+    fontFamily: FONT_FAMILY.medium,
+    color: '#7A869A',
   },
 
   options: {
@@ -95,11 +108,21 @@ const styles = StyleSheet.create({
   chipSelected: {
     backgroundColor: COLORS.text.primary,
     borderColor: COLORS.text.primary,
+    borderStyle: 'solid',
   },
 
   chipUnselected: {
     backgroundColor: COLORS.surface,
     borderColor: COLORS.border,
+    borderStyle: 'dashed',
+  },
+
+  chipTextSelected: {
+    fontFamily: FONT_FAMILY.bold,
+  },
+
+  chipTextUnselected: {
+    fontFamily: FONT_FAMILY.medium,
   },
 
   pressed: {

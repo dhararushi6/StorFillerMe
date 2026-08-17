@@ -107,10 +107,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: COLORS.cart.walletBg,
+    backgroundColor: COLORS.orange.light,
     paddingVertical: SPACING.sm + 2,
     borderBottomWidth: 1,
-    borderBottomColor: COLORS.cart.billBorder,
+    borderBottomColor: COLORS.border,
   },
 
   walletText: {

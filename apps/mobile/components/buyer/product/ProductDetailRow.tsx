@@ -3,7 +3,7 @@ import { Pressable, StyleSheet } from 'react-native';
 
 import { AppIcon } from '@/components/common/AppIcon';
 import { AppText } from '@/components/common/AppText';
-import { COLORS, RADIUS, SPACING, useResponsive } from '@/theme';
+import { COLORS, FONT_FAMILY, RADIUS, SPACING, useResponsive } from '@/theme';
 
 interface ProductDetailRowProps {
   label: string;
@@ -26,7 +26,7 @@ export function ProductDetailRow({ label, onPress }: ProductDetailRowProps) {
       accessibilityRole="button"
       accessibilityLabel={label}
     >
-      <AppText variant="body" color="primary">
+      <AppText variant="bodyMedium" color="primary" style={styles.label}>
         {label}
       </AppText>
 
@@ -45,6 +45,10 @@ const styles = StyleSheet.create({
     borderColor: COLORS.border,
     borderRadius: RADIUS.md,
     backgroundColor: COLORS.surface,
+  },
+
+  label: {
+    fontFamily: FONT_FAMILY.medium,
   },
 
   pressed: {

@@ -78,7 +78,7 @@ export function CartDeliveryHeader({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: COLORS.cart.headerBg,
+    backgroundColor: COLORS.orange.light,
     paddingBottom: SPACING.lg,
   },
 

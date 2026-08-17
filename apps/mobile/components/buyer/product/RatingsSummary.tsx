@@ -30,6 +30,7 @@ export function RatingsSummary({
           color="primary"
           style={{
             fontSize: product.ratingValueFontSize,
+            fontWeight: '700',
           }}
         >
           {value}
@@ -37,9 +38,11 @@ export function RatingsSummary({
 
         <AppIcon name="star" size="sm" color={COLORS.rating} />
 
-        <AppText variant="caption" style={styles.label}>
-          {label}
-        </AppText>
+        <View style={styles.badge}>
+          <AppText variant="caption" style={styles.badgeText}>
+            {label}
+          </AppText>
+        </View>
       </View>
 
       <View style={styles.filters}>
@@ -89,8 +92,17 @@ const styles = StyleSheet.create({
     gap: SPACING.xs,
   },
 
-  label: {
-    color: COLORS.orange.normal,
+  badge: {
+    backgroundColor: COLORS.successLight,
+    paddingHorizontal: SPACING.sm,
+    paddingVertical: 2,
+    borderRadius: RADIUS.xs,
+  },
+
+  badgeText: {
+    fontWeight: '700',
+    color: COLORS.success,
+    fontSize: 11,
   },
 
   filters: {

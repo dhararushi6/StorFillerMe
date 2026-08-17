@@ -116,17 +116,17 @@ const styles = StyleSheet.create({
 
   cardContainer: {
     borderWidth: 1,
-    borderColor: COLORS.cart.billBorder,
+    borderColor: COLORS.border,
     borderRadius: RADIUS.lg,
     overflow: 'hidden',
   },
 
   cardHeader: {
-    backgroundColor: COLORS.cart.billHeaderBg,
+    backgroundColor: COLORS.yellow.normal,
     paddingHorizontal: SPACING.lg,
     paddingVertical: SPACING.md,
     borderBottomWidth: 1,
-    borderBottomColor: COLORS.cart.billBorder,
+    borderBottomColor: COLORS.border,
   },
 
   cardHeaderTitle: {
@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
   },
 
   cardBody: {
-    backgroundColor: COLORS.cart.billBodyBg,
+    backgroundColor: COLORS.orange.light,
     padding: SPACING.lg,
     gap: SPACING.md,
   },
@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
 
   divider: {
     height: 1,
-    backgroundColor: COLORS.cart.billDivider,
+    backgroundColor: COLORS.border,
     marginVertical: SPACING.xs / 2,
   },
 
@@ -174,7 +174,7 @@ const styles = StyleSheet.create({
   },
 
   savingsBanner: {
-    backgroundColor: COLORS.cart.savingsBg,
+    backgroundColor: COLORS.successLight,
     borderRadius: RADIUS.md,
     paddingVertical: SPACING.sm + 2,
     alignItems: 'center',
@@ -183,11 +183,11 @@ const styles = StyleSheet.create({
 
   savingsText: {
     fontFamily: FONT_FAMILY.bold,
-    color: COLORS.cart.savingsText,
+    color: COLORS.success,
   },
 
   cancellationCard: {
-    backgroundColor: COLORS.cart.cancellationBg,
+    backgroundColor: COLORS.orange.light,
     borderRadius: RADIUS.lg,
     padding: SPACING.lg,
     gap: SPACING.xs,
