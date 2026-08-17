@@ -16,6 +16,7 @@ interface CategoryItem {
 interface CategorySectionProps {
   categories: readonly CategoryItem[];
   onCategoryPress?: (categoryId: string) => void;
+  onViewAllPress?: () => void;
 }
 
 export function CategorySection({ categories, onCategoryPress }: CategorySectionProps) {

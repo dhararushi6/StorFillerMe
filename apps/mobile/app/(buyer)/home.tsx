@@ -157,7 +157,7 @@ export default function BuyerHomeScreen() {
             ]}
           >
             <View style={styles.popularHeader}>
-              <AppText variant="subtitle" style={styles.popularTitle}>
+              <AppText variant="subheading" style={styles.popularTitle}>
                 Popular Products
               </AppText>
 
@@ -234,7 +234,7 @@ export default function BuyerHomeScreen() {
             ]}
           >
             <View style={styles.productSectionHeader}>
-              <AppText variant="subtitle" color="primary" style={styles.productSectionTitle}>
+              <AppText variant="subheading" color="primary" style={styles.productSectionTitle}>
                 Household cleaning needs
               </AppText>
 
@@ -276,7 +276,7 @@ export default function BuyerHomeScreen() {
             ]}
           >
             <View style={styles.productSectionHeader}>
-              <AppText variant="subtitle" color="primary" style={styles.productSectionTitle}>
+              <AppText variant="subheading" color="primary" style={styles.productSectionTitle}>
                 Personal care & more
               </AppText>
 
@@ -309,7 +309,7 @@ export default function BuyerHomeScreen() {
             ]}
           >
             <View style={styles.productSectionHeader}>
-              <AppText variant="subtitle" color="primary" style={styles.productSectionTitle}>
+              <AppText variant="subheading" color="primary" style={styles.productSectionTitle}>
                 Drinks
               </AppText>
 
@@ -342,7 +342,7 @@ export default function BuyerHomeScreen() {
             ]}
           >
             <View style={styles.productSectionHeader}>
-              <AppText variant="subtitle" color="primary" style={styles.productSectionTitle}>
+              <AppText variant="subheading" color="primary" style={styles.productSectionTitle}>
                 Ghee
               </AppText>
 

@@ -35,11 +35,11 @@ export function PromoBanner({ title, description, image, buttonTitle, onPress }:
         accessibilityRole="button"
         accessibilityLabel={buttonTitle}
       >
-        <AppText variant="body" color="inverse" style={styles.buttonText}>
+        <AppText variant="button" color="inverse">
           {buttonTitle}
         </AppText>
 
-        <AppText variant="body" color="inverse" style={styles.arrow}>
+        <AppText variant="button" color="inverse" style={styles.arrow}>
           →
         </AppText>
       </Pressable>
