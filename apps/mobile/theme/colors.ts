@@ -13,6 +13,11 @@ export const COLORS = {
     darkActive: '#5C2A12',
 
     darker: '#47210E',
+
+    promoText: '#9D3E11',
+    banner: '#EFA980',
+    showcase: '#FECA7A',
+    card: '#FAE2BB',
   },
 
   yellow: {
@@ -42,6 +47,15 @@ export const COLORS = {
     inverse: '#FFFFFF',
     inverseSecondary: '#DDDDDD',
     danger: '#D64545',
+  },
+
+  deal: {
+    card: '#FFF1CC',
+    inner: '#CC5D281A',
+  },
+
+  green: {
+    light: '#56973F1A',
   },
 
   border: '#E5DED2',

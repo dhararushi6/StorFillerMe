@@ -30,6 +30,7 @@ export const ICONS = {
   chevronRight: 'chevron-forward',
   chevronDown: 'chevron-down',
   chevronUp: 'chevron-up',
+  chevronLeft: 'chevron-back',
 
   edit: 'create-outline',
   delete: 'trash-outline',

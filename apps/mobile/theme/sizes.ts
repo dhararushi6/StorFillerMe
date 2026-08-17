@@ -13,4 +13,8 @@ export const SIZES = {
   avatarSmall: 32,
   avatarMedium: 40,
   avatarLarge: 48,
+
+  showcaseCardWidth: 122,
+  showcaseCardHeight: 132,
+  showcaseImageHeight: 82,
 } as const;

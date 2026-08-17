@@ -3,7 +3,7 @@ import { Image, Pressable, StyleSheet, View } from 'react-native';
 
 import { AppIcon } from '@/components/common/AppIcon';
 import { AppText } from '@/components/common/AppText';
-import { COLORS, RADIUS, SPACING } from '@/theme';
+import { COLORS, FONT_SIZE, RADIUS, SPACING } from '@/theme';
 
 interface ProductDealCardProps {
   name: string;
@@ -47,13 +47,13 @@ export function ProductDealCard({
 
       <View style={styles.bottomRow}>
         <View style={styles.priceContainer}>
-          <AppText variant="bodyMedium" color="primary">
-            ₹{price}
+          <AppText variant="bodyMedium" color="primary" style={styles.price}>
+            ₹ {price}
           </AppText>
 
           {oldPrice !== undefined && (
             <AppText variant="caption" color="muted" style={styles.oldPrice}>
-              ₹{oldPrice}
+              ₹ {oldPrice}
             </AppText>
           )}
         </View>
@@ -65,7 +65,7 @@ export function ProductDealCard({
           accessibilityLabel={`Add ${name} to cart`}
           hitSlop={6}
         >
-          <AppIcon name="add" size="sm" color={COLORS.text.inverse} />
+          <AppIcon name="add" size="lg" color={COLORS.text.inverse} />
         </Pressable>
       </View>
     </View>
@@ -74,13 +74,12 @@ export function ProductDealCard({
 
 const styles = StyleSheet.create({
   container: {
-    width: 168,
-    minHeight: 250,
-    backgroundColor: COLORS.surface,
+    width: 150,
+    minHeight: 235,
+    backgroundColor: COLORS.deal.card,
     borderRadius: RADIUS.xl,
-    padding: SPACING.md,
+    padding: SPACING.sm,
   },
-
   productContent: {
     flex: 1,
   },
@@ -89,13 +88,13 @@ const styles = StyleSheet.create({
     height: 118,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: COLORS.yellow.lightActive,
+    backgroundColor: COLORS.deal.inner,
     borderRadius: RADIUS.lg,
   },
 
   image: {
-    width: '85%',
-    height: '85%',
+    width: '100%',
+    height: '100%',
   },
 
   name: {
@@ -110,26 +109,29 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-end',
     justifyContent: 'space-between',
-    marginTop: SPACING.md,
+    marginTop: SPACING.sm,
   },
 
   priceContainer: {
-    flexDirection: 'row',
-    alignItems: 'baseline',
-    gap: SPACING.xs,
+    alignItems: 'flex-start',
+  },
+  price: {
+    fontSize: FONT_SIZE.lg,
+    fontWeight: '500',
   },
 
   oldPrice: {
+    marginTop: 0,
     textDecorationLine: 'line-through',
   },
 
   addButton: {
-    width: 32,
-    height: 32,
+    width: 36,
+    height: 36,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: COLORS.orange.normal,
-    borderRadius: RADIUS.sm,
+    borderRadius: 999,
   },
 
   pressed: {

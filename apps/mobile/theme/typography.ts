@@ -24,4 +24,5 @@ export const LINE_HEIGHT = {
   xl: 28,
   xxl: 32,
   display: 38,
+  category: 14.4,
 } as const;

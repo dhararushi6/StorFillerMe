@@ -19,6 +19,12 @@ export function useResponsive() {
 
   const horizontalPadding = isTablet ? 32 : Math.min(Math.max(width * 0.04, 16), 24);
 
+  // Space between the 3 category cards
+  const categoryGap = isSmall ? 10 : 12;
+
+  // Calculate 3 equal cards inside the available content width
+  const categoryCardWidth = Math.floor((width - horizontalPadding * 2 - categoryGap * 2) / 3);
+
   const home = {
     headerBottomSpacing: isSmall ? 4 : 6,
 
@@ -30,9 +36,9 @@ export function useResponsive() {
 
     locationFontSize: isSmall ? 15 : 17,
 
-    categoryCardWidth: isSmall ? 92 : 104,
+    categoryCardWidth,
     categoryCardHeight: isSmall ? 116 : 124,
-    categoryImageSize: isSmall ? 52 : 56,
+    categoryImageSize: isSmall ? 70 : 90,
     categoryIllustrationSize: isSmall ? 120 : 140,
   };
 
