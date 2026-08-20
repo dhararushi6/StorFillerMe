@@ -116,17 +116,17 @@ const styles = StyleSheet.create({
 
   cardContainer: {
     borderWidth: 1,
-    borderColor: COLORS.border,
+    borderColor: COLORS.orange.normal,
     borderRadius: RADIUS.lg,
     overflow: 'hidden',
   },
 
   cardHeader: {
-    backgroundColor: COLORS.yellow.normal,
+    backgroundColor: COLORS.cart.billHeader,
     paddingHorizontal: SPACING.lg,
     paddingVertical: SPACING.md,
     borderBottomWidth: 1,
-    borderBottomColor: COLORS.border,
+    borderBottomColor: COLORS.orange.normal,
   },
 
   cardHeaderTitle: {
@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
   },
 
   cardBody: {
-    backgroundColor: COLORS.orange.light,
+    backgroundColor: COLORS.cart.billCalculation,
     padding: SPACING.lg,
     gap: SPACING.md,
   },
@@ -187,7 +187,7 @@ const styles = StyleSheet.create({
   },
 
   cancellationCard: {
-    backgroundColor: COLORS.orange.light,
+    backgroundColor: COLORS.cart.cancellation,
     borderRadius: RADIUS.lg,
     padding: SPACING.lg,
     gap: SPACING.xs,

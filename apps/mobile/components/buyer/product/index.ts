@@ -8,4 +8,3 @@ export * from './QuantitySelector';
 export * from './RatingStars';
 export * from './RatingsSummary';
 export * from './ReviewCard';
-export * from './SimilarProductCard';

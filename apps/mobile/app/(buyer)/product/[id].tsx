@@ -5,6 +5,7 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { AppIcon } from '@/components/common/AppIcon';
 import { AppText } from '@/components/common/AppText';
 import { AppButton } from '@/components/ui/AppButton';
+import { ProductDealCard } from '@/components/buyer/home';
 import {
   DeliveryAddressCard,
   ProductDetailRow,
@@ -15,7 +16,6 @@ import {
   QuantitySelector,
   RatingsSummary,
   ReviewCard,
-  SimilarProductCard,
 } from '@/components/buyer/product';
 import {
   getProductById,
@@ -28,7 +28,7 @@ import {
   PRODUCT_SIMILAR,
   PRODUCT_YOU_MAY_ALSO_LIKE,
 } from '@/constants/product';
-import { COLORS, SPACING, useResponsive } from '@/theme';
+import { COLORS, FONT_FAMILY, RADIUS, SPACING, useResponsive } from '@/theme';
 
 export default function BuyerProductScreen() {
   const { id } = useLocalSearchParams<{ id?: string }>();
@@ -43,6 +43,11 @@ export default function BuyerProductScreen() {
     PRODUCT_RATING_SUMMARY.selectedFilter,
   );
   const [isWishlisted, setIsWishlisted] = useState(false);
+  const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
+
+  const handleToggleRow = useCallback((rowId: string) => {
+    setExpandedRows((rows) => ({ ...rows, [rowId]: rows[rowId] !== true }));
+  }, []);
 
   const { horizontalPadding } = useResponsive();
 
@@ -136,7 +141,27 @@ export default function BuyerProductScreen() {
 
             <View style={[styles.sectionBody, styles.detailRows]}>
               {PRODUCT_DETAIL_ROWS.map((row) => (
-                <ProductDetailRow key={row.id} label={row.label} />
+                <ProductDetailRow
+                  key={row.id}
+                  label={row.label}
+                  expanded={expandedRows[row.id] === true}
+                  onToggle={() => handleToggleRow(row.id)}
+                >
+                  {row.id === 'about-product'
+                    ? productDetail.about.map((highlight) => (
+                        <AppText key={highlight.label} variant="body" color="primary">
+                          <AppText variant="body" color="primary" style={styles.highlightLabel}>
+                            {highlight.label}
+                          </AppText>{' '}
+                          {highlight.text}
+                        </AppText>
+                      ))
+                    : productDetail.description.map((paragraph) => (
+                        <AppText key={paragraph.slice(0, 24)} variant="body" color="primary">
+                          {paragraph}
+                        </AppText>
+                      ))}
+                </ProductDetailRow>
               ))}
             </View>
           </View>
@@ -156,7 +181,7 @@ export default function BuyerProductScreen() {
             contentContainerStyle={[styles.carousel, sidePadding]}
           >
             {PRODUCT_SIMILAR.map((similarProduct) => (
-              <SimilarProductCard
+              <ProductDealCard
                 key={similarProduct.id}
                 name={similarProduct.name}
                 unit={similarProduct.unit}
@@ -184,7 +209,7 @@ export default function BuyerProductScreen() {
             contentContainerStyle={[styles.carousel, sidePadding]}
           >
             {PRODUCT_YOU_MAY_ALSO_LIKE.map((suggestedProduct) => (
-              <SimilarProductCard
+              <ProductDealCard
                 key={suggestedProduct.id}
                 name={suggestedProduct.name}
                 unit={suggestedProduct.unit}
@@ -253,9 +278,9 @@ const styles = StyleSheet.create({
   },
 
   heroSection: {
-    backgroundColor: COLORS.orange.light,
-    borderBottomLeftRadius: 32,
-    borderBottomRightRadius: 32,
+    backgroundColor: COLORS.header,
+    borderBottomLeftRadius: RADIUS.header,
+    borderBottomRightRadius: RADIUS.header,
     paddingBottom: SPACING.xl,
   },
 
@@ -273,6 +298,10 @@ const styles = StyleSheet.create({
 
   detailRows: {
     gap: SPACING.md,
+  },
+
+  highlightLabel: {
+    fontFamily: FONT_FAMILY.bold,
   },
 
   carousel: {

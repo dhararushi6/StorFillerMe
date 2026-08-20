@@ -54,21 +54,24 @@ export function useResponsive() {
     priceFontSize: isSmall ? 18 : 20,
     oldPriceFontSize: isSmall ? 12 : 13,
     starSize: isSmall ? 12 : 13,
-    summaryActionSize: isSmall ? 20 : 22,
 
     quantityChipHeight: isSmall ? 38 : 42,
     quantityChipMinWidth: isSmall ? 54 : 60,
 
     detailRowHeight: isSmall ? 42 : 46,
 
-    similarCardWidth: isSmall ? 128 : 142,
-    similarImageHeight: isSmall ? 88 : 98,
-    similarAddButtonSize: isSmall ? 24 : 26,
-
     ratingValueFontSize: isSmall ? 26 : 30,
     ratingFilterSize: isSmall ? 20 : 22,
-    reviewPhotoSize: isSmall ? 68 : 76,
-    reviewActionSize: isSmall ? 16 : 18,
+    reviewPhotoSize: isSmall ? 88 : 100,
+    reviewPhotoWidth: isSmall ? 96 : 111,
+    reviewPhotoHeight: isSmall ? 114 : 132,
+    reviewActionSize: isSmall ? 13 : 14,
+  };
+
+  const wallet = {
+    cardMinHeight: isSmall ? 116 : 132,
+    balanceFontSize: isSmall ? 30 : 34,
+    chipHeight: isSmall ? 30 : 34,
   };
 
   const cart = {
@@ -77,8 +80,6 @@ export function useResponsive() {
     itemImageSize: isSmall ? 68 : 76,
     qtyButtonWidth: isSmall ? 68 : 76,
     qtyButtonHeight: isSmall ? 28 : 32,
-    similarCardWidth: isSmall ? 120 : 132,
-    similarImageHeight: isSmall ? 80 : 90,
   };
 
   return {
@@ -92,6 +93,7 @@ export function useResponsive() {
     hp,
     horizontalPadding,
     home,
+    wallet,
     product,
     cart,
   };

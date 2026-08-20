@@ -54,6 +54,12 @@ export const CART_ACTIONS = {
   applyCouponSubtitle: 'Checkout offers and coupons',
 } as const;
 
+export const CART_SECTION_TITLES = {
+  yourCart: 'Your Cart',
+  itemSingular: 'item',
+  itemPlural: 'items',
+} as const;
+
 export const CART_RECOMMENDATIONS = {
   title: 'You might like this',
   viewAllLabel: 'View All',
@@ -87,7 +93,7 @@ export const CART_RECOMMENDATIONS = {
 
 export const CART_BILL_DATA = {
   title: 'Your Bill',
-  itemsTotalLabel: 'items total',
+  itemsTotalLabel: 'Items total',
   deliveryFeeLabel: 'Delivery fee',
   handlingFeeLabel: 'Handling fee',
   totalAmountLabel: 'Total amount',

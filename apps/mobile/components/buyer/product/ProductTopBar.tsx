@@ -4,7 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import cartIcon from '@/assets/icons/cart.png';
 import { HomeSearchBar } from '@/components/buyer/home';
-import { COLORS, SPACING, useResponsive } from '@/theme';
+import { COLORS, RADIUS, SPACING, useResponsive } from '@/theme';
 
 interface ProductTopBarProps {
   searchQuery: string;
@@ -22,7 +22,7 @@ export function ProductTopBar({
   onCartPress,
 }: ProductTopBarProps) {
   const insets = useSafeAreaInsets();
-  const { horizontalPadding, product } = useResponsive();
+  const { horizontalPadding, isTablet, product } = useResponsive();
 
   return (
     <View
@@ -34,7 +34,7 @@ export function ProductTopBar({
         },
       ]}
     >
-      <View style={styles.searchSlot}>
+      <View style={[styles.searchSlot, { borderRadius: isTablet ? RADIUS.lg : RADIUS.md }]}>
         <HomeSearchBar
           value={searchQuery}
           onChangeText={onSearchQueryChange}
@@ -75,6 +75,9 @@ const styles = StyleSheet.create({
 
   searchSlot: {
     flex: 1,
+    overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: COLORS.border,
   },
 
   cartButton: {

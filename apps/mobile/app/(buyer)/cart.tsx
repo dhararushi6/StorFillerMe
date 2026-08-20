@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
-import { router } from 'expo-router';
+import { router, useNavigation } from 'expo-router';
 
 import { AppIcon } from '@/components/common/AppIcon';
 import { AppText } from '@/components/common/AppText';
@@ -11,7 +11,7 @@ import {
   CartDeliveryHeader,
   CartItemCard,
 } from '@/components/buyer/cart';
-import { SimilarProductCard } from '@/components/buyer/product/SimilarProductCard';
+import { ProductDealCard } from '@/components/buyer/home';
 import {
   CART_ACTIONS,
   CART_BILL_DATA,
@@ -20,18 +20,37 @@ import {
   CART_FOOTER,
   CART_FREE_DELIVERY,
   CART_RECOMMENDATIONS,
+  CART_SECTION_TITLES,
   CART_WALLET_DATA,
   INITIAL_CART_ITEMS,
   type CartItem,
 } from '@/constants/cart';
-import { COLORS, FONT_FAMILY, RADIUS, SPACING, useResponsive } from '@/theme';
+import {
+  COLORS,
+  FONT_FAMILY,
+  FONT_SIZE,
+  LINE_HEIGHT,
+  RADIUS,
+  SIZES,
+  SPACING,
+  useResponsive,
+} from '@/theme';
 
 export default function BuyerCartScreen() {
+  const navigation = useNavigation();
   const [cartItems, setCartItems] = useState<CartItem[]>(INITIAL_CART_ITEMS);
   const scrollViewRef = useRef<ScrollView>(null);
   const billSectionY = useRef<number>(0);
 
   const { horizontalPadding } = useResponsive();
+
+  const handleBack = useCallback(() => {
+    if (navigation.canGoBack()) {
+      navigation.goBack();
+      return;
+    }
+    router.replace('/(buyer)/home');
+  }, [navigation]);
 
   const handleIncrement = useCallback((id: string) => {
     setCartItems((prev) =>
@@ -85,7 +104,7 @@ export default function BuyerCartScreen() {
   }, []);
 
   const handleContinue = useCallback(() => {
-    router.push('/(buyer)/checkout');
+    router.push('/(buyer)/add-balance');
   }, []);
 
   const handleViewBillDetails = useCallback(() => {
@@ -114,7 +133,7 @@ export default function BuyerCartScreen() {
         title={CART_DELIVERY_ADDRESS.title}
         highlight={CART_DELIVERY_ADDRESS.highlight}
         address={CART_DELIVERY_ADDRESS.address}
-        onBackPress={() => router.back()}
+        onBackPress={handleBack}
         onSearchPress={() => router.push('/(buyer)/category')}
       />
 
@@ -164,11 +183,14 @@ export default function BuyerCartScreen() {
         {/* Your Cart Header */}
         <View style={styles.cartSectionHeader}>
           <AppText variant="subheading" color="primary" style={styles.boldText}>
-            Your Cart
+            {CART_SECTION_TITLES.yourCart}
           </AppText>
 
           <AppText variant="caption" style={styles.itemCountText}>
-            {totalItemCount} {totalItemCount === 1 ? 'item' : 'items'}
+            {totalItemCount}{' '}
+            {totalItemCount === 1
+              ? CART_SECTION_TITLES.itemSingular
+              : CART_SECTION_TITLES.itemPlural}
           </AppText>
         </View>
 
@@ -202,7 +224,7 @@ export default function BuyerCartScreen() {
         <Pressable
           accessibilityRole="button"
           accessibilityLabel={`${CART_ACTIONS.applyCouponTitle}, ${CART_ACTIONS.applyCouponSubtitle}`}
-          onPress={() => {}}
+          onPress={() => router.push('/(buyer)/apply-coupon')}
           style={({ pressed }) => [styles.couponCard, pressed && styles.pressed]}
         >
           <View style={styles.couponContent}>
@@ -230,7 +252,7 @@ export default function BuyerCartScreen() {
               hitSlop={6}
               onPress={handleAddMoreItems}
             >
-              <AppText variant="caption" color="secondary" style={styles.viewAllText}>
+              <AppText variant="caption" style={styles.viewAllText}>
                 {CART_RECOMMENDATIONS.viewAllLabel}
               </AppText>
             </Pressable>
@@ -242,7 +264,7 @@ export default function BuyerCartScreen() {
             contentContainerStyle={styles.recommendationsList}
           >
             {CART_RECOMMENDATIONS.products.map((item) => (
-              <SimilarProductCard
+              <ProductDealCard
                 key={item.id}
                 name={item.name}
                 unit={item.unit}
@@ -289,7 +311,7 @@ export default function BuyerCartScreen() {
         totalAmount={totalAmount}
         viewBillDetailsLabel={CART_FOOTER.viewBillDetailsLabel}
         continueLabel={CART_FOOTER.continueLabel}
-        onAddBalancePress={() => router.push('/(buyer)/profile')}
+        onAddBalancePress={() => router.push('/(buyer)/add-balance')}
         onViewBillDetailsPress={handleViewBillDetails}
         onContinuePress={handleContinue}
       />
@@ -372,12 +394,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: COLORS.orange.light,
+    backgroundColor: COLORS.cart.couponCard,
     borderWidth: 1,
-    borderColor: COLORS.orange.lightActive,
-    borderRadius: RADIUS.lg,
-    paddingHorizontal: SPACING.lg,
-    paddingVertical: SPACING.md,
+    borderColor: COLORS.orange.normal,
+    borderRadius: RADIUS.md,
+    minHeight: SIZES.buttonHeight,
+    paddingHorizontal: SPACING.md,
+    paddingVertical: SPACING.xs,
     marginVertical: SPACING.sm,
   },
 
@@ -386,11 +409,12 @@ const styles = StyleSheet.create({
   },
 
   couponSubtitle: {
-    marginTop: SPACING.xs / 2,
+    fontSize: FONT_SIZE.xs,
+    lineHeight: LINE_HEIGHT.xs,
   },
 
   recommendationsCard: {
-    backgroundColor: COLORS.orange.lightActive,
+    backgroundColor: COLORS.cart.recommendations,
     borderRadius: RADIUS.xl,
     padding: SPACING.md,
     marginVertical: SPACING.md,
@@ -405,6 +429,7 @@ const styles = StyleSheet.create({
 
   viewAllText: {
     fontFamily: FONT_FAMILY.medium,
+    color: COLORS.white,
   },
 
   recommendationsList: {

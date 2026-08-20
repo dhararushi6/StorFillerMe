@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pressable, StyleSheet } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 
 import { AppIcon } from '@/components/common/AppIcon';
 import { AppText } from '@/components/common/AppText';
@@ -7,39 +7,54 @@ import { COLORS, FONT_FAMILY, RADIUS, SPACING, useResponsive } from '@/theme';
 
 interface ProductDetailRowProps {
   label: string;
-  onPress?: () => void;
+  expanded?: boolean;
+  onToggle?: () => void;
+  children?: React.ReactNode;
 }
 
-export function ProductDetailRow({ label, onPress }: ProductDetailRowProps) {
+export function ProductDetailRow({
+  label,
+  expanded = false,
+  onToggle,
+  children,
+}: ProductDetailRowProps) {
   const { product } = useResponsive();
 
-  return (
-    <Pressable
-      style={({ pressed }) => [
-        styles.row,
-        {
-          minHeight: product.detailRowHeight,
-        },
-        pressed && styles.pressed,
-      ]}
-      onPress={onPress}
-      accessibilityRole="button"
-      accessibilityLabel={label}
-    >
-      <AppText variant="bodyMedium" color="primary" style={styles.label}>
-        {label}
-      </AppText>
+  const hasContent = expanded && React.Children.count(children) > 0;
 
-      <AppIcon name="chevronRight" size="md" color={COLORS.text.primary} />
-    </Pressable>
+  return (
+    <View style={styles.card}>
+      <Pressable
+        style={({ pressed }) => [
+          styles.header,
+          {
+            minHeight: product.detailRowHeight,
+          },
+          pressed && styles.pressed,
+        ]}
+        onPress={onToggle}
+        accessibilityRole="button"
+        accessibilityState={{ expanded }}
+        accessibilityLabel={label}
+      >
+        <AppText variant="bodyMedium" color="primary" style={styles.label}>
+          {label}
+        </AppText>
+
+        <AppIcon
+          name={expanded ? 'chevronDown' : 'chevronRight'}
+          size="md"
+          color={COLORS.text.primary}
+        />
+      </Pressable>
+
+      {hasContent && <View style={styles.body}>{children}</View>}
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+  card: {
     paddingHorizontal: SPACING.md,
     borderWidth: 1,
     borderColor: COLORS.border,
@@ -47,8 +62,20 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.surface,
   },
 
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: SPACING.md,
+  },
+
   label: {
     fontFamily: FONT_FAMILY.medium,
+  },
+
+  body: {
+    gap: SPACING.md,
+    paddingBottom: SPACING.md,
   },
 
   pressed: {

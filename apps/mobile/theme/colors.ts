@@ -36,6 +36,8 @@ export const COLORS = {
     darker: '#565551',
   },
 
+  header: '#FFF1CB',
+
   background: '#F6F2E7',
 
   surface: '#FFFFFF',
@@ -52,6 +54,15 @@ export const COLORS = {
   deal: {
     card: '#FFF1CC',
     inner: '#CC5D281A',
+  },
+
+  cart: {
+    billCalculation: '#EFCDBC99',
+    billHeader: '#FAE2BB',
+    cancellation: '#FAE2BB',
+    walletBar: '#FAE2BB',
+    couponCard: '#CC5D281A',
+    recommendations: '#E9A37B',
   },
 
   green: {

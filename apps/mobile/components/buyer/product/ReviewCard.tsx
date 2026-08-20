@@ -63,8 +63,8 @@ export function ReviewCard({
           style={[
             styles.photo,
             {
-              width: product.reviewPhotoSize,
-              height: product.reviewPhotoSize,
+              width: product.reviewPhotoWidth,
+              height: product.reviewPhotoHeight,
             },
           ]}
           resizeMode="cover"
@@ -150,6 +150,6 @@ const styles = StyleSheet.create({
   feedbackActions: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: SPACING.lg,
+    gap: SPACING.sm,
   },
 });
