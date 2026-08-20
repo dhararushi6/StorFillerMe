@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { router } from 'expo-router';
-
+import { BuyerBottomBar } from '@/components/buyer/navigation/BuyerBottomBar';
 import { AppText } from '@/components/common/AppText';
 import {
   CategorySection,
@@ -58,7 +58,17 @@ export default function BuyerHomeScreen() {
   const handleSearchPress = useCallback(() => {
     router.push('/(buyer)/category');
   }, []);
+  const handleHomePress = useCallback(() => {
+    // Already on Home.
+  }, []);
 
+  const handleCategoriesPress = useCallback(() => {
+    router.push('/(buyer)/category');
+  }, []);
+
+  const handleProfilePress = useCallback(() => {
+    router.push('/(buyer)/profile');
+  }, []);
   const handlePromoPress = useCallback(() => {
     // Product/category destination can be wired when the catalog route is finalized.
   }, []);
@@ -367,6 +377,12 @@ export default function BuyerHomeScreen() {
           <View style={styles.bottomSpacing} />
         </View>
       </ScrollView>
+      <BuyerBottomBar
+        activeTab="home"
+        onHomePress={handleHomePress}
+        onCategoriesPress={handleCategoriesPress}
+        onProfilePress={handleProfilePress}
+      />
     </View>
   );
 }
