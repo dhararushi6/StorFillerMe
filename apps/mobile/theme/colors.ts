@@ -18,6 +18,7 @@ export const COLORS = {
     banner: '#EFA980',
     showcase: '#FECA7A',
     card: '#FAE2BB',
+    bottomBar: '#FAE2BB',
   },
 
   yellow: {
