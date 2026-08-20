@@ -68,7 +68,7 @@ export function CartDeliveryHeader({
       </View>
 
       <View style={styles.addressContainer}>
-        <AppText variant="caption" color="secondary" numberOfLines={2} style={styles.addressText}>
+        <AppText variant="caption" color="primary" numberOfLines={2} style={styles.addressText}>
           {address}
         </AppText>
       </View>

@@ -33,11 +33,11 @@ export function WalletNote({ title, points, termsLabel, onTermsPress }: WalletNo
       <View style={styles.points}>
         {points.map((point) => (
           <View key={point} style={styles.pointRow}>
-            <AppText variant="caption" color="secondary" style={styles.bullet}>
+            <AppText variant="caption" color="primary" style={styles.bullet}>
               •
             </AppText>
 
-            <AppText variant="caption" color="secondary" style={styles.pointText}>
+            <AppText variant="caption" color="primary" style={styles.pointText}>
               {point}
             </AppText>
           </View>
@@ -51,7 +51,7 @@ export function WalletNote({ title, points, termsLabel, onTermsPress }: WalletNo
         hitSlop={8}
         style={styles.terms}
       >
-        <AppText variant="caption" color="secondary" style={styles.termsLabel}>
+        <AppText variant="caption" color="primary" style={styles.termsLabel}>
           {termsLabel}
         </AppText>
       </Pressable>
@@ -107,7 +107,6 @@ const styles = StyleSheet.create({
 
   termsLabel: {
     fontSize: FONT_SIZE.sm,
-    color: COLORS.text.secondary,
     textDecorationLine: 'underline',
   },
 });

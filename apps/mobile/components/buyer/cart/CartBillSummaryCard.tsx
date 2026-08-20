@@ -100,7 +100,7 @@ export function CartBillSummaryCard({
         <AppText variant="bodyMedium" color="primary" style={styles.cancellationTitle}>
           {cancellationTitle}
         </AppText>
-        <AppText variant="caption" color="secondary" style={styles.cancellationDescription}>
+        <AppText variant="caption" color="primary" style={styles.cancellationDescription}>
           {cancellationDescription}
         </AppText>
       </View>

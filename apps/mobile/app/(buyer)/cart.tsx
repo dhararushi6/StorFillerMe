@@ -154,7 +154,7 @@ export default function BuyerCartScreen() {
           </View>
 
           <View style={styles.freeDeliverySubRow}>
-            <AppText variant="caption" color="secondary">
+            <AppText variant="caption" color="primary">
               {CART_FREE_DELIVERY.prefixText}
               <AppText variant="caption" style={styles.greenAmountText}>
                 ₹ {CART_FREE_DELIVERY.thresholdAmount}{' '}

@@ -72,6 +72,7 @@ export const COLORS = {
   },
 
   border: '#E5DED2',
+  borderStrong: '#6A6A6A',
 
   success: '#1EA836',
   successLight: '#DDF7D0',
