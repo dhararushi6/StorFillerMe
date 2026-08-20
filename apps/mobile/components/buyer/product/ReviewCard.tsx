@@ -1,11 +1,11 @@
 import React from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
-import Ionicons from '@expo/vector-icons/Ionicons';
 
+import thumbsDownIcon from '@/assets/icons/thumbs-down-review.png';
+import thumbsUpIcon from '@/assets/icons/thumbs-up-review.png';
 import { AppIcon } from '@/components/common/AppIcon';
 import { AppText } from '@/components/common/AppText';
 import { COLORS, FONT_FAMILY, RADIUS, SPACING, useResponsive } from '@/theme';
-import { ICONS } from '@/constants/icons';
 
 import { RatingStars } from './RatingStars';
 
@@ -83,10 +83,13 @@ export function ReviewCard({
             accessibilityLabel="Mark review as helpful"
             hitSlop={8}
           >
-            <Ionicons
-              name={ICONS.thumbsUp as React.ComponentProps<typeof Ionicons>['name']}
-              size={product.reviewActionSize}
-              color={COLORS.orange.normal}
+            <Image
+              source={thumbsUpIcon}
+              style={{
+                width: product.reviewActionSize,
+                height: product.reviewActionSize,
+              }}
+              resizeMode="contain"
             />
           </Pressable>
 
@@ -96,10 +99,13 @@ export function ReviewCard({
             accessibilityLabel="Mark review as not helpful"
             hitSlop={8}
           >
-            <Ionicons
-              name={ICONS.thumbsDown as React.ComponentProps<typeof Ionicons>['name']}
-              size={product.reviewActionSize}
-              color={COLORS.orange.normal}
+            <Image
+              source={thumbsDownIcon}
+              style={{
+                width: product.reviewActionSize,
+                height: product.reviewActionSize,
+              }}
+              resizeMode="contain"
             />
           </Pressable>
         </View>

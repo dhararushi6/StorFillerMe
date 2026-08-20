@@ -66,13 +66,14 @@ export const COLORS = {
   },
 
   green: {
-    light: '#56973F1A',
+    light: '#DDF7D0',
+    normal: '#1EA836',
   },
 
   border: '#E5DED2',
 
-  success: '#3A9D23',
-  successLight: '#E9F6E4',
+  success: '#1EA836',
+  successLight: '#DDF7D0',
   warning: '#F2A900',
   danger: '#D64545',
 

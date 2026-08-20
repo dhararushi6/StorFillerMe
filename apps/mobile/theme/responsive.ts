@@ -45,7 +45,7 @@ export function useResponsive() {
   const product = {
     cartIconSize: isSmall ? 21 : 22,
 
-    galleryHeight: isSmall ? 252 : 288,
+    galleryHeight: isSmall ? 260 : 295,
     galleryImageWidth: isSmall ? 62 : 66,
     paginationDotSize: isSmall ? 5 : 6,
     paginationActiveDotWidth: isSmall ? 16 : 18,
@@ -65,7 +65,7 @@ export function useResponsive() {
     reviewPhotoSize: isSmall ? 88 : 100,
     reviewPhotoWidth: isSmall ? 96 : 111,
     reviewPhotoHeight: isSmall ? 114 : 132,
-    reviewActionSize: isSmall ? 13 : 14,
+    reviewActionSize: isSmall ? 18 : 20,
   };
 
   const wallet = {

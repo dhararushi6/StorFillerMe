@@ -1,7 +1,8 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
+import starIcon from '@/assets/icons/star.png';
 import { COLORS, SPACING } from '@/theme';
 import { ICONS } from '@/constants/icons';
 
@@ -23,12 +24,18 @@ export function RatingStars({ rating, size, color = COLORS.rating }: RatingStars
       {Array.from({ length: TOTAL_STARS }, (_, index) => {
         const starValue = index + 1;
 
-        const iconName =
-          rating >= starValue
-            ? ICONS.star
-            : rating >= starValue - 0.5
-              ? ICONS.starHalf
-              : ICONS.starOutline;
+        if (rating >= starValue) {
+          return (
+            <Image
+              key={starValue}
+              source={starIcon}
+              style={{ width: size, height: size }}
+              resizeMode="contain"
+            />
+          );
+        }
+
+        const iconName = rating >= starValue - 0.5 ? ICONS.starHalf : ICONS.starOutline;
 
         return (
           <Ionicons

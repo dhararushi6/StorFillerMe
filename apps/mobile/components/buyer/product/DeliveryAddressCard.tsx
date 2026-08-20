@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
   },
 
   deliveryText: {
-    fontFamily: FONT_FAMILY.bold,
+    fontFamily: FONT_FAMILY.semiBold,
     color: COLORS.success,
     textAlign: 'center',
     fontSize: 12,

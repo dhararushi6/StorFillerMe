@@ -113,7 +113,7 @@ export function ProductGallery({ images, expiryLabel }: ProductGalleryProps) {
 const styles = StyleSheet.create({
   gallery: {
     overflow: 'hidden',
-    backgroundColor: 'transparent',
+    backgroundColor: COLORS.orange.card,
     borderRadius: RADIUS.lg,
   },
 

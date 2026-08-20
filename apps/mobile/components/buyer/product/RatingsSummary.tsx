@@ -1,7 +1,7 @@
 import React from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Image, Pressable, StyleSheet, View } from 'react-native';
 
-import { AppIcon } from '@/components/common/AppIcon';
+import starIcon from '@/assets/icons/star.png';
 import { AppText } from '@/components/common/AppText';
 import { COLORS, RADIUS, SPACING, useResponsive } from '@/theme';
 
@@ -36,7 +36,14 @@ export function RatingsSummary({
           {value}
         </AppText>
 
-        <AppIcon name="star" size="sm" color={COLORS.rating} />
+        <Image
+          source={starIcon}
+          style={{
+            width: product.starSize + 3,
+            height: product.starSize + 3,
+          }}
+          resizeMode="contain"
+        />
 
         <View style={styles.badge}>
           <AppText variant="caption" style={styles.badgeText}>
