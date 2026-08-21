@@ -239,9 +239,16 @@ export default function BuyerCartScreen() {
           <AppIcon name="chevronRight" size="md" color={COLORS.text.primary} />
         </Pressable>
 
-        {/* Recommendations Section */}
-        <View style={styles.recommendationsCard}>
-          <View style={styles.recommendationsHeader}>
+        {/* Recommendations Section (Full Width) */}
+        <View
+          style={[
+            styles.recommendationsCard,
+            {
+              marginHorizontal: -horizontalPadding,
+            },
+          ]}
+        >
+          <View style={[styles.recommendationsHeader, { paddingHorizontal: horizontalPadding }]}>
             <AppText variant="subheading" color="primary" style={styles.boldText}>
               {CART_RECOMMENDATIONS.title}
             </AppText>
@@ -261,7 +268,10 @@ export default function BuyerCartScreen() {
           <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.recommendationsList}
+            contentContainerStyle={[
+              styles.recommendationsList,
+              { paddingHorizontal: horizontalPadding },
+            ]}
           >
             {CART_RECOMMENDATIONS.products.map((item) => (
               <ProductDealCard
@@ -415,8 +425,7 @@ const styles = StyleSheet.create({
 
   recommendationsCard: {
     backgroundColor: COLORS.cart.recommendations,
-    borderRadius: RADIUS.xl,
-    padding: SPACING.md,
+    paddingVertical: SPACING.md,
     marginVertical: SPACING.md,
   },
 

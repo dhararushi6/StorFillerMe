@@ -66,6 +66,13 @@ export const COLORS = {
     recommendations: '#E9A37B',
   },
 
+  payment: {
+    amountBanner: '#D8E6FD',
+    amountText: '#2563EB',
+    card: '#FFF1CB',
+    dashedBorder: '#D4C5A9',
+  },
+
   green: {
     light: '#DDF7D0',
     normal: '#1EA836',

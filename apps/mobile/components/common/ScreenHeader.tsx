@@ -11,9 +11,15 @@ interface ScreenHeaderProps {
   title: string;
   fallbackRoute?: string;
   onBackPress?: () => void;
+  rightElement?: React.ReactNode;
 }
 
-export function ScreenHeader({ title, fallbackRoute, onBackPress }: ScreenHeaderProps) {
+export function ScreenHeader({
+  title,
+  fallbackRoute,
+  onBackPress,
+  rightElement,
+}: ScreenHeaderProps) {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation();
   const { horizontalPadding } = useResponsive();
@@ -46,18 +52,22 @@ export function ScreenHeader({ title, fallbackRoute, onBackPress }: ScreenHeader
         },
       ]}
     >
-      <Pressable
-        onPress={handleBack}
-        accessibilityRole="button"
-        accessibilityLabel="Go back"
-        hitSlop={8}
-      >
-        <AppIcon name="back" size="lg" color={COLORS.text.primary} />
-      </Pressable>
+      <View style={styles.leftGroup}>
+        <Pressable
+          onPress={handleBack}
+          accessibilityRole="button"
+          accessibilityLabel="Go back"
+          hitSlop={8}
+        >
+          <AppIcon name="back" size="lg" color={COLORS.text.primary} />
+        </Pressable>
 
-      <AppText variant="bodyMedium" color="primary" style={styles.title}>
-        {title}
-      </AppText>
+        <AppText variant="bodyMedium" color="primary" style={styles.title}>
+          {title}
+        </AppText>
+      </View>
+
+      {rightElement !== undefined && <View style={styles.rightGroup}>{rightElement}</View>}
     </View>
   );
 }
@@ -67,11 +77,22 @@ const styles = StyleSheet.create({
     minHeight: SIZES.headerLargeHeight,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: SPACING.md,
+    justifyContent: 'space-between',
     paddingBottom: SPACING.lg,
     backgroundColor: COLORS.header,
     borderBottomLeftRadius: RADIUS.header,
     borderBottomRightRadius: RADIUS.header,
+  },
+
+  leftGroup: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: SPACING.md,
+  },
+
+  rightGroup: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 
   title: {

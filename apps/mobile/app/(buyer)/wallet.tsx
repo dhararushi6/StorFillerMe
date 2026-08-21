@@ -3,28 +3,20 @@ import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 
-import { ScreenHeader } from '@/components/common/ScreenHeader';
-import { AppText } from '@/components/common/AppText';
-import { AppButton } from '@/components/ui/AppButton';
 import {
   WalletBalanceCard,
   WalletHelpModal,
-  WalletNote,
-  WalletQuickAdd,
+  WalletRecentTransactions,
 } from '@/components/buyer/wallet';
-import {
-  WALLET_BALANCE,
-  WALLET_NOTE,
-  WALLET_QUICK_ADD_OPTIONS,
-  WALLET_SCREEN,
-} from '@/constants/wallet';
+import { ScreenHeader } from '@/components/common/ScreenHeader';
+import { AppText } from '@/components/common/AppText';
+import { AppButton } from '@/components/ui/AppButton';
+import { MY_WALLET_SCREEN, WALLET_BALANCE, WALLET_TRANSACTIONS } from '@/constants/wallet';
 import { COLORS, FONT_FAMILY, FONT_SIZE, RADIUS, SPACING, useResponsive } from '@/theme';
 
-export default function BuyerAddBalanceScreen() {
+export default function BuyerWalletScreen() {
   const insets = useSafeAreaInsets();
   const { horizontalPadding } = useResponsive();
-
-  const [selectedOptionId, setSelectedOptionId] = useState<string>(WALLET_QUICK_ADD_OPTIONS[0].id);
   const [isHelpVisible, setIsHelpVisible] = useState(false);
 
   const handleHelpPress = useCallback(() => {
@@ -45,18 +37,13 @@ export default function BuyerAddBalanceScreen() {
     router.push('/(buyer)/support');
   }, []);
 
-  const handleTermsPress = useCallback(() => {
-    router.push('/(buyer)/terms-and-conditions');
+  const handleAddBalance = useCallback(() => {
+    router.push('/(buyer)/add-balance');
   }, []);
 
-  const handleAddToWallet = useCallback(() => {
-    const selectedOption = WALLET_QUICK_ADD_OPTIONS.find((opt) => opt.id === selectedOptionId);
-    const amount = selectedOption ? selectedOption.amount : 500;
-    router.push({
-      pathname: '/(buyer)/payment',
-      params: { amount: amount.toString() },
-    });
-  }, [selectedOptionId]);
+  const handleViewAllTransactions = useCallback(() => {
+    // Navigate to full transaction history or expand view
+  }, []);
 
   const sidePadding = {
     paddingHorizontal: horizontalPadding,
@@ -66,12 +53,12 @@ export default function BuyerAddBalanceScreen() {
     <Pressable
       onPress={handleHelpPress}
       accessibilityRole="button"
-      accessibilityLabel={WALLET_SCREEN.helpLabel}
+      accessibilityLabel={MY_WALLET_SCREEN.helpLabel}
       hitSlop={8}
       style={({ pressed }) => [styles.helpButton, pressed && styles.pressed]}
     >
       <AppText variant="caption" color="primary" style={styles.helpText}>
-        {WALLET_SCREEN.helpLabel}
+        {MY_WALLET_SCREEN.helpLabel}
       </AppText>
     </Pressable>
   );
@@ -79,8 +66,8 @@ export default function BuyerAddBalanceScreen() {
   return (
     <View style={styles.screen}>
       <ScreenHeader
-        title={WALLET_SCREEN.title}
-        fallbackRoute="/(buyer)/wallet"
+        title={MY_WALLET_SCREEN.title}
+        fallbackRoute="/(buyer)/home"
         rightElement={helpButton}
       />
 
@@ -89,27 +76,18 @@ export default function BuyerAddBalanceScreen() {
         contentContainerStyle={[styles.scrollContent, sidePadding]}
       >
         <WalletBalanceCard
-          title={WALLET_SCREEN.cardTitle}
-          statusLabel={WALLET_SCREEN.statusLabel}
-          currentBalanceLabel={WALLET_SCREEN.currentBalanceLabel}
+          title={MY_WALLET_SCREEN.cardTitle}
+          statusLabel={MY_WALLET_SCREEN.statusLabel}
+          currentBalanceLabel={MY_WALLET_SCREEN.currentBalanceLabel}
           balance={WALLET_BALANCE}
         />
 
         <View style={styles.section}>
-          <WalletQuickAdd
-            title={WALLET_SCREEN.quickAddTitle}
-            options={WALLET_QUICK_ADD_OPTIONS}
-            selectedId={selectedOptionId}
-            onSelect={setSelectedOptionId}
-          />
-        </View>
-
-        <View style={styles.section}>
-          <WalletNote
-            title={WALLET_NOTE.title}
-            points={WALLET_NOTE.points}
-            termsLabel={WALLET_NOTE.termsLabel}
-            onTermsPress={handleTermsPress}
+          <WalletRecentTransactions
+            title={MY_WALLET_SCREEN.recentTransactionsTitle}
+            viewAllLabel={MY_WALLET_SCREEN.viewAllLabel}
+            transactions={WALLET_TRANSACTIONS}
+            onViewAllPress={handleViewAllTransactions}
           />
         </View>
       </ScrollView>
@@ -123,7 +101,7 @@ export default function BuyerAddBalanceScreen() {
           },
         ]}
       >
-        <AppButton title={WALLET_SCREEN.submitLabel} onPress={handleAddToWallet} />
+        <AppButton title={MY_WALLET_SCREEN.addToWalletLabel} onPress={handleAddBalance} />
       </View>
 
       <WalletHelpModal
@@ -160,10 +138,11 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     paddingTop: SPACING.lg,
     paddingBottom: SPACING.xxl,
+    gap: SPACING.xl,
   },
 
   section: {
-    marginTop: SPACING.xl,
+    gap: SPACING.md,
   },
 
   footer: {

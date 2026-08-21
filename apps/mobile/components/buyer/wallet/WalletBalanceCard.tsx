@@ -63,7 +63,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     padding: SPACING.lg,
     backgroundColor: COLORS.orange.dark,
-    borderRadius: RADIUS.lg,
+    borderRadius: RADIUS.xxl,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.1)',
   },
 
   topRow: {

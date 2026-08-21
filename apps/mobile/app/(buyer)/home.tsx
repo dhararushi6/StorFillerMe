@@ -86,7 +86,7 @@ export default function BuyerHomeScreen() {
           <HomeHeader
             location="Kolar, Karnataka"
             walletBalance={500}
-            onWalletPress={() => router.push('/(buyer)/profile')}
+            onWalletPress={() => router.push('/(buyer)/wallet')}
             onCartPress={() => router.push('/(buyer)/cart')}
           />
 
