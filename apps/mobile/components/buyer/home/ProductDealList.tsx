@@ -14,7 +14,7 @@ export interface ProductDealItem {
 }
 
 interface ProductDealListProps {
-  products: ProductDealItem[];
+  products: readonly ProductDealItem[];
   horizontalPadding?: number;
   onProductPress?: (productId: string) => void;
   onAddPress?: (productId: string) => void;

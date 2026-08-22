@@ -18,6 +18,7 @@ export const COLORS = {
     banner: '#EFA980',
     showcase: '#FECA7A',
     card: '#FAE2BB',
+    bottomBar: '#FAE2BB',
   },
 
   yellow: {
@@ -35,6 +36,8 @@ export const COLORS = {
 
     darker: '#565551',
   },
+
+  header: '#FFF1CB',
 
   background: '#F6F2E7',
 
@@ -54,15 +57,38 @@ export const COLORS = {
     inner: '#CC5D281A',
   },
 
+  cart: {
+    billCalculation: '#EFCDBC99',
+    billHeader: '#FAE2BB',
+    cancellation: '#FAE2BB',
+    walletBar: '#FAE2BB',
+    couponCard: '#CC5D281A',
+    recommendations: '#E9A37B',
+  },
+
+  payment: {
+    amountBanner: '#D8E6FD',
+    amountText: '#2563EB',
+    card: '#FFF1CB',
+    dashedBorder: '#D4C5A9',
+  },
+
   green: {
-    light: '#56973F1A',
+    light: '#DDF7D0',
+    normal: '#1EA836',
   },
 
   border: '#E5DED2',
+  borderStrong: '#6A6A6A',
 
-  success: '#3A9D23',
+  success: '#1EA836',
+  successLight: '#DDF7D0',
   warning: '#F2A900',
   danger: '#D64545',
+
+  rating: '#F2A900',
+
+  overlay: 'rgba(17, 17, 17, 0.55)',
 
   white: '#FFFFFF',
   black: '#000000',

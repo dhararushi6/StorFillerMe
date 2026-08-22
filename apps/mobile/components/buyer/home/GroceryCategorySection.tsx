@@ -24,7 +24,7 @@ export function GroceryCategorySection({
 }: GroceryCategorySectionProps) {
   return (
     <View style={styles.container}>
-      <AppText variant="subtitle" style={styles.title}>
+      <AppText variant="subheading" style={styles.title}>
         {title}
       </AppText>
 

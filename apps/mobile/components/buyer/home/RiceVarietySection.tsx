@@ -14,8 +14,8 @@ export interface RiceVariety {
 
 interface RiceVarietySectionProps {
   title: string;
-  varieties: RiceVariety[];
-  products: ProductDealItem[];
+  varieties: readonly RiceVariety[];
+  products: readonly ProductDealItem[];
   weightLabel: string;
   exploreLabel: string;
   horizontalPadding: number;
@@ -52,7 +52,7 @@ export function RiceVarietySection({
     >
       {/* Header */}
       <View style={styles.header}>
-        <AppText variant="subtitle" color="primary" style={styles.title}>
+        <AppText variant="subheading" color="primary" style={styles.title}>
           {title}
         </AppText>
 
