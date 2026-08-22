@@ -14,7 +14,7 @@ const COLORS = {
 export default function SuccessScreen() {
   const handleGetStarted = () => {
     // Later this can navigate to the actual buyer/shop dashboard.
-    router.replace('/(buyer)');
+    router.replace('/(buyer)/home');
   };
 
   return (

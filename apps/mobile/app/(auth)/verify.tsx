@@ -85,7 +85,7 @@ export default function VerifyScreen() {
       return;
     }
 
-    router.push('/(auth)/shop-details');
+    router.push('/(auth)/shop-detail');
   };
 
   const formattedTimer = `00:${String(timer).padStart(2, '0')}`;
