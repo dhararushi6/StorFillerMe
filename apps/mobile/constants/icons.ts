@@ -21,6 +21,7 @@ export const ICONS = {
   more: 'ellipsis-vertical',
 
   location: 'location-outline',
+  locate: 'locate-outline', // Added for "Use current location" crosshair
   notification: 'notifications-outline',
   settings: 'settings-outline',
 
@@ -50,6 +51,9 @@ export const ICONS = {
 
   eye: 'eye-outline',
   eyeOff: 'eye-off-outline',
+
+  store: 'storefront-outline',
+  warehouse: 'business-outline',
 } as const;
 
 export type IconName = keyof typeof ICONS;

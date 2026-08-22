@@ -69,6 +69,12 @@ export default function BuyerHomeScreen() {
   const handleProfilePress = useCallback(() => {
     router.push('/(buyer)/profile');
   }, []);
+
+  // Navigate to Location / Saved Addresses screen
+  const handleLocationPress = useCallback(() => {
+    router.push('/(buyer)/location' as any);
+  }, []);
+
   const handlePromoPress = useCallback(() => {
     // Product/category destination can be wired when the catalog route is finalized.
   }, []);
@@ -86,6 +92,7 @@ export default function BuyerHomeScreen() {
           <HomeHeader
             location="Kolar, Karnataka"
             walletBalance={500}
+            onLocationPress={handleLocationPress}
             onWalletPress={() => router.push('/(buyer)/wallet')}
             onCartPress={() => router.push('/(buyer)/cart')}
           />
