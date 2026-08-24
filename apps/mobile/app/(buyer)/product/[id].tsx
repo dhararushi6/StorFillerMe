@@ -39,6 +39,23 @@ export default function BuyerProductScreen() {
   const [selectedQuantityId, setSelectedQuantityId] = useState<string>(
     PRODUCT_QUANTITY_OPTIONS[0].id,
   );
+  const selectedQuantity = useMemo(() => {
+    return (
+      PRODUCT_QUANTITY_OPTIONS.find((q) => q.id === selectedQuantityId) ||
+      PRODUCT_QUANTITY_OPTIONS[0]
+    );
+  }, [selectedQuantityId]);
+
+  const currentPrice = useMemo(() => {
+    return productDetail.price * selectedQuantity.multiplier;
+  }, [productDetail.price, selectedQuantity.multiplier]);
+
+  const currentOldPrice = useMemo(() => {
+    return productDetail.oldPrice
+      ? productDetail.oldPrice * selectedQuantity.multiplier
+      : undefined;
+  }, [productDetail.oldPrice, selectedQuantity.multiplier]);
+
   const [selectedRatingFilter, setSelectedRatingFilter] = useState<number>(
     PRODUCT_RATING_SUMMARY.selectedFilter,
   );
@@ -97,8 +114,8 @@ export default function BuyerProductScreen() {
                 name={productDetail.name}
                 rating={productDetail.rating}
                 reviewsLabel={productDetail.reviewsLabel}
-                price={productDetail.price}
-                oldPrice={productDetail.oldPrice}
+                price={currentPrice}
+                oldPrice={currentOldPrice}
                 isWishlisted={isWishlisted}
                 onWishlistPress={() => setIsWishlisted((wishlisted) => !wishlisted)}
               />
@@ -111,7 +128,7 @@ export default function BuyerProductScreen() {
           <View style={styles.section}>
             <QuantitySelector
               title={PRODUCT_SECTION_TITLES.quantity}
-              selectedLabel={productDetail.selectedQuantityLabel}
+              selectedLabel={selectedQuantity.label}
               options={PRODUCT_QUANTITY_OPTIONS}
               selectedId={selectedQuantityId}
               onSelect={setSelectedQuantityId}
