@@ -2,6 +2,7 @@ export const SIZES = {
   buttonHeight: 48,
   inputHeight: 48,
   smallButtonHeight: 40,
+  compactButtonHeight: 32,
 
   headerHeight: 56,
   headerLargeHeight: 107,

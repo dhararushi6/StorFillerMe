@@ -12,6 +12,10 @@ interface ScreenHeaderProps {
   fallbackRoute?: string;
   onBackPress?: () => void;
   rightElement?: React.ReactNode;
+
+  variant?: 'default' | 'orange';
+
+  bottomContent?: React.ReactNode;
 }
 
 export function ScreenHeader({
@@ -19,10 +23,14 @@ export function ScreenHeader({
   fallbackRoute,
   onBackPress,
   rightElement,
+  variant = 'default',
+  bottomContent,
 }: ScreenHeaderProps) {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation();
   const { horizontalPadding } = useResponsive();
+
+  const isOrange = variant === 'orange';
 
   const handleBack = useCallback(() => {
     if (onBackPress !== undefined) {
@@ -37,37 +45,48 @@ export function ScreenHeader({
 
     if (fallbackRoute !== undefined) {
       router.replace(fallbackRoute as Parameters<typeof router.replace>[0]);
-    } else {
-      router.replace('/(buyer)/home');
+      return;
     }
+
+    router.replace('/(buyer)/home');
   }, [fallbackRoute, navigation, onBackPress]);
 
   return (
     <View
       style={[
         styles.header,
+        isOrange && styles.orangeHeader,
         {
           paddingHorizontal: horizontalPadding,
           paddingTop: Math.max(insets.top, SPACING.md) + SPACING.sm,
         },
       ]}
     >
-      <View style={styles.leftGroup}>
-        <Pressable
-          onPress={handleBack}
-          accessibilityRole="button"
-          accessibilityLabel="Go back"
-          hitSlop={8}
-        >
-          <AppIcon name="back" size="lg" color={COLORS.text.primary} />
-        </Pressable>
+      <View style={styles.topRow}>
+        <View style={styles.leftGroup}>
+          <Pressable
+            onPress={handleBack}
+            accessibilityRole="button"
+            accessibilityLabel="Go back"
+            hitSlop={8}
+            style={styles.backButton}
+          >
+            <AppIcon name="back" size="lg" color={isOrange ? COLORS.white : COLORS.text.primary} />
+          </Pressable>
 
-        <AppText variant="bodyMedium" color="primary" style={styles.title}>
-          {title}
-        </AppText>
+          <AppText
+            variant="bodyMedium"
+            color={isOrange ? 'inverse' : 'primary'}
+            style={[styles.title, isOrange && styles.orangeTitle]}
+          >
+            {title}
+          </AppText>
+        </View>
+
+        {rightElement !== undefined && <View style={styles.rightGroup}>{rightElement}</View>}
       </View>
 
-      {rightElement !== undefined && <View style={styles.rightGroup}>{rightElement}</View>}
+      {bottomContent !== undefined && <View style={styles.bottomContent}>{bottomContent}</View>}
     </View>
   );
 }
@@ -75,13 +94,21 @@ export function ScreenHeader({
 const styles = StyleSheet.create({
   header: {
     minHeight: SIZES.headerLargeHeight,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingBottom: SPACING.lg,
     backgroundColor: COLORS.header,
     borderBottomLeftRadius: RADIUS.header,
     borderBottomRightRadius: RADIUS.header,
+    paddingBottom: SPACING.lg,
+  },
+
+  orangeHeader: {
+    backgroundColor: COLORS.orange.normal,
+  },
+
+  topRow: {
+    minHeight: SIZES.headerHeight,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
 
   leftGroup: {
@@ -90,13 +117,27 @@ const styles = StyleSheet.create({
     gap: SPACING.md,
   },
 
+  backButton: {
+    width: SIZES.iconLarge,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+  title: {
+    fontFamily: FONT_FAMILY.bold,
+    fontSize: FONT_SIZE.md,
+  },
+
+  orangeTitle: {
+    fontFamily: FONT_FAMILY.medium,
+  },
+
   rightGroup: {
     flexDirection: 'row',
     alignItems: 'center',
   },
 
-  title: {
-    fontFamily: FONT_FAMILY.bold,
-    fontSize: FONT_SIZE.lg,
+  bottomContent: {
+    marginTop: SPACING.sm,
   },
 });
