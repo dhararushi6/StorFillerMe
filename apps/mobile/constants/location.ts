@@ -4,6 +4,7 @@ export interface SavedAddressItem {
   address: string;
   isSelected?: boolean;
 }
+
 export const LOCATION_STRINGS = {
   headerTitle: 'Location',
   addNewAddress: 'Add New Address',
@@ -14,15 +15,28 @@ export const LOCATION_STRINGS = {
   deliveringYourOrderTo: 'DELIVERING YOUR ORDER TO',
   addAddressDetails: 'Add address details',
   routes: {
-    addAddress: '/add-address', // Update this path to match your actual file path in the app directory
+    addAddress: '/(buyer)/add-address',
+    location: '/(buyer)/location',
   },
 } as const;
 
-export const INITIAL_SAVED_ADDRESSES: SavedAddressItem[] = [
-  {
-    id: '1',
-    title: 'Jagadeesh shop',
-    address: 'Bangarpet, Kolar District, Karnataka, India',
+// Default address removed
+export const INITIAL_SAVED_ADDRESSES: SavedAddressItem[] = [];
+
+// Helper function to format and create a new address item
+export const createSavedAddress = (
+  title: string,
+  addressDetails: string,
+  landmark?: string,
+): SavedAddressItem => {
+  const formattedAddress = landmark?.trim()
+    ? `${addressDetails.trim()}, Near ${landmark.trim()}`
+    : addressDetails.trim();
+
+  return {
+    id: Date.now().toString(),
+    title: title.trim(),
+    address: formattedAddress,
     isSelected: true,
-  },
-];
+  };
+};

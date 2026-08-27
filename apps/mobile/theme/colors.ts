@@ -18,6 +18,9 @@ export const COLORS = {
     banner: '#EFA980',
     showcase: '#FECA7A',
     card: '#FAE2BB',
+    lightCard: '#F7DDB2',
+    typeUnselected: '#EFE3D5',
+    disabledButton: '#E3C1B0',
     bottomBar: '#FAE2BB',
   },
 
@@ -40,6 +43,7 @@ export const COLORS = {
   header: '#FFF1CB',
 
   background: '#F6F2E7',
+  backgroundSecondary: '#FAF6EE',
 
   surface: '#FFFFFF',
 
@@ -47,6 +51,10 @@ export const COLORS = {
     primary: '#111111',
     secondary: '#666666',
     muted: '#8A8A8A',
+
+    // Location title color
+    location: '#444444',
+
     inverse: '#FFFFFF',
     inverseSecondary: '#DDDDDD',
     danger: '#D64545',
@@ -79,6 +87,7 @@ export const COLORS = {
   },
 
   border: '#E5DED2',
+  borderDark: '#C8C4BC',
   borderStrong: '#6A6A6A',
 
   success: '#1EA836',

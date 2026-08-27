@@ -1,50 +1,48 @@
 import React, { useCallback, useState } from 'react';
-import { Pressable, StyleSheet, TextInput, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 
 import { AppIcon } from '@/components/common/AppIcon';
 import { AppText } from '@/components/common/AppText';
 import { AppButton } from '@/components/ui/AppButton';
+import { HomeSearchBar } from '../../components/buyer/home/HomeSearchBar';
 
-import { INITIAL_SAVED_ADDRESSES, LOCATION_STRINGS } from '@/constants/location';
+import { LOCATION_STRINGS } from '@/constants/location';
+import { useAddresses } from './AddressContext';
 
 import { COLORS } from '@/theme/colors';
-import { FONT_FAMILY, LINE_HEIGHT } from '@/theme/typography';
+import { FONT_FAMILY, FONT_SIZE, LINE_HEIGHT } from '@/theme/typography';
 import { RADIUS } from '@/theme/radius';
 import { SIZES } from '@/theme/sizes';
 import { SPACING } from '@/theme/spacing';
 import { useResponsive } from '@/theme/responsive';
-import { ICON_SIZES } from '@/theme/iconSizes';
 
 export default function BuyerAddAddressMapScreen() {
   const { horizontalPadding } = useResponsive();
   const [searchQuery, setSearchQuery] = useState('');
 
-  const selectedAddress = INITIAL_SAVED_ADDRESSES[0];
+  // Access dynamic address state from context
+  const { selectedAddress, addresses } = useAddresses();
+  const currentAddress = selectedAddress || addresses[0];
 
-  // Navigate back to location screen
   const handleBack = useCallback(() => {
     router.push('/(buyer)/location' as any);
   }, []);
 
-  // Navigate to the form screen (add-address-form)
   const handleAddAddressDetails = useCallback(() => {
     router.push('/(buyer)/add-address-form' as any);
   }, []);
 
   return (
     <SafeAreaView edges={['top']} style={styles.screen}>
-      {/* SOLID PEACH HEADER BAR (#FAE2BB) */}
+      {/* SOLID PEACH HEADER BAR */}
       <View style={styles.headerContainer}>
         <View style={[styles.header, { paddingHorizontal: horizontalPadding }]}>
           <Pressable onPress={handleBack} hitSlop={SPACING.md}>
-            <AppIcon name="back" size={ICON_SIZES.md} color={COLORS.text.primary} />
+            <AppIcon name="back" size="md" color={COLORS.text.primary} />
           </Pressable>
-
-          <AppText style={styles.headerTitle} fontSize="lg">
-            {LOCATION_STRINGS.addAddressHeader}
-          </AppText>
+          <AppText style={styles.headerTitle}>{LOCATION_STRINGS.addAddressHeader}</AppText>
         </View>
       </View>
 
@@ -55,17 +53,13 @@ export default function BuyerAddAddressMapScreen() {
           style={[styles.searchContainer, { paddingHorizontal: horizontalPadding }]}
           pointerEvents="box-none"
         >
-          <View style={styles.searchBar} pointerEvents="auto">
-            <AppIcon name="search" size={ICON_SIZES.sm} color={COLORS.text.secondary} />
-            <TextInput
-              value={searchQuery}
-              onChangeText={setSearchQuery}
-              placeholder={LOCATION_STRINGS.searchPlaceholder}
-              placeholderTextColor={COLORS.text.secondary}
-              style={styles.searchInput}
-              returnKeyType="search"
-            />
-          </View>
+          <HomeSearchBar
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+            placeholder={LOCATION_STRINGS.searchPlaceholder}
+            onPress={() => {}}
+            onMicPress={() => {}}
+          />
         </View>
 
         {/* Bottom Stack: Current Location Badge + Delivery Card */}
@@ -73,32 +67,24 @@ export default function BuyerAddAddressMapScreen() {
           style={[styles.bottomStack, { paddingHorizontal: horizontalPadding }]}
           pointerEvents="box-none"
         >
-          {/* Current Location Badge */}
           <Pressable style={styles.currentLocationBadge} pointerEvents="auto">
-            <AppIcon name="locate" size={ICON_SIZES.md} color={COLORS.text.primary} />
-            <AppText style={styles.locationText} fontSize="sm">
-              {LOCATION_STRINGS.useCurrentLocation}
-            </AppText>
+            <AppIcon name="locate" size="md" color={COLORS.text.primary} />
+            <AppText style={styles.locationText}>{LOCATION_STRINGS.useCurrentLocation}</AppText>
           </Pressable>
 
-          {/* Delivery Card */}
           <View style={styles.addressCard} pointerEvents="auto">
-            <AppText style={styles.deliveryLabel} fontSize="xs" color={COLORS.text.secondary}>
-              {LOCATION_STRINGS.deliveringYourOrderTo}
-            </AppText>
+            <AppText style={styles.deliveryLabel}>{LOCATION_STRINGS.deliveringYourOrderTo}</AppText>
 
             <View style={styles.addressDetailsRow}>
               <View style={styles.pinIconBox}>
-                <AppIcon name="location" size={ICON_SIZES.md} color={COLORS.text.primary} />
+                <AppIcon name="location" size="md" color={COLORS.text.primary} />
               </View>
-
               <View style={styles.addressTextContainer}>
-                <AppText style={styles.shopTitle} fontSize="md" numberOfLines={1}>
-                  {selectedAddress.title}
+                <AppText style={styles.shopTitle} numberOfLines={1}>
+                  {currentAddress?.title || (currentAddress as any)?.shopName || 'Current Location'}
                 </AppText>
-
-                <AppText style={styles.addressText} fontSize="sm" color={COLORS.text.secondary}>
-                  {selectedAddress.address}
+                <AppText style={styles.addressText}>
+                  {currentAddress?.address || 'Select or add a new address'}
                 </AppText>
               </View>
             </View>
@@ -120,8 +106,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.orange.card,
   },
-
-  /* HEADER */
   headerContainer: {
     backgroundColor: COLORS.orange.card,
     paddingBottom: SPACING.xs,
@@ -136,16 +120,14 @@ const styles = StyleSheet.create({
   headerTitle: {
     flex: 1,
     fontFamily: FONT_FAMILY.semiBold,
+    fontSize: FONT_SIZE.lg,
+    color: COLORS.text.primary,
   },
-
-  /* MAP AREA */
   mapArea: {
     flex: 1,
     position: 'relative',
     backgroundColor: COLORS.yellow.normal,
   },
-
-  /* SEARCH BAR */
   searchContainer: {
     position: 'absolute',
     top: SPACING.md,
@@ -154,29 +136,6 @@ const styles = StyleSheet.create({
     zIndex: 10,
     elevation: 10,
   },
-  searchBar: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: SPACING.sm,
-    height: SIZES.inputHeight,
-    backgroundColor: COLORS.surface,
-    paddingHorizontal: SPACING.md,
-    borderRadius: RADIUS.md,
-    elevation: 4,
-    shadowColor: COLORS.black,
-    shadowOpacity: 0.1,
-    shadowRadius: SPACING.sm,
-    shadowOffset: { width: 0, height: SPACING.xs },
-  },
-  searchInput: {
-    flex: 1,
-    height: '100%',
-    padding: 0,
-    fontFamily: FONT_FAMILY.regular,
-    color: COLORS.text.primary,
-  },
-
-  /* BOTTOM STACK */
   bottomStack: {
     position: 'absolute',
     bottom: SPACING.xl,
@@ -187,8 +146,6 @@ const styles = StyleSheet.create({
     zIndex: 10,
     elevation: 10,
   },
-
-  /* CURRENT LOCATION BADGE */
   currentLocationBadge: {
     alignSelf: 'center',
     flexDirection: 'row',
@@ -199,34 +156,34 @@ const styles = StyleSheet.create({
     paddingVertical: SPACING.sm,
     borderRadius: RADIUS.pill,
     elevation: 3,
-    shadowColor: COLORS.black,
+    shadowColor: COLORS.text.primary,
     shadowOpacity: 0.1,
     shadowRadius: 4,
     shadowOffset: { width: 0, height: 2 },
   },
   locationText: {
     fontFamily: FONT_FAMILY.medium,
+    fontSize: FONT_SIZE.sm,
+    color: COLORS.text.primary,
   },
-
-  /* BOTTOM CARD */
   addressCard: {
     backgroundColor: COLORS.orange.card,
-    borderRadius: RADIUS.xxl,
+    borderRadius: RADIUS.xxl ?? RADIUS.lg,
     padding: SPACING.lg,
     gap: SPACING.md,
     elevation: 4,
-    shadowColor: COLORS.black,
+    shadowColor: COLORS.text.primary,
     shadowOpacity: 0.08,
     shadowRadius: SPACING.sm,
     shadowOffset: { width: 0, height: SPACING.xs },
   },
   deliveryLabel: {
     fontFamily: FONT_FAMILY.semiBold,
+    fontSize: FONT_SIZE.xs,
+    color: COLORS.text.secondary,
     letterSpacing: 0.6,
     textTransform: 'uppercase',
   },
-
-  /* ADDRESS */
   addressDetailsRow: {
     flexDirection: 'row',
     alignItems: 'flex-start',
@@ -241,19 +198,20 @@ const styles = StyleSheet.create({
   },
   shopTitle: {
     fontFamily: FONT_FAMILY.bold,
-    color: COLORS.orange.promoText,
+    fontSize: FONT_SIZE.md,
+    color: COLORS.orange.normal,
   },
   addressText: {
     fontFamily: FONT_FAMILY.regular,
+    fontSize: FONT_SIZE.sm,
+    color: COLORS.text.secondary,
     lineHeight: LINE_HEIGHT.md,
   },
-
-  /* BUTTON */
   actionButton: {
     alignSelf: 'stretch',
     backgroundColor: COLORS.orange.normal,
     borderRadius: RADIUS.pill,
-    height: SIZES.buttonHeight,
+    height: SIZES.buttonHeight ?? 52,
     marginTop: SPACING.sm,
   },
 });

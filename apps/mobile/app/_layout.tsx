@@ -6,6 +6,9 @@ import mediumFont from '@/assets/fonts/SchibstedGrotesk-Medium.ttf';
 import regularFont from '@/assets/fonts/SchibstedGrotesk-Regular.ttf';
 import semiBoldFont from '@/assets/fonts/SchibstedGrotesk-SemiBold.ttf';
 
+// Adjust path if AddressContext is located elsewhere (e.g. '@/app/(buyer)/AddressContext')
+import { AddressProvider } from '@/app/(buyer)/AddressContext';
+
 export default function RootLayout() {
   const [fontsLoaded] = useFonts({
     'SchibstedGrotesk-Regular': regularFont,
@@ -19,10 +22,12 @@ export default function RootLayout() {
   }
 
   return (
-    <Stack
-      screenOptions={{
-        headerShown: false,
-      }}
-    />
+    <AddressProvider>
+      <Stack
+        screenOptions={{
+          headerShown: false,
+        }}
+      />
+    </AddressProvider>
   );
 }

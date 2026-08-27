@@ -1,55 +1,73 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { router } from 'expo-router';
 
 import { AppIcon } from '@/components/common/AppIcon';
 import { AppText } from '@/components/common/AppText';
 
-import { INITIAL_SAVED_ADDRESSES, LOCATION_STRINGS, SavedAddressItem } from '@/constants/location';
+import { LOCATION_STRINGS } from '@/constants/location';
+// Fixed: Relative import to match your Explorer structure
+import { useAddresses, type Address } from './AddressContext';
 
 import { COLORS } from '@/theme/colors';
-import { FONT_FAMILY } from '@/theme/typography';
+import { FONT_FAMILY, FONT_SIZE } from '@/theme/typography';
 import { RADIUS } from '@/theme/radius';
 import { SPACING } from '@/theme/spacing';
 import { useResponsive } from '@/theme/responsive';
-import { ICON_SIZES } from '@/theme/iconSizes';
 
 export default function BuyerLocationScreen() {
   const { horizontalPadding } = useResponsive();
+  const { addresses, removeAddress, selectAddress } = useAddresses();
 
-  const [addresses, setAddresses] = useState<SavedAddressItem[]>(INITIAL_SAVED_ADDRESSES);
-
-  // Navigate back to home screen
   const handleBack = useCallback(() => {
     router.push('/(buyer)/home' as any);
   }, []);
 
-  // Navigate to Add Address Map screen
   const handleAddNewAddress = useCallback(() => {
     router.push('/(buyer)/add-address' as any);
   }, []);
 
-  const handleDeleteAddress = useCallback((id: string) => {
-    setAddresses((prev) => prev.filter((item) => item.id !== id));
-  }, []);
+  const handleDeleteAddress = useCallback(
+    (id: string) => {
+      removeAddress(id);
+    },
+    [removeAddress],
+  );
+
+  const handleSelectAddress = useCallback(
+    (id: string) => {
+      selectAddress(id);
+      router.push('/(buyer)/home' as any);
+    },
+    [selectAddress],
+  );
 
   return (
     <View style={styles.screen}>
-      {/* Translucent Backdrop */}
+      {/* BACKDROP */}
       <Pressable style={styles.backdrop} onPress={handleBack} />
 
-      {/* White Bottom Sheet */}
-      <View style={[styles.sheetContainer, { paddingHorizontal: horizontalPadding }]}>
-        {/* Header */}
+      {/* BOTTOM SHEET */}
+      <View
+        style={[
+          styles.sheetContainer,
+          {
+            paddingHorizontal: horizontalPadding,
+          },
+        ]}
+      >
+        {/* HEADER */}
         <View style={styles.header}>
           <View style={styles.headerLeft}>
             <Pressable onPress={handleBack} hitSlop={SPACING.md}>
-              <AppIcon name="back" size={ICON_SIZES.lg} color={COLORS.text.primary} />
+              <AppIcon name="back" size="lg" color={COLORS.text.primary} />
             </Pressable>
+
             <AppText style={styles.headerTitleText}>{LOCATION_STRINGS.headerTitle}</AppText>
           </View>
+
           <Pressable onPress={handleBack} hitSlop={SPACING.md}>
-            <AppIcon name="close" size={ICON_SIZES.lg} color={COLORS.text.primary} />
+            <AppIcon name="close" size="lg" color={COLORS.text.primary} />
           </Pressable>
         </View>
 
@@ -62,41 +80,48 @@ export default function BuyerLocationScreen() {
           <Pressable style={styles.addAddressRow} onPress={handleAddNewAddress}>
             <View style={styles.addAddressLeft}>
               <View style={styles.addIconBox}>
-                <AppIcon name="add" size={ICON_SIZES.sm} color={COLORS.text.primary} />
+                <AppIcon name="add" size="sm" color={COLORS.text.primary} />
               </View>
+
               <AppText style={styles.addAddressText}>{LOCATION_STRINGS.addNewAddress}</AppText>
             </View>
-            <AppIcon name="chevronRight" size={ICON_SIZES.md} color={COLORS.text.secondary} />
+
+            <AppIcon name="chevronRight" size="md" color={COLORS.text.secondary} />
           </Pressable>
 
           {/* SAVED ADDRESSES */}
-          <AppText style={styles.sectionHeading} fontSize="sm" color={COLORS.text.secondary}>
-            {LOCATION_STRINGS.savedAddresses}
-          </AppText>
+          <AppText style={styles.sectionHeading}>{LOCATION_STRINGS.savedAddresses}</AppText>
 
           {/* ADDRESS LIST */}
           <View style={styles.addressList}>
-            {addresses.map((item) => (
-              <View key={item.id} style={styles.addressCard}>
-                <View style={styles.cardLeft}>
-                  <View style={styles.pinIcon}>
-                    <AppIcon name="location" size={ICON_SIZES.md} color={COLORS.orange.normal} />
+            {addresses.map((item: Address) => (
+              <View
+                key={item.id}
+                style={[styles.addressCard, item.isSelected && styles.selectedAddressCard]}
+              >
+                <Pressable style={styles.cardLeft} onPress={() => handleSelectAddress(item.id)}>
+                  {/* LOCATION PIN */}
+                  <View style={styles.pinIconBox}>
+                    <AppIcon name="location" size="lg" color={COLORS.text.primary} />
                   </View>
+
+                  {/* ADDRESS DETAILS */}
                   <View style={styles.addressTextContainer}>
-                    <AppText style={styles.shopTitle} fontSize="md">
-                      {item.title}
-                    </AppText>
-                    <AppText style={styles.addressBody} fontSize="sm">
-                      {item.address}
-                    </AppText>
+                    {/* SHOP NAME */}
+                    <AppText style={styles.shopTitle}>{item.title}</AppText>
+
+                    {/* ADDRESS */}
+                    <AppText style={styles.addressBody}>{item.address}</AppText>
                   </View>
-                </View>
+                </Pressable>
+
+                {/* DELETE */}
                 <Pressable
                   onPress={() => handleDeleteAddress(item.id)}
                   hitSlop={SPACING.sm}
                   style={styles.deleteButton}
                 >
-                  <AppIcon name="delete" size={ICON_SIZES.md} color={COLORS.text.primary} />
+                  <AppIcon name="delete" size="md" color={COLORS.text.primary} />
                 </Pressable>
               </View>
             ))}
@@ -110,8 +135,8 @@ export default function BuyerLocationScreen() {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.3)',
-    justifyContent: 'flex-end',
+    backgroundColor: COLORS.background,
+    justifyContent: 'flex-end', // Fixed typo from 'justify' to 'justifyContent'
   },
 
   backdrop: {
@@ -120,13 +145,14 @@ const styles = StyleSheet.create({
 
   sheetContainer: {
     backgroundColor: COLORS.surface,
-    borderTopLeftRadius: RADIUS.xxl,
-    borderTopRightRadius: RADIUS.xxl,
+    borderTopLeftRadius: RADIUS.lg,
+    borderTopRightRadius: RADIUS.lg,
     paddingTop: SPACING.lg,
     paddingBottom: SPACING.xxxl,
     maxHeight: '85%',
   },
 
+  /* HEADER */
   header: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -141,34 +167,32 @@ const styles = StyleSheet.create({
     gap: SPACING.md,
   },
 
+  /* LOCATION TITLE */
   headerTitleText: {
     fontFamily: FONT_FAMILY.semiBold,
-    fontSize: 20,
-    color: COLORS.text.primary,
-  },
-
-  addAddressLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: SPACING.md,
-  },
-
-  addAddressText: {
-    fontFamily: FONT_FAMILY.medium,
-    fontSize: 16,
+    fontSize: FONT_SIZE.xl,
+    lineHeight: FONT_SIZE.xl * 1.6,
+    letterSpacing: 0,
     color: COLORS.text.primary,
   },
 
   scrollContent: {
-    paddingBottom: SPACING.section,
+    paddingBottom: SPACING.xl,
   },
 
+  /* ADD NEW ADDRESS */
   addAddressRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingVertical: SPACING.md,
     marginBottom: SPACING.lg,
+  },
+
+  addAddressLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: SPACING.md,
   },
 
   addIconBox: {
@@ -181,7 +205,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 
+  addAddressText: {
+    fontFamily: FONT_FAMILY.medium,
+    fontSize: FONT_SIZE.lg,
+    color: COLORS.text.primary,
+  },
+
+  /* SAVED ADDRESSES */
   sectionHeading: {
+    fontFamily: FONT_FAMILY.regular,
+    fontSize: FONT_SIZE.sm,
+    color: COLORS.text.primary,
     marginBottom: SPACING.md,
   },
 
@@ -189,42 +223,61 @@ const styles = StyleSheet.create({
     gap: SPACING.md,
   },
 
+  /* ADDRESS CARD */
   addressCard: {
     flexDirection: 'row',
-    alignItems: 'flex-start',
+    alignItems: 'center',
     justifyContent: 'space-between',
     backgroundColor: COLORS.orange.card,
     borderRadius: RADIUS.md,
-    padding: SPACING.lg,
+    paddingHorizontal: SPACING.lg,
+    paddingVertical: SPACING.md,
+    borderWidth: 1,
+    borderColor: 'transparent',
   },
 
+  selectedAddressCard: {
+    borderColor: COLORS.orange.normal,
+  },
+
+  /* CARD LEFT */
   cardLeft: {
     flexDirection: 'row',
-    alignItems: 'flex-start',
+    alignItems: 'center',
     flex: 1,
     gap: SPACING.sm,
     paddingRight: SPACING.sm,
   },
 
-  pinIcon: {
-    marginTop: SPACING.xs / 2,
+  /* LOCATION PIN */
+  pinIconBox: {
+    width: 24,
+    height: 24,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 
+  /* ADDRESS TEXT */
   addressTextContainer: {
     flex: 1,
     gap: SPACING.xs / 2,
   },
 
+  /* SHOP NAME */
   shopTitle: {
     fontFamily: FONT_FAMILY.bold,
-    color: COLORS.orange.promoText,
+    fontSize: FONT_SIZE.md,
+    color: COLORS.orange.normal,
   },
 
+  /* ADDRESS */
   addressBody: {
     fontFamily: FONT_FAMILY.regular,
+    fontSize: FONT_SIZE.sm,
     color: COLORS.text.primary,
   },
 
+  /* DELETE */
   deleteButton: {
     paddingLeft: SPACING.sm,
   },

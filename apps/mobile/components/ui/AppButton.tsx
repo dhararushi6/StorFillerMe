@@ -1,5 +1,13 @@
 import React from 'react';
-import { ActivityIndicator, Pressable, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import {
+  ActivityIndicator,
+  Pressable,
+  StyleProp,
+  StyleSheet,
+  TextStyle,
+  View,
+  ViewStyle,
+} from 'react-native';
 
 import { AppIcon } from '@/components/common/AppIcon';
 import { AppText } from '@/components/common/AppText';
@@ -24,6 +32,7 @@ interface AppButtonProps {
   fullWidth?: boolean;
 
   style?: StyleProp<ViewStyle>;
+  textStyle?: StyleProp<TextStyle>;
 }
 
 const BUTTON_HEIGHTS: Record<ButtonSize, number> = {
@@ -43,6 +52,7 @@ export function AppButton({
   loading = false,
   fullWidth = true,
   style,
+  textStyle,
 }: AppButtonProps) {
   const isDisabled = disabled || loading;
 
@@ -83,6 +93,7 @@ export function AppButton({
               {
                 color: textColor,
               },
+              textStyle,
             ]}
           >
             {title}
