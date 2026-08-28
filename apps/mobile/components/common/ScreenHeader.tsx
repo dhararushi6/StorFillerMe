@@ -5,6 +5,7 @@ import { router, useNavigation } from 'expo-router';
 
 import { AppIcon } from '@/components/common/AppIcon';
 import { AppText } from '@/components/common/AppText';
+
 import { COLORS, FONT_FAMILY, FONT_SIZE, RADIUS, SIZES, SPACING, useResponsive } from '@/theme';
 
 interface ScreenHeaderProps {
@@ -16,6 +17,8 @@ interface ScreenHeaderProps {
   variant?: 'default' | 'orange';
 
   bottomContent?: React.ReactNode;
+
+  compact?: boolean;
 }
 
 export function ScreenHeader({
@@ -25,6 +28,7 @@ export function ScreenHeader({
   rightElement,
   variant = 'default',
   bottomContent,
+  compact = false,
 }: ScreenHeaderProps) {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation();
@@ -56,6 +60,7 @@ export function ScreenHeader({
       style={[
         styles.header,
         isOrange && styles.orangeHeader,
+        compact && styles.compactHeader,
         {
           paddingHorizontal: horizontalPadding,
           paddingTop: Math.max(insets.top, SPACING.md) + SPACING.sm,
@@ -102,6 +107,11 @@ const styles = StyleSheet.create({
 
   orangeHeader: {
     backgroundColor: COLORS.orange.normal,
+  },
+
+  compactHeader: {
+    minHeight: SIZES.headerHeight + SPACING.md,
+    paddingBottom: SPACING.sm,
   },
 
   topRow: {

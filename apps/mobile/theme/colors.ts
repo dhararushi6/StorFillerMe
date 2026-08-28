@@ -56,6 +56,11 @@ export const COLORS = {
     card: '#FFF1CC',
     inner: '#CC5D281A',
   },
+  order: {
+    card: '#FFF0D7',
+    productBackground: '#CC5D281A',
+    delivered: '#296601',
+  },
 
   cart: {
     billCalculation: '#EFCDBC99',
