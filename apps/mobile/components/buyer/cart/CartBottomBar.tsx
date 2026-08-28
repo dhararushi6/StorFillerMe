@@ -3,7 +3,7 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { AppText } from '@/components/common/AppText';
-import { COLORS, FONT_FAMILY, RADIUS, SPACING, useResponsive } from '@/theme';
+import { COLORS, FONT_FAMILY, FONT_SIZE, RADIUS, SPACING, useResponsive } from '@/theme';
 
 interface CartBottomBarProps {
   walletLabel: string;
@@ -98,33 +98,37 @@ export function CartBottomBar({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: COLORS.surface,
-    borderTopWidth: 1,
-    borderTopColor: COLORS.border,
+    backgroundColor: COLORS.background,
   },
 
   walletBar: {
+    height: 37,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: COLORS.cart.walletBar,
-    paddingVertical: SPACING.sm + 2,
-    borderBottomWidth: 1,
-    borderBottomColor: COLORS.border,
+    backgroundColor: COLORS.orange.bottomBar,
+    borderTopLeftRadius: RADIUS.lg,
+    borderTopRightRadius: RADIUS.lg,
+    borderTopWidth: 1,
+    borderTopColor: COLORS.orange.normal,
   },
 
   walletText: {
-    fontFamily: FONT_FAMILY.bold,
+    fontFamily: FONT_FAMILY.medium,
+    fontSize: FONT_SIZE.md,
+    color: COLORS.black,
   },
 
   walletBalanceText: {
-    fontFamily: FONT_FAMILY.bold,
-    color: COLORS.success,
+    fontFamily: FONT_FAMILY.medium,
+    fontSize: FONT_SIZE.md,
+    color: COLORS.green.dark,
   },
 
   addBalanceText: {
-    fontFamily: FONT_FAMILY.semiBold,
-    color: COLORS.success,
+    fontFamily: FONT_FAMILY.medium,
+    fontSize: FONT_SIZE.md,
+    color: COLORS.green.dark,
     textDecorationLine: 'underline',
   },
 
@@ -133,7 +137,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingTop: SPACING.md,
-    backgroundColor: COLORS.surface,
+    backgroundColor: COLORS.white,
   },
 
   priceContainer: {
@@ -141,11 +145,14 @@ const styles = StyleSheet.create({
   },
 
   totalPrice: {
-    fontFamily: FONT_FAMILY.bold,
+    fontFamily: FONT_FAMILY.semiBold,
+    fontSize: FONT_SIZE.title,
+    color: COLORS.black,
   },
 
   viewBillText: {
     fontFamily: FONT_FAMILY.medium,
+    fontSize: FONT_SIZE.xs,
     color: COLORS.orange.normal,
     marginTop: SPACING.xs / 2,
   },
@@ -153,11 +160,12 @@ const styles = StyleSheet.create({
   continueButton: {
     backgroundColor: COLORS.orange.normal,
     borderRadius: RADIUS.pill,
-    paddingHorizontal: SPACING.xxl,
-    paddingVertical: SPACING.md,
+    height: 31,
+    paddingHorizontal: 16,
+    paddingVertical: 6,
     alignItems: 'center',
     justifyContent: 'center',
-    minWidth: 140,
+    minWidth: 100,
   },
 
   buttonPressed: {
@@ -165,6 +173,8 @@ const styles = StyleSheet.create({
   },
 
   continueText: {
-    fontFamily: FONT_FAMILY.bold,
+    fontFamily: FONT_FAMILY.medium,
+    fontSize: FONT_SIZE.md,
+    color: COLORS.white,
   },
 });

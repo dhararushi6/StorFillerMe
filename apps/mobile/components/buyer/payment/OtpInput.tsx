@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import {
+  Platform,
   StyleSheet,
   TextInput,
   type TextInputKeyPressEventData,
@@ -84,12 +85,12 @@ const styles = StyleSheet.create({
 
   box: {
     flex: 1,
-    height: 60,
+    height: 68,
     maxWidth: 56,
-    backgroundColor: COLORS.surface,
+    backgroundColor: COLORS.white,
     borderWidth: 1,
-    borderColor: COLORS.orange.lightActive,
-    borderRadius: RADIUS.md,
+    borderColor: COLORS.orange.banner,
+    borderRadius: RADIUS.xs,
     fontFamily: FONT_FAMILY.bold,
     fontSize: FONT_SIZE.xl,
     color: COLORS.text.primary,
@@ -97,6 +98,12 @@ const styles = StyleSheet.create({
     textAlignVertical: 'center',
     paddingHorizontal: 0,
     paddingVertical: 0,
+    ...Platform.select({
+      web: {
+        outlineStyle: 'none',
+        outlineWidth: 0,
+      } as any,
+    }),
   },
 
   boxFilled: {

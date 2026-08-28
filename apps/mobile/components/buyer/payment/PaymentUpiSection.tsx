@@ -109,19 +109,22 @@ const styles = StyleSheet.create({
 
   appsRow: {
     flexDirection: 'row',
-    alignItems: 'flex-start',
+    alignItems: 'center',
     justifyContent: 'space-between',
+    paddingVertical: SPACING.xs,
   },
 
   appItem: {
+    width: 52,
+    height: 66,
     alignItems: 'center',
     justifyContent: 'center',
   },
 
   phonePeCircle: {
-    width: 38,
-    height: 38,
-    borderRadius: 19,
+    width: 44,
+    height: 44,
+    borderRadius: 22,
     backgroundColor: '#5F259F',
     alignItems: 'center',
     justifyContent: 'center',
@@ -129,28 +132,29 @@ const styles = StyleSheet.create({
 
   phonePeText: {
     color: '#FFFFFF',
-    fontSize: 20,
+    fontSize: 23,
     fontFamily: FONT_FAMILY.bold,
-    lineHeight: 24,
+    lineHeight: 27,
   },
 
   appName: {
-    fontSize: 10,
-    marginTop: 6,
+    fontSize: 11,
+    marginTop: 5,
     fontFamily: FONT_FAMILY.medium,
   },
 
   groupImage: {
-    width: 51,
-    height: 60,
+    width: 52,
+    height: 65,
   },
 
   groupImageWide: {
-    width: 62,
-    height: 60,
+    width: 64,
+    height: 65,
   },
 
   pressed: {
     opacity: 0.75,
+    transform: [{ scale: 0.96 }],
   },
 });

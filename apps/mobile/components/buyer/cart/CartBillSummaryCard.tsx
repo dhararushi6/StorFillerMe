@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { AppText } from '@/components/common/AppText';
-import { COLORS, FONT_FAMILY, RADIUS, SPACING } from '@/theme';
+import { COLORS, FONT_FAMILY, FONT_SIZE, LINE_HEIGHT, RADIUS, SPACING } from '@/theme';
 
 interface CartBillSummaryCardProps {
   title: string;
@@ -130,7 +130,10 @@ const styles = StyleSheet.create({
   },
 
   cardHeaderTitle: {
-    fontFamily: FONT_FAMILY.bold,
+    fontFamily: FONT_FAMILY.medium,
+    fontSize: FONT_SIZE.lg,
+    lineHeight: LINE_HEIGHT.md,
+    color: COLORS.black,
   },
 
   cardBody: {
@@ -161,7 +164,7 @@ const styles = StyleSheet.create({
 
   divider: {
     height: 1,
-    backgroundColor: COLORS.border,
+    backgroundColor: COLORS.text.muted,
     marginVertical: SPACING.xs / 2,
   },
 
@@ -194,7 +197,10 @@ const styles = StyleSheet.create({
   },
 
   cancellationTitle: {
-    fontFamily: FONT_FAMILY.bold,
+    fontFamily: FONT_FAMILY.medium,
+    fontSize: FONT_SIZE.sm,
+    lineHeight: LINE_HEIGHT.category,
+    color: COLORS.black,
   },
 
   cancellationDescription: {

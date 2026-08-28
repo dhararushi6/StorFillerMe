@@ -1,8 +1,8 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
 
 import { AppText } from '@/components/common/AppText';
-import { COLORS, FONT_FAMILY, RADIUS, SPACING, useResponsive } from '@/theme';
+import { FONT_FAMILY, FONT_SIZE, LINE_HEIGHT, SPACING } from '@/theme';
 
 interface WalletBalanceCardProps {
   title: string;
@@ -17,74 +17,81 @@ export function WalletBalanceCard({
   currentBalanceLabel,
   balance,
 }: WalletBalanceCardProps) {
-  const { wallet } = useResponsive();
-
   return (
-    <View
-      style={[
-        styles.card,
-        {
-          minHeight: wallet.cardMinHeight,
-        },
-      ]}
-    >
+    <View style={styles.card}>
+      {/* Top Row: Store Filler Wallet & Low Balance */}
       <View style={styles.topRow}>
         <AppText variant="bodyMedium" color="inverse" style={styles.title}>
           {title}
         </AppText>
 
-        <AppText variant="caption" color="inverseSecondary">
+        <AppText variant="caption" color="inverse" style={styles.statusLabel}>
           {statusLabel}
         </AppText>
       </View>
 
-      <AppText variant="caption" color="inverseSecondary" style={styles.balanceLabel}>
-        {currentBalanceLabel}
-      </AppText>
+      {/* Bottom Section: Current Balance & Big Amount */}
+      <View style={styles.balanceSection}>
+        <AppText variant="caption" color="inverse" style={styles.currentBalanceLabel}>
+          {currentBalanceLabel}
+        </AppText>
 
-      <AppText
-        variant="heading"
-        color="inverse"
-        style={[
-          styles.balance,
-          {
-            fontSize: wallet.balanceFontSize,
-          },
-        ]}
-      >
-        ₹ {balance.toFixed(2)}
-      </AppText>
+        <AppText variant="display" color="inverse" style={styles.balance}>
+          ₹ {balance.toFixed(2)}
+        </AppText>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   card: {
-    justifyContent: 'space-between',
+    height: 176,
+    borderRadius: 12,
     padding: SPACING.lg,
-    backgroundColor: COLORS.orange.dark,
-    borderRadius: RADIUS.xxl,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.1)',
+    justifyContent: 'space-between',
+    backgroundColor: '#CC5D28',
+    ...Platform.select({
+      web: {
+        backgroundImage: 'linear-gradient(135deg, #CC5D28 0%, #6B2605 100%)',
+      } as any,
+    }),
+    overflow: 'hidden',
   },
 
   topRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    gap: SPACING.md,
   },
 
   title: {
-    fontFamily: FONT_FAMILY.bold,
+    fontFamily: FONT_FAMILY.medium,
+    fontSize: FONT_SIZE.md,
+    lineHeight: LINE_HEIGHT.md,
   },
 
-  balanceLabel: {
-    marginTop: SPACING.lg,
+  statusLabel: {
+    fontFamily: FONT_FAMILY.medium,
+    fontSize: FONT_SIZE.sm,
+    lineHeight: LINE_HEIGHT.sm,
+    opacity: 0.95,
+  },
+
+  balanceSection: {
+    gap: 4,
+  },
+
+  currentBalanceLabel: {
+    fontFamily: FONT_FAMILY.regular,
+    fontSize: FONT_SIZE.sm,
+    lineHeight: LINE_HEIGHT.sm,
+    opacity: 0.85,
   },
 
   balance: {
-    fontFamily: FONT_FAMILY.bold,
-    marginTop: SPACING.xs,
+    fontFamily: FONT_FAMILY.semiBold,
+    fontSize: FONT_SIZE.hero,
+    lineHeight: LINE_HEIGHT.hero,
   },
 });

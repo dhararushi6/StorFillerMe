@@ -6,10 +6,10 @@ import { PaymentAmountBanner, UnderlineInput } from '@/components/buyer/payment'
 import { ScreenHeader } from '@/components/common/ScreenHeader';
 import { AppButton } from '@/components/ui/AppButton';
 import { ADD_CARD_SCREEN, PAYMENTS_SCREEN } from '@/constants/payment';
-import { COLORS, SPACING, useResponsive } from '@/theme';
+import { COLORS, RADIUS, SPACING, useResponsive } from '@/theme';
 
 export default function BuyerAddCardScreen() {
-  const params = useLocalSearchParams<{ amount?: string }>();
+  const params = useLocalSearchParams<{ amount?: string; from?: string }>();
   const { horizontalPadding } = useResponsive();
 
   const totalAmount = params.amount ? parseFloat(params.amount) : PAYMENTS_SCREEN.defaultAmount;
@@ -37,9 +37,12 @@ export default function BuyerAddCardScreen() {
   const handlePay = useCallback(() => {
     router.push({
       pathname: '/(buyer)/bank-verification',
-      params: { amount: totalAmount.toString() },
+      params: {
+        amount: totalAmount.toString(),
+        from: params.from || 'cart',
+      },
     });
-  }, [totalAmount]);
+  }, [params.from, totalAmount]);
 
   const sidePadding = {
     paddingHorizontal: horizontalPadding,
@@ -100,6 +103,7 @@ export default function BuyerAddCardScreen() {
             <AppButton
               title={`${ADD_CARD_SCREEN.payButtonLabel}  ₹ ${totalAmount}`}
               onPress={handlePay}
+              style={styles.payButton}
             />
           </View>
         </View>
@@ -136,6 +140,12 @@ const styles = StyleSheet.create({
   },
 
   buttonWrapper: {
-    marginTop: SPACING.md,
+    marginTop: SPACING.lg,
+  },
+
+  payButton: {
+    height: 39,
+    borderRadius: RADIUS.sm,
+    backgroundColor: COLORS.orange.normal,
   },
 });

@@ -4,28 +4,28 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 import { AppText } from '@/components/common/AppText';
-import { EXIT_PAYMENT_MODAL } from '@/constants/payment';
+import { COD_CONFIRMATION_MODAL } from '@/constants/payment';
 import { COLORS, FONT_FAMILY, FONT_SIZE, RADIUS, SPACING, useResponsive } from '@/theme';
 
-interface ExitPaymentModalProps {
+interface CodConfirmationModalProps {
   visible: boolean;
   onClose: () => void;
-  onConfirmExit: () => void;
+  onConfirm: () => void;
   title?: string;
   description?: string;
-  exitLabel?: string;
+  noLabel?: string;
   continueLabel?: string;
 }
 
-export function ExitPaymentModal({
+export function CodConfirmationModal({
   visible,
   onClose,
-  onConfirmExit,
-  title = EXIT_PAYMENT_MODAL.title,
-  description = EXIT_PAYMENT_MODAL.description,
-  exitLabel = EXIT_PAYMENT_MODAL.exitAnywayLabel,
-  continueLabel = EXIT_PAYMENT_MODAL.continuePaymentLabel,
-}: ExitPaymentModalProps) {
+  onConfirm,
+  title = COD_CONFIRMATION_MODAL.title,
+  description = COD_CONFIRMATION_MODAL.description,
+  noLabel = COD_CONFIRMATION_MODAL.noLabel,
+  continueLabel = COD_CONFIRMATION_MODAL.continueLabel,
+}: CodConfirmationModalProps) {
   const insets = useSafeAreaInsets();
   const { horizontalPadding } = useResponsive();
 
@@ -36,7 +36,7 @@ export function ExitPaymentModal({
           style={styles.backdrop}
           onPress={onClose}
           accessibilityRole="button"
-          accessibilityLabel="Dismiss exit dialog"
+          accessibilityLabel="Dismiss confirmation dialog"
         />
 
         <View
@@ -48,9 +48,11 @@ export function ExitPaymentModal({
             },
           ]}
         >
-          {/* Title Row */}
+          {/* Header with Cash Icon */}
           <View style={styles.headerRow}>
-            <Ionicons name="alert-circle" size={26} color="#E53935" />
+            <View style={styles.iconCircle}>
+              <Ionicons name="cash-outline" size={24} color={COLORS.orange.normal} />
+            </View>
             <AppText variant="subheading" color="primary" style={styles.title}>
               {title}
             </AppText>
@@ -61,22 +63,22 @@ export function ExitPaymentModal({
             {description}
           </AppText>
 
-          {/* Action Buttons */}
+          {/* Action Buttons: No & Continue */}
           <View style={styles.buttonRow}>
             <Pressable
-              style={({ pressed }) => [styles.exitButton, pressed && styles.pressed]}
-              onPress={onConfirmExit}
+              style={({ pressed }) => [styles.noButton, pressed && styles.pressed]}
+              onPress={onClose}
               accessibilityRole="button"
-              accessibilityLabel={exitLabel}
+              accessibilityLabel={noLabel}
             >
-              <AppText variant="bodyMedium" color="primary" style={styles.exitButtonText}>
-                {exitLabel}
+              <AppText variant="bodyMedium" color="primary" style={styles.noButtonText}>
+                {noLabel}
               </AppText>
             </Pressable>
 
             <Pressable
               style={({ pressed }) => [styles.continueButton, pressed && styles.pressed]}
-              onPress={onClose}
+              onPress={onConfirm}
               accessibilityRole="button"
               accessibilityLabel={continueLabel}
             >
@@ -107,6 +109,9 @@ const styles = StyleSheet.create({
     borderRadius: RADIUS.xl,
     padding: SPACING.lg,
     gap: SPACING.sm,
+    maxWidth: 440,
+    width: '100%',
+    alignSelf: 'center',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.15,
@@ -117,18 +122,27 @@ const styles = StyleSheet.create({
   headerRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: SPACING.xs + 2,
+    gap: SPACING.sm,
+  },
+
+  iconCircle: {
+    width: 38,
+    height: 38,
+    borderRadius: 19,
+    backgroundColor: '#FFE2CC',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 
   title: {
     fontFamily: FONT_FAMILY.bold,
-    fontSize: FONT_SIZE.md + 1,
+    fontSize: FONT_SIZE.lg,
   },
 
   description: {
     fontFamily: FONT_FAMILY.regular,
-    fontSize: FONT_SIZE.xs + 1,
-    lineHeight: 18,
+    fontSize: FONT_SIZE.md,
+    lineHeight: 20,
     color: '#333333',
     marginVertical: SPACING.xs,
   },
@@ -140,7 +154,7 @@ const styles = StyleSheet.create({
     marginTop: SPACING.xs,
   },
 
-  exitButton: {
+  noButton: {
     flex: 1,
     height: 42,
     borderRadius: RADIUS.pill,
@@ -151,10 +165,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
 
-  exitButtonText: {
+  noButtonText: {
     fontFamily: FONT_FAMILY.medium,
     fontSize: FONT_SIZE.md,
-    color: COLORS.text.primary,
   },
 
   continueButton: {
@@ -174,5 +187,6 @@ const styles = StyleSheet.create({
 
   pressed: {
     opacity: 0.8,
+    transform: [{ scale: 0.98 }],
   },
 });

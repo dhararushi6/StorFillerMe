@@ -46,10 +46,10 @@ export const COLORS = {
   text: {
     primary: '#111111',
     secondary: '#666666',
-    muted: '#8A8A8A',
+    muted: '#9D9D9D',
     inverse: '#FFFFFF',
     inverseSecondary: '#DDDDDD',
-    danger: '#D64545',
+    danger: '#FF0000',
   },
 
   deal: {
@@ -68,14 +68,23 @@ export const COLORS = {
 
   payment: {
     amountBanner: '#D8E6FD',
-    amountText: '#2563EB',
+    amountText: '#3A83FF',
     card: '#FFF1CB',
     dashedBorder: '#D4C5A9',
+  },
+
+  coupon: {
+    border: '#CEE0FE',
+  },
+
+  wallet: {
+    cardGradient: ['#CC5D28', '#6B2605'] as const,
   },
 
   green: {
     light: '#DDF7D0',
     normal: '#1EA836',
+    dark: '#009411',
   },
 
   border: '#E5DED2',
@@ -84,7 +93,7 @@ export const COLORS = {
   success: '#1EA836',
   successLight: '#DDF7D0',
   warning: '#F2A900',
-  danger: '#D64545',
+  danger: '#FF0000',
 
   rating: '#F2A900',
 

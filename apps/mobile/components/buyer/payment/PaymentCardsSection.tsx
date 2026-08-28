@@ -83,13 +83,13 @@ const styles = StyleSheet.create({
   },
 
   cardIcon: {
-    width: 24,
-    height: 24,
+    width: 28,
+    height: 28,
   },
 
   optionLabel: {
     fontFamily: FONT_FAMILY.medium,
-    fontSize: FONT_SIZE.sm + 1,
+    fontSize: FONT_SIZE.md,
   },
 
   pressed: {

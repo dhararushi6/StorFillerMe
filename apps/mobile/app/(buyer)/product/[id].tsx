@@ -17,6 +17,7 @@ import {
   RatingsSummary,
   ReviewCard,
 } from '@/components/buyer/product';
+import { useCartStore } from '@/store';
 import {
   getProductById,
   PRODUCT_ADDRESS,
@@ -32,6 +33,7 @@ import { COLORS, FONT_FAMILY, RADIUS, SPACING, useResponsive } from '@/theme';
 
 export default function BuyerProductScreen() {
   const { id } = useLocalSearchParams<{ id?: string }>();
+  const { items: cartItems, addItem, incrementItem, decrementItem } = useCartStore();
 
   const productDetail = useMemo(() => getProductById(id), [id]);
 
@@ -80,8 +82,16 @@ export default function BuyerProductScreen() {
   }, []);
 
   const handleAddToCart = useCallback(() => {
-    // Cart integration will be connected to the cart store/API.
-  }, []);
+    addItem({
+      id: productDetail.id,
+      name: `${productDetail.name} (${selectedQuantity.label})`,
+      unit: selectedQuantity.label,
+      price: currentPrice,
+      oldPrice: currentOldPrice,
+      image: productDetail.gallery[0],
+    });
+    router.push('/(buyer)/cart');
+  }, [addItem, productDetail, selectedQuantity, currentPrice, currentOldPrice]);
 
   const handleChangeAddress = useCallback(() => {
     router.push('/(buyer)/profile');
@@ -197,18 +207,32 @@ export default function BuyerProductScreen() {
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={[styles.carousel, sidePadding]}
           >
-            {PRODUCT_SIMILAR.map((similarProduct) => (
-              <ProductDealCard
-                key={similarProduct.id}
-                name={similarProduct.name}
-                unit={similarProduct.unit}
-                price={similarProduct.price}
-                oldPrice={similarProduct.oldPrice}
-                image={similarProduct.image}
-                onPress={() => handleProductPress(similarProduct.id)}
-                onAddPress={handleAddToCart}
-              />
-            ))}
+            {PRODUCT_SIMILAR.map((similarProduct) => {
+              const cartItem = cartItems.find((i) => i.id === similarProduct.id);
+              const quantity = cartItem ? cartItem.quantity : 0;
+
+              return (
+                <ProductDealCard
+                  key={similarProduct.id}
+                  name={similarProduct.name}
+                  unit={similarProduct.unit}
+                  price={similarProduct.price}
+                  oldPrice={similarProduct.oldPrice}
+                  image={similarProduct.image}
+                  quantity={quantity}
+                  onPress={() => handleProductPress(similarProduct.id)}
+                  onAddPress={() => addItem(similarProduct)}
+                  onIncrement={() => {
+                    if (quantity === 0) {
+                      addItem(similarProduct);
+                    } else {
+                      incrementItem(similarProduct.id);
+                    }
+                  }}
+                  onDecrement={() => decrementItem(similarProduct.id)}
+                />
+              );
+            })}
           </ScrollView>
         </View>
 
@@ -225,18 +249,32 @@ export default function BuyerProductScreen() {
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={[styles.carousel, sidePadding]}
           >
-            {PRODUCT_YOU_MAY_ALSO_LIKE.map((suggestedProduct) => (
-              <ProductDealCard
-                key={suggestedProduct.id}
-                name={suggestedProduct.name}
-                unit={suggestedProduct.unit}
-                price={suggestedProduct.price}
-                oldPrice={suggestedProduct.oldPrice}
-                image={suggestedProduct.image}
-                onPress={() => handleProductPress(suggestedProduct.id)}
-                onAddPress={handleAddToCart}
-              />
-            ))}
+            {PRODUCT_YOU_MAY_ALSO_LIKE.map((suggestedProduct) => {
+              const cartItem = cartItems.find((i) => i.id === suggestedProduct.id);
+              const quantity = cartItem ? cartItem.quantity : 0;
+
+              return (
+                <ProductDealCard
+                  key={suggestedProduct.id}
+                  name={suggestedProduct.name}
+                  unit={suggestedProduct.unit}
+                  price={suggestedProduct.price}
+                  oldPrice={suggestedProduct.oldPrice}
+                  image={suggestedProduct.image}
+                  quantity={quantity}
+                  onPress={() => handleProductPress(suggestedProduct.id)}
+                  onAddPress={() => addItem(suggestedProduct)}
+                  onIncrement={() => {
+                    if (quantity === 0) {
+                      addItem(suggestedProduct);
+                    } else {
+                      incrementItem(suggestedProduct.id);
+                    }
+                  }}
+                  onDecrement={() => decrementItem(suggestedProduct.id)}
+                />
+              );
+            })}
           </ScrollView>
         </View>
 

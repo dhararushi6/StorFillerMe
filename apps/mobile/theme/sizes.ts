@@ -7,10 +7,6 @@ export const SIZES = {
   headerLargeHeight: 107,
   bottomTabHeight: 64,
 
-  iconSmall: 16,
-  iconMedium: 20,
-  iconLarge: 24,
-
   avatarSmall: 32,
   avatarMedium: 40,
   avatarLarge: 48,

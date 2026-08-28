@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, TextInput, type TextInputProps, View, type ViewStyle } from 'react-native';
+import { Platform, StyleSheet, TextInput, type TextInputProps, View, type ViewStyle } from 'react-native';
 
 import { AppText } from '@/components/common/AppText';
 import { COLORS, FONT_FAMILY, FONT_SIZE, SPACING } from '@/theme';
@@ -31,16 +31,30 @@ const styles = StyleSheet.create({
   },
 
   label: {
-    fontFamily: FONT_FAMILY.semiBold,
-    fontSize: FONT_SIZE.sm + 1,
+    fontFamily: FONT_FAMILY.medium,
+    fontSize: FONT_SIZE.md,
+    lineHeight: 17,
+    color: COLORS.text.primary,
   },
 
   input: {
     borderBottomWidth: 1,
-    borderBottomColor: '#333333',
+    borderBottomColor: '#555555',
+    borderTopWidth: 0,
+    borderLeftWidth: 0,
+    borderRightWidth: 0,
+    borderRadius: 0,
     paddingVertical: SPACING.xs + 2,
+    paddingHorizontal: 0,
     fontSize: FONT_SIZE.md,
-    fontFamily: FONT_FAMILY.medium,
+    fontFamily: FONT_FAMILY.regular,
     color: COLORS.text.primary,
+    backgroundColor: 'transparent',
+    ...Platform.select({
+      web: {
+        outlineStyle: 'none',
+        outlineWidth: 0,
+      } as any,
+    }),
   },
 });

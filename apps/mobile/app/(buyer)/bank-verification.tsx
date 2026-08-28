@@ -8,11 +8,11 @@ import { ScreenHeader } from '@/components/common/ScreenHeader';
 import { AppText } from '@/components/common/AppText';
 import { AppButton } from '@/components/ui/AppButton';
 import { BANK_VERIFICATION_SCREEN } from '@/constants/payment';
-import { COLORS, FONT_FAMILY, FONT_SIZE, SPACING, useResponsive } from '@/theme';
+import { COLORS, FONT_FAMILY, FONT_SIZE, LINE_HEIGHT, RADIUS, SPACING, useResponsive } from '@/theme';
 
 export default function BuyerBankVerificationScreen() {
   const insets = useSafeAreaInsets();
-  const params = useLocalSearchParams<{ phone?: string; amount?: string }>();
+  const params = useLocalSearchParams<{ phone?: string; amount?: string; from?: string }>();
   const { horizontalPadding } = useResponsive();
 
   const [otp, setOtp] = useState('');
@@ -36,11 +36,18 @@ export default function BuyerBankVerificationScreen() {
   }, [timeLeft]);
 
   const handleVerify = useCallback(() => {
-    router.replace({
-      pathname: '/(buyer)/processing-payment',
-      params: { amount: params.amount || '105' },
-    });
-  }, [params.amount]);
+    if (params.from === 'wallet') {
+      router.replace({
+        pathname: '/(buyer)/processing-payment',
+        params: { amount: params.amount || '105' },
+      });
+    } else {
+      router.replace({
+        pathname: '/(buyer)/payment-success',
+        params: { amount: params.amount || '105' },
+      });
+    }
+  }, [params.amount, params.from]);
 
   const formatTimer = (seconds: number) => {
     const s = seconds < 10 ? `0${seconds}` : `${seconds}`;
@@ -107,6 +114,7 @@ export default function BuyerBankVerificationScreen() {
           title={BANK_VERIFICATION_SCREEN.verifyButtonLabel}
           onPress={handleVerify}
           disabled={otp.length < BANK_VERIFICATION_SCREEN.otpLength}
+          style={styles.verifyButton}
         />
       </View>
     </View>
@@ -131,12 +139,15 @@ const styles = StyleSheet.create({
 
   description: {
     fontFamily: FONT_FAMILY.medium,
-    fontSize: FONT_SIZE.md,
-    lineHeight: 22,
+    fontSize: FONT_SIZE.lg,
+    lineHeight: LINE_HEIGHT.lg,
+    color: COLORS.black,
   },
 
   phoneText: {
-    fontFamily: FONT_FAMILY.semiBold,
+    fontFamily: FONT_FAMILY.medium,
+    fontSize: FONT_SIZE.lg,
+    lineHeight: LINE_HEIGHT.lg,
     color: COLORS.orange.normal,
   },
 
@@ -167,5 +178,11 @@ const styles = StyleSheet.create({
   footer: {
     paddingTop: SPACING.md,
     backgroundColor: COLORS.background,
+  },
+
+  verifyButton: {
+    height: 43,
+    borderRadius: RADIUS.xs,
+    backgroundColor: COLORS.orange.normal,
   },
 });
