@@ -83,7 +83,7 @@ export default function OrdersScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.background.primary,
+    backgroundColor: COLORS.background,
   },
 
   content: {
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: COLORS.background.primary,
+    backgroundColor: COLORS.background,
     paddingHorizontal: SPACING.lg,
   },
 

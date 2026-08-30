@@ -1,6 +1,7 @@
 export const SIZES = {
   buttonHeight: 48,
   inputHeight: 48,
+  reviewInputHeight: 96,
   smallButtonHeight: 40,
   compactButtonHeight: 32,
 
@@ -22,4 +23,9 @@ export const SIZES = {
 
   chipHeight: 23,
   borderThin: 0.8,
+
+  orderProductImage: 60,
+  orderProductAsset: 64,
+  orderProductRowHeight: 64,
+  orderPriceWidth: 64,
 } as const;

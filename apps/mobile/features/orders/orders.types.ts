@@ -6,6 +6,16 @@ export interface OrderProduct {
   name: string;
   image: number;
   quantity: number;
+  packSize: string;
+  unitPrice: number;
+  originalPrice: number;
+}
+
+export interface OrderDeliveryDetails {
+  shopName: string;
+  shopAddress: string;
+  customerName: string;
+  customerPhone: string;
 }
 
 export interface Order {
@@ -15,4 +25,7 @@ export interface Order {
   itemCount: number;
   totalAmount: number;
   products: OrderProduct[];
+  deliveryFee: number;
+  handlingFee: number;
+  deliveryDetails: OrderDeliveryDetails;
 }
