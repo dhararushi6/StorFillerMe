@@ -1,7 +1,7 @@
 import React from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
-import Ionicons from '@expo/vector-icons/Ionicons';
+import { Image, Pressable, StyleSheet, View } from 'react-native';
 
+import moneyWavyIcon from '@/assets/icons/money-wavy.png';
 import { AppText } from '@/components/common/AppText';
 import { COLORS, FONT_FAMILY, FONT_SIZE, RADIUS, SPACING } from '@/theme';
 
@@ -11,11 +11,7 @@ interface PaymentCodSectionProps {
   onSelect?: () => void;
 }
 
-export function PaymentCodSection({
-  label,
-  selected = false,
-  onSelect,
-}: PaymentCodSectionProps) {
+export function PaymentCodSection({ label, selected = false, onSelect }: PaymentCodSectionProps) {
   return (
     <Pressable
       style={({ pressed }) => [styles.card, pressed && styles.pressed]}
@@ -25,7 +21,7 @@ export function PaymentCodSection({
       accessibilityLabel={label}
     >
       <View style={styles.leftGroup}>
-        <Ionicons name="cash-outline" size={26} color={COLORS.text.primary} />
+        <Image source={moneyWavyIcon} style={styles.codIcon} resizeMode="contain" />
         <AppText variant="bodyMedium" color="primary" style={styles.label}>
           {label}
         </AppText>
@@ -54,6 +50,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: SPACING.md,
+  },
+
+  codIcon: {
+    width: 26,
+    height: 26,
   },
 
   label: {

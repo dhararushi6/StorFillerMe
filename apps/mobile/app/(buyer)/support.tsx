@@ -1,14 +1,15 @@
 import React, { useCallback } from 'react';
 import { Image, Linking, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-import truckFillIcon from '@/assets/icons/truck-fill.png';
+import messageSquareIcon from '@/assets/icons/message-square.png';
+import { OrderHeaderSection } from '@/components/buyer/order';
 import { AppText } from '@/components/common/AppText';
 import { ScreenHeader } from '@/components/common/ScreenHeader';
 import { SUPPORT_SCREEN, TRACK_ORDER_SCREEN } from '@/constants/order';
-import { COLORS, FONT_FAMILY, FONT_SIZE, RADIUS, SPACING, useResponsive } from '@/theme';
+import { COLORS, FONT_FAMILY, SPACING, useResponsive } from '@/theme';
 
 export default function BuyerSupportScreen() {
   const insets = useSafeAreaInsets();
@@ -21,8 +22,11 @@ export default function BuyerSupportScreen() {
   const orderId = params.orderId || params.id || TRACK_ORDER_SCREEN.defaultOrderId;
 
   const handleChatWithUs = useCallback(() => {
-    // Open chat or WhatsApp support
-  }, []);
+    router.push({
+      pathname: '/(buyer)/chat',
+      params: { orderId },
+    });
+  }, [orderId]);
 
   const handleCallUs = useCallback(() => {
     Linking.openURL('tel:1800123456');
@@ -34,10 +38,7 @@ export default function BuyerSupportScreen() {
 
   return (
     <View style={styles.screen}>
-      <ScreenHeader
-        title={SUPPORT_SCREEN.headerTitle}
-        fallbackRoute="/(buyer)/home"
-      />
+      <ScreenHeader title={SUPPORT_SCREEN.headerTitle} fallbackRoute="/(buyer)/track-order" />
 
       <ScrollView
         showsVerticalScrollIndicator={false}
@@ -49,59 +50,14 @@ export default function BuyerSupportScreen() {
           },
         ]}
       >
-        {/* Order ID & Confirmed Status Header */}
-        <View style={styles.orderIdHeaderRow}>
-          <View style={styles.orderIdCol}>
-            <AppText style={styles.orderIdLabel}>
-              {TRACK_ORDER_SCREEN.orderIdLabel}
-            </AppText>
-
-            <AppText style={styles.orderIdValue}>
-              {orderId}
-            </AppText>
-
-            <AppText style={styles.placedDateText}>
-              {TRACK_ORDER_SCREEN.placedOnPrefix} {TRACK_ORDER_SCREEN.defaultPlacedDate}
-            </AppText>
-          </View>
-
-          {/* Confirmed Badge */}
-          <View style={styles.confirmedBadge}>
-            <Ionicons name="checkmark-circle" size={18} color="#009411" />
-            <AppText style={styles.confirmedText}>
-              {TRACK_ORDER_SCREEN.confirmedBadge}
-            </AppText>
-          </View>
-        </View>
-
-        {/* Delivery At Banner (Rectangle 366) */}
-        <View style={styles.deliveryBanner}>
-          <Image source={truckFillIcon} style={styles.truckIcon} resizeMode="contain" />
-
-          <View style={styles.deliveryBannerTextCol}>
-            <AppText style={styles.deliveryAtLabel}>
-              {TRACK_ORDER_SCREEN.deliveryAtLabel}
-            </AppText>
-            <AppText style={styles.deliveryWindowText}>
-              {TRACK_ORDER_SCREEN.defaultDeliveryWindow}
-            </AppText>
-          </View>
-        </View>
-
-        {/* Subtitle Notification */}
-        <AppText style={styles.deliveryNotice}>
-          {TRACK_ORDER_SCREEN.outForDeliveryNotice}
-        </AppText>
+        {/* Reusable Order Header (Order ID + Confirmed + Delivery At Banner + Notice) */}
+        <OrderHeaderSection orderId={orderId} />
 
         {/* Need Help Section */}
         <View style={styles.helpSection}>
-          <AppText style={styles.helpTitle}>
-            {SUPPORT_SCREEN.helpSectionTitle}
-          </AppText>
+          <AppText style={styles.helpTitle}>{SUPPORT_SCREEN.helpSectionTitle}</AppText>
 
-          <AppText style={styles.helpSubtitle}>
-            {SUPPORT_SCREEN.helpSectionSubtitle}
-          </AppText>
+          <AppText style={styles.helpSubtitle}>{SUPPORT_SCREEN.helpSectionSubtitle}</AppText>
 
           {/* Action Cards */}
           <View style={styles.cardsList}>
@@ -114,15 +70,15 @@ export default function BuyerSupportScreen() {
               style={({ pressed }) => [styles.chatCard, pressed && styles.pressed]}
             >
               <View style={styles.cardLeftGroup}>
-                <Ionicons name="chatbubble-outline" size={26} color={COLORS.orange.normal} />
+                <Image
+                  source={messageSquareIcon}
+                  style={styles.actionCardIcon}
+                  resizeMode="contain"
+                />
 
                 <View style={styles.cardTextCol}>
-                  <AppText style={styles.cardMainTitle}>
-                    {SUPPORT_SCREEN.chatWithUsTitle}
-                  </AppText>
-                  <AppText style={styles.chatSubText}>
-                    {SUPPORT_SCREEN.chatWithUsSubtitle}
-                  </AppText>
+                  <AppText style={styles.cardMainTitle}>{SUPPORT_SCREEN.chatWithUsTitle}</AppText>
+                  <AppText style={styles.chatSubText}>{SUPPORT_SCREEN.chatWithUsSubtitle}</AppText>
                 </View>
               </View>
 
@@ -141,12 +97,8 @@ export default function BuyerSupportScreen() {
                 <Ionicons name="call-outline" size={26} color="#009411" />
 
                 <View style={styles.cardTextCol}>
-                  <AppText style={styles.cardMainTitle}>
-                    {SUPPORT_SCREEN.callUsTitle}
-                  </AppText>
-                  <AppText style={styles.callSubText}>
-                    {SUPPORT_SCREEN.callUsSubtitle}
-                  </AppText>
+                  <AppText style={styles.cardMainTitle}>{SUPPORT_SCREEN.callUsTitle}</AppText>
+                  <AppText style={styles.callSubText}>{SUPPORT_SCREEN.callUsSubtitle}</AppText>
                 </View>
               </View>
 
@@ -171,89 +123,6 @@ const styles = StyleSheet.create({
     gap: SPACING.md,
   },
 
-  orderIdHeaderRow: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    justifyContent: 'space-between',
-  },
-
-  orderIdCol: {
-    gap: 2,
-  },
-
-  orderIdLabel: {
-    fontFamily: FONT_FAMILY.regular,
-    fontSize: FONT_SIZE.md,
-    color: '#444444',
-  },
-
-  orderIdValue: {
-    fontFamily: FONT_FAMILY.semiBold,
-    fontSize: 20,
-    lineHeight: 24,
-    color: '#000000',
-    marginTop: 2,
-  },
-
-  placedDateText: {
-    fontFamily: FONT_FAMILY.regular,
-    fontSize: FONT_SIZE.sm,
-    color: '#666666',
-    marginTop: 2,
-  },
-
-  confirmedBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-    marginTop: SPACING.xs,
-  },
-
-  confirmedText: {
-    fontFamily: FONT_FAMILY.semiBold,
-    fontSize: FONT_SIZE.md,
-    color: '#009411',
-  },
-
-  deliveryBanner: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'rgba(204, 93, 40, 0.20)',
-    borderRadius: RADIUS.lg,
-    paddingHorizontal: SPACING.lg,
-    paddingVertical: 12,
-    gap: SPACING.md,
-    minHeight: 64,
-  },
-
-  truckIcon: {
-    width: 32,
-    height: 32,
-  },
-
-  deliveryBannerTextCol: {
-    gap: 2,
-  },
-
-  deliveryAtLabel: {
-    fontFamily: FONT_FAMILY.regular,
-    fontSize: 13,
-    color: '#111111',
-  },
-
-  deliveryWindowText: {
-    fontFamily: FONT_FAMILY.semiBold,
-    fontSize: 14,
-    color: COLORS.orange.normal,
-  },
-
-  deliveryNotice: {
-    fontFamily: FONT_FAMILY.regular,
-    fontSize: FONT_SIZE.sm,
-    color: '#555555',
-    marginTop: -4,
-  },
-
   helpSection: {
     marginTop: SPACING.sm,
     gap: 4,
@@ -267,8 +136,9 @@ const styles = StyleSheet.create({
 
   helpSubtitle: {
     fontFamily: FONT_FAMILY.regular,
-    fontSize: 13,
-    color: '#555555',
+    fontSize: 12,
+    lineHeight: 14,
+    color: '#3C3C3C',
     marginBottom: SPACING.sm,
   },
 
@@ -307,6 +177,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: SPACING.md,
     flex: 1,
+  },
+
+  actionCardIcon: {
+    width: 26,
+    height: 26,
   },
 
   cardTextCol: {

@@ -1,8 +1,8 @@
 import React from 'react';
-import { Modal, Pressable, StyleSheet, View } from 'react-native';
+import { Image, Modal, Pressable, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import Ionicons from '@expo/vector-icons/Ionicons';
 
+import moneyWavyIcon from '@/assets/icons/money-wavy.png';
 import { AppText } from '@/components/common/AppText';
 import { COD_CONFIRMATION_MODAL } from '@/constants/payment';
 import { COLORS, FONT_FAMILY, FONT_SIZE, RADIUS, SPACING, useResponsive } from '@/theme';
@@ -51,7 +51,11 @@ export function CodConfirmationModal({
           {/* Header with Cash Icon */}
           <View style={styles.headerRow}>
             <View style={styles.iconCircle}>
-              <Ionicons name="cash-outline" size={24} color={COLORS.orange.normal} />
+              <Image
+                source={moneyWavyIcon}
+                style={{ width: 22, height: 22 }}
+                resizeMode="contain"
+              />
             </View>
             <AppText variant="subheading" color="primary" style={styles.title}>
               {title}

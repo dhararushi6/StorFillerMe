@@ -7,7 +7,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import ashirvaadAttaImg from '@/assets/images/home/ashirvaad-mp-atta.png';
 import fortuneOilImg from '@/assets/images/home/fortune-sunlite-oil.png';
 import toorDalImg from '@/assets/images/home/tata-sampann-toor-dal.png';
-import truckFillIcon from '@/assets/icons/truck-fill.png';
+import { OrderHeaderSection } from '@/components/buyer/order';
 import { AppText } from '@/components/common/AppText';
 import { ScreenHeader } from '@/components/common/ScreenHeader';
 import { DEFAULT_TIMELINE_STEPS, TRACK_ORDER_SCREEN } from '@/constants/order';
@@ -24,12 +24,17 @@ export default function BuyerTrackOrderScreen() {
   const { horizontalPadding } = useResponsive();
 
   const orderId = params.orderId || params.id || TRACK_ORDER_SCREEN.defaultOrderId;
-  const totalAmount = params.amount ? parseFloat(params.amount) : TRACK_ORDER_SCREEN.defaultTotalAmount;
+  const totalAmount = params.amount
+    ? parseFloat(params.amount)
+    : TRACK_ORDER_SCREEN.defaultTotalAmount;
   const itemsCount = params.itemsCount || TRACK_ORDER_SCREEN.defaultItemsCount;
 
   const handleNeedHelp = useCallback(() => {
-    router.push('/(buyer)/support');
-  }, []);
+    router.push({
+      pathname: '/(buyer)/support',
+      params: { orderId },
+    });
+  }, [orderId]);
 
   const handleDownloadInvoice = useCallback(() => {
     // Invoice download handler
@@ -56,9 +61,7 @@ export default function BuyerTrackOrderScreen() {
             accessibilityLabel={TRACK_ORDER_SCREEN.needHelpLabel}
             style={({ pressed }) => [pressed && styles.pressed]}
           >
-            <AppText style={styles.needHelpText}>
-              {TRACK_ORDER_SCREEN.needHelpLabel}
-            </AppText>
+            <AppText style={styles.needHelpText}>{TRACK_ORDER_SCREEN.needHelpLabel}</AppText>
           </Pressable>
         }
       />
@@ -73,122 +76,80 @@ export default function BuyerTrackOrderScreen() {
           },
         ]}
       >
-        {/* Order ID & Confirmed Status Header */}
-        <View style={styles.orderIdHeaderRow}>
-          <View style={styles.orderIdCol}>
-            <AppText style={styles.orderIdLabel}>
-              {TRACK_ORDER_SCREEN.orderIdLabel}
-            </AppText>
-
-            <AppText style={styles.orderIdValue}>
-              {orderId}
-            </AppText>
-
-            <AppText style={styles.placedDateText}>
-              {TRACK_ORDER_SCREEN.placedOnPrefix} {TRACK_ORDER_SCREEN.defaultPlacedDate}
-            </AppText>
-          </View>
-
-          {/* Confirmed Badge */}
-          <View style={styles.confirmedBadge}>
-            <Ionicons name="checkmark-circle" size={18} color="#009411" />
-            <AppText style={styles.confirmedText}>
-              {TRACK_ORDER_SCREEN.confirmedBadge}
-            </AppText>
-          </View>
-        </View>
-
-        {/* Delivery At Banner (Rectangle 366) */}
-        <View style={styles.deliveryBanner}>
-          <Image source={truckFillIcon} style={styles.truckIcon} resizeMode="contain" />
-
-          <View style={styles.deliveryBannerTextCol}>
-            <AppText style={styles.deliveryAtLabel}>
-              {TRACK_ORDER_SCREEN.deliveryAtLabel}
-            </AppText>
-            <AppText style={styles.deliveryWindowText}>
-              {TRACK_ORDER_SCREEN.defaultDeliveryWindow}
-            </AppText>
-          </View>
-        </View>
-
-        {/* Subtitle Notification */}
-        <AppText style={styles.deliveryNotice}>
-          {TRACK_ORDER_SCREEN.outForDeliveryNotice}
-        </AppText>
+        {/* Shared Order Header (Order ID + Confirmed + Delivery At Banner + Notice) */}
+        <OrderHeaderSection orderId={orderId} />
 
         {/* Delivery Address Card (Rectangle 66) */}
         <View style={styles.addressCard}>
-          <AppText style={styles.addressTitle}>
-            {TRACK_ORDER_SCREEN.deliveryAddressTitle}
-          </AppText>
+          <AppText style={styles.addressTitle}>{TRACK_ORDER_SCREEN.deliveryAddressTitle}</AppText>
 
-          <AppText style={styles.storeName}>
-            {TRACK_ORDER_SCREEN.storeName}
-          </AppText>
+          <AppText style={styles.storeName}>{TRACK_ORDER_SCREEN.storeName}</AppText>
 
-          <AppText style={styles.addressLine}>
-            {TRACK_ORDER_SCREEN.addressLine}
-          </AppText>
+          <AppText style={styles.addressLine}>{TRACK_ORDER_SCREEN.addressLine}</AppText>
 
           <AppText style={styles.phoneText}>
             {TRACK_ORDER_SCREEN.phonePrefix}{' '}
-            <AppText style={styles.phoneNumber}>
-              {TRACK_ORDER_SCREEN.phoneNumber}
-            </AppText>
+            <AppText style={styles.phoneNumber}>{TRACK_ORDER_SCREEN.phoneNumber}</AppText>
           </AppText>
         </View>
 
         {/* Order Status Section */}
         <View style={styles.statusSection}>
-          <AppText style={styles.statusSectionTitle}>
-            {TRACK_ORDER_SCREEN.orderStatusTitle}
-          </AppText>
+          <AppText style={styles.statusSectionTitle}>{TRACK_ORDER_SCREEN.orderStatusTitle}</AppText>
 
           <View style={styles.timelineContainer}>
             {DEFAULT_TIMELINE_STEPS.map((step, index) => {
               const isLast = index === DEFAULT_TIMELINE_STEPS.length - 1;
               const isStepActive = step.isCompleted;
-              const nextStep = DEFAULT_TIMELINE_STEPS[index + 1];
-              const isLineCompleted = isStepActive && nextStep?.isCompleted;
+              const prevStep = index > 0 ? DEFAULT_TIMELINE_STEPS[index - 1] : null;
+              const isTopLineActive = prevStep ? prevStep.isCompleted && isStepActive : false;
+              const nextStep = !isLast ? DEFAULT_TIMELINE_STEPS[index + 1] : null;
+              const isBottomLineActive = isStepActive && nextStep?.isCompleted;
 
               return (
                 <View key={step.id} style={styles.timelineStepRow}>
-                  {/* Left Column: Dot & Line */}
+                  {/* Left Column: Top/Bottom connector & Centered Dot */}
                   <View style={styles.timelineTrackCol}>
+                    {/* Top line connecting from previous step */}
+                    {index > 0 && (
+                      <View
+                        style={[
+                          styles.timelineTopLine,
+                          isTopLineActive ? styles.timelineLineActive : styles.timelineLineInactive,
+                        ]}
+                      />
+                    )}
+
+                    {/* Bottom line connecting to next step */}
+                    {!isLast && (
+                      <View
+                        style={[
+                          styles.timelineBottomLine,
+                          isBottomLineActive
+                            ? styles.timelineLineActive
+                            : styles.timelineLineInactive,
+                        ]}
+                      />
+                    )}
+
+                    {/* Dot centered vertically with title text */}
                     <View
                       style={[
                         styles.timelineDot,
                         isStepActive ? styles.timelineDotActive : styles.timelineDotInactive,
                       ]}
                     />
-
-                    {!isLast && (
-                      <View
-                        style={[
-                          styles.timelineLine,
-                          isLineCompleted
-                            ? styles.timelineLineActive
-                            : styles.timelineLineInactive,
-                        ]}
-                      />
-                    )}
                   </View>
 
                   {/* Right Column: Title & Date */}
-                  <View style={[styles.timelineContentCol, !isLast && styles.timelineContentSpacing]}>
-                    <AppText
-                      style={[
-                        styles.stepTitle,
-                        isStepActive ? styles.stepTitleActive : styles.stepTitleInactive,
-                      ]}
-                    >
-                      {step.title}
-                    </AppText>
+                  <View
+                    style={[styles.timelineContentCol, !isLast && styles.timelineContentSpacing]}
+                  >
+                    <View style={styles.titleRowWrapper}>
+                      <AppText style={styles.stepTitle}>{step.title}</AppText>
+                    </View>
 
-                    <AppText style={styles.stepTimestamp}>
-                      {step.timestamp}
-                    </AppText>
+                    <AppText style={styles.stepTimestamp}>{step.timestamp}</AppText>
                   </View>
                 </View>
               );
@@ -199,21 +160,15 @@ export default function BuyerTrackOrderScreen() {
         {/* Alert Card (Rectangle 367) */}
         <View style={styles.alertCard}>
           <Ionicons name="alert-circle" size={18} color="#C87C01" />
-          <AppText style={styles.alertText}>
-            {TRACK_ORDER_SCREEN.alertNotice}
-          </AppText>
+          <AppText style={styles.alertText}>{TRACK_ORDER_SCREEN.alertNotice}</AppText>
         </View>
 
         {/* Order Summary Card */}
         <View style={styles.orderSummaryCard}>
           <View style={styles.summaryTopRow}>
-            <AppText style={styles.summaryTitle}>
-              {TRACK_ORDER_SCREEN.orderSummaryTitle}
-            </AppText>
+            <AppText style={styles.summaryTitle}>{TRACK_ORDER_SCREEN.orderSummaryTitle}</AppText>
 
-            <AppText style={styles.summaryCount}>
-              {itemsCount}
-            </AppText>
+            <AppText style={styles.summaryCount}>{itemsCount}</AppText>
           </View>
 
           <View style={styles.summaryProductsRow}>
@@ -230,9 +185,7 @@ export default function BuyerTrackOrderScreen() {
                 <Image source={toorDalImg} style={styles.productImage} resizeMode="contain" />
               </View>
 
-              <AppText style={styles.moreItemsText}>
-                {TRACK_ORDER_SCREEN.moreItemsLabel}
-              </AppText>
+              <AppText style={styles.moreItemsText}>{TRACK_ORDER_SCREEN.moreItemsLabel}</AppText>
             </View>
 
             <AppText style={styles.summaryTotal}>
@@ -264,9 +217,7 @@ export default function BuyerTrackOrderScreen() {
             style={({ pressed }) => [styles.outlineButton, pressed && styles.pressed]}
           >
             <Ionicons name="share-social-outline" size={18} color={COLORS.orange.normal} />
-            <AppText style={styles.outlineButtonText}>
-              {TRACK_ORDER_SCREEN.shareOrderLabel}
-            </AppText>
+            <AppText style={styles.outlineButtonText}>{TRACK_ORDER_SCREEN.shareOrderLabel}</AppText>
           </Pressable>
         </View>
       </ScrollView>
@@ -290,89 +241,6 @@ const styles = StyleSheet.create({
     fontFamily: FONT_FAMILY.medium,
     fontSize: FONT_SIZE.md,
     color: COLORS.orange.normal,
-  },
-
-  orderIdHeaderRow: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    justifyContent: 'space-between',
-  },
-
-  orderIdCol: {
-    gap: 2,
-  },
-
-  orderIdLabel: {
-    fontFamily: FONT_FAMILY.regular,
-    fontSize: FONT_SIZE.md,
-    color: '#444444',
-  },
-
-  orderIdValue: {
-    fontFamily: FONT_FAMILY.semiBold,
-    fontSize: 20,
-    lineHeight: 24,
-    color: '#000000',
-    marginTop: 2,
-  },
-
-  placedDateText: {
-    fontFamily: FONT_FAMILY.regular,
-    fontSize: FONT_SIZE.sm,
-    color: '#666666',
-    marginTop: 2,
-  },
-
-  confirmedBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-    marginTop: SPACING.xs,
-  },
-
-  confirmedText: {
-    fontFamily: FONT_FAMILY.semiBold,
-    fontSize: FONT_SIZE.md,
-    color: '#009411',
-  },
-
-  deliveryBanner: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'rgba(204, 93, 40, 0.20)',
-    borderRadius: RADIUS.lg,
-    paddingHorizontal: SPACING.lg,
-    paddingVertical: 12,
-    gap: SPACING.md,
-    minHeight: 64,
-  },
-
-  truckIcon: {
-    width: 32,
-    height: 32,
-  },
-
-  deliveryBannerTextCol: {
-    gap: 2,
-  },
-
-  deliveryAtLabel: {
-    fontFamily: FONT_FAMILY.regular,
-    fontSize: 13,
-    color: '#111111',
-  },
-
-  deliveryWindowText: {
-    fontFamily: FONT_FAMILY.semiBold,
-    fontSize: 14,
-    color: COLORS.orange.normal,
-  },
-
-  deliveryNotice: {
-    fontFamily: FONT_FAMILY.regular,
-    fontSize: FONT_SIZE.sm,
-    color: '#555555',
-    marginTop: -4,
   },
 
   addressCard: {
@@ -431,18 +299,21 @@ const styles = StyleSheet.create({
 
   timelineStepRow: {
     flexDirection: 'row',
-    alignItems: 'flex-start',
+    alignItems: 'stretch',
   },
 
   timelineTrackCol: {
     alignItems: 'center',
     width: 20,
+    position: 'relative',
   },
 
   timelineDot: {
     width: 16,
     height: 16,
     borderRadius: 8,
+    marginTop: 1,
+    zIndex: 2,
   },
 
   timelineDotActive: {
@@ -453,9 +324,22 @@ const styles = StyleSheet.create({
     backgroundColor: '#8E98A8',
   },
 
-  timelineLine: {
+  timelineTopLine: {
+    position: 'absolute',
+    top: 0,
+    height: 9,
     width: 6,
-    height: 44,
+    left: 7,
+    zIndex: 1,
+  },
+
+  timelineBottomLine: {
+    position: 'absolute',
+    top: 9,
+    bottom: 0,
+    width: 6,
+    left: 7,
+    zIndex: 1,
   },
 
   timelineLineActive: {
@@ -473,28 +357,25 @@ const styles = StyleSheet.create({
   },
 
   timelineContentSpacing: {
-    paddingBottom: 16,
+    paddingBottom: 20,
+  },
+
+  titleRowWrapper: {
+    height: 18,
+    justifyContent: 'center',
   },
 
   stepTitle: {
+    fontFamily: FONT_FAMILY.medium,
     fontSize: 14,
     lineHeight: 18,
-  },
-
-  stepTitleActive: {
-    fontFamily: FONT_FAMILY.medium,
-    color: COLORS.orange.normal,
-  },
-
-  stepTitleInactive: {
-    fontFamily: FONT_FAMILY.medium,
-    color: '#777777',
+    color: '#CC5D28',
   },
 
   stepTimestamp: {
     fontFamily: FONT_FAMILY.regular,
     fontSize: 12,
-    color: '#535353',
+    color: '#000000',
   },
 
   alertCard: {

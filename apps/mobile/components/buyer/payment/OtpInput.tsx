@@ -8,7 +8,7 @@ import {
   View,
 } from 'react-native';
 
-import { COLORS, FONT_FAMILY, FONT_SIZE, RADIUS, SPACING } from '@/theme';
+import { COLORS, FONT_FAMILY, RADIUS, SPACING } from '@/theme';
 
 interface OtpInputProps {
   length?: number;
@@ -91,8 +91,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.orange.banner,
     borderRadius: RADIUS.xs,
-    fontFamily: FONT_FAMILY.bold,
-    fontSize: FONT_SIZE.xl,
+    fontFamily: FONT_FAMILY.semiBold,
+    fontSize: 28,
+    lineHeight: 34,
     color: COLORS.text.primary,
     textAlign: 'center',
     textAlignVertical: 'center',
@@ -102,7 +103,7 @@ const styles = StyleSheet.create({
       web: {
         outlineStyle: 'none',
         outlineWidth: 0,
-      } as any,
+      } as Record<string, unknown>,
     }),
   },
 

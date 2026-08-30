@@ -1,11 +1,12 @@
 import React from 'react';
-import { Modal, Pressable, StyleSheet, View } from 'react-native';
+import { Image, Modal, Pressable, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
+import messageSquareIcon from '@/assets/icons/message-square.png';
 import { AppText } from '@/components/common/AppText';
 import { WALLET_SUPPORT_MODAL } from '@/constants/wallet';
-import { COLORS, FONT_FAMILY, FONT_SIZE, LINE_HEIGHT, RADIUS, SPACING } from '@/theme';
+import { COLORS, FONT_FAMILY, FONT_SIZE, LINE_HEIGHT, SPACING } from '@/theme';
 
 interface WalletHelpModalProps {
   visible: boolean;
@@ -36,7 +37,7 @@ export function WalletHelpModal({
           style={[
             styles.sheet,
             {
-              paddingBottom: Math.max(insets.bottom, 14) + 12,
+              marginBottom: Math.max(insets.bottom, 16) + 4,
             },
           ]}
         >
@@ -61,7 +62,11 @@ export function WalletHelpModal({
               accessibilityLabel={WALLET_SUPPORT_MODAL.chat.title}
             >
               <View style={styles.iconWrapper}>
-                <Ionicons name="chatbubble-outline" size={22} color="#CC5D28" />
+                <Image
+                  source={messageSquareIcon}
+                  style={{ width: 22, height: 22 }}
+                  resizeMode="contain"
+                />
               </View>
 
               <View style={styles.textContainer}>
@@ -84,7 +89,7 @@ export function WalletHelpModal({
               accessibilityLabel={WALLET_SUPPORT_MODAL.call.title}
             >
               <View style={styles.iconWrapper}>
-                <Ionicons name="call-outline" size={22} color="#1EA836" />
+                <Ionicons name="call-outline" size={22} color="#009411" />
               </View>
 
               <View style={styles.textContainer}>
@@ -117,24 +122,23 @@ const styles = StyleSheet.create({
   },
 
   sheet: {
-    backgroundColor: COLORS.white,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 20,
     paddingHorizontal: 16,
     paddingTop: 12,
+    paddingBottom: 16,
+    width: '92%',
     maxWidth: 374,
-    width: '100%',
-    minHeight: 281,
     alignSelf: 'center',
   },
 
   handle: {
     width: 48,
-    height: 3.5,
+    height: 4,
     borderRadius: 2,
     backgroundColor: '#1E1E1E',
     alignSelf: 'center',
-    marginBottom: SPACING.sm + 2,
+    marginBottom: 12,
   },
 
   title: {
@@ -162,24 +166,24 @@ const styles = StyleSheet.create({
   chatCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#FFF4EE',
-    borderWidth: 1,
-    borderColor: '#F5C2A5',
-    borderRadius: 14,
+    backgroundColor: 'rgba(204, 93, 40, 0.10)',
+    borderWidth: 0.4,
+    borderColor: '#CC5D28',
+    borderRadius: 12,
+    height: 64,
     paddingHorizontal: 14,
-    paddingVertical: 10,
     gap: 12,
   },
 
   callCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#EDFAEE',
-    borderWidth: 1,
-    borderColor: '#BFE7B4',
-    borderRadius: 14,
+    backgroundColor: 'rgba(0, 148, 17, 0.10)',
+    borderWidth: 0.4,
+    borderColor: '#009411',
+    borderRadius: 12,
+    height: 64,
     paddingHorizontal: 14,
-    paddingVertical: 10,
     gap: 12,
   },
 
