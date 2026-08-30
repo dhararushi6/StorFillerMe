@@ -507,7 +507,7 @@ const styles = StyleSheet.create({
   },
 
   saveButtonText: {
-    fontFamily: FONT_FAMILY.bold,
+    fontFamily: FONT_FAMILY.semiBold,
     fontSize: FONT_SIZE.md,
     lineHeight: LINE_HEIGHT.md,
     color: COLORS.text.primary,
