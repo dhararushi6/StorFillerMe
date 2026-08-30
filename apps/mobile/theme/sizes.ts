@@ -28,4 +28,7 @@ export const SIZES = {
   orderProductAsset: 64,
   orderProductRowHeight: 64,
   orderPriceWidth: 64,
+
+  helpButtonWidth: 60,
+  helpButtonHeight: 27,
 } as const;

@@ -157,18 +157,18 @@ const styles = StyleSheet.create({
   },
 
   helpButton: {
-    minHeight: SIZES.smallButtonHeight,
-    paddingHorizontal: SPACING.md,
+    width: SIZES.helpButtonWidth,
+    height: SIZES.helpButtonHeight,
     borderWidth: SIZES.borderThin,
-    borderColor: COLORS.white,
-    borderRadius: RADIUS.md,
+    borderColor: COLORS.orange.card,
+    borderRadius: RADIUS.xs,
     alignItems: 'center',
     justifyContent: 'center',
   },
 
   helpText: {
     fontFamily: FONT_FAMILY.regular,
-    fontSize: FONT_SIZE.sm,
+    fontSize: FONT_SIZE.md,
   },
 
   orderInfo: {
