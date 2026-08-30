@@ -22,6 +22,10 @@ export const COLORS = {
     typeUnselected: '#EFE3D5',
     disabledButton: '#E3C1B0',
     bottomBar: '#FAE2BB',
+
+    // Add-address (map) screen
+    actionButton: '#D45C25',
+    shopTitleAccent: '#B33C03',
   },
 
   yellow: {
@@ -40,9 +44,12 @@ export const COLORS = {
     darker: '#565551',
   },
 
+  // Figma header background
   header: '#FFF1CB',
 
+  // Figma address card background
   background: '#F6F2E7',
+
   backgroundSecondary: '#FAF6EE',
 
   surface: '#FFFFFF',
@@ -51,10 +58,7 @@ export const COLORS = {
     primary: '#111111',
     secondary: '#666666',
     muted: '#8A8A8A',
-
-    // Location title color
-    location: '#444444',
-
+    location: '#3C3C3C',
     inverse: '#FFFFFF',
     inverseSecondary: '#DDDDDD',
     danger: '#D64545',
@@ -81,6 +85,12 @@ export const COLORS = {
     dashedBorder: '#D4C5A9',
   },
 
+  // Add-address map screen
+  map: {
+    background: '#E8E3D5',
+    badge: '#FBE4C0',
+  },
+
   green: {
     light: '#DDF7D0',
     normal: '#1EA836',
@@ -89,6 +99,7 @@ export const COLORS = {
   border: '#E5DED2',
   borderDark: '#C8C4BC',
   borderStrong: '#6A6A6A',
+  borderSubtle: 'rgba(0,0,0,0.1)',
 
   success: '#1EA836',
   successLight: '#DDF7D0',

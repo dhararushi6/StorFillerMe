@@ -6,6 +6,10 @@ export const BREAKPOINTS = {
   tablet: 768,
 } as const;
 
+// Base design dimensions (iPhone 12/13/14)
+const BASE_WIDTH = 390;
+const BASE_HEIGHT = 844;
+
 export function useResponsive() {
   const { width, height } = useWindowDimensions();
 
@@ -14,8 +18,14 @@ export function useResponsive() {
   const isLarge = width >= BREAKPOINTS.medium;
   const isTablet = width >= BREAKPOINTS.tablet;
 
+  // Percentage-based scaling (as before)
   const wp = (percentage: number) => (width * percentage) / 100;
   const hp = (percentage: number) => (height * percentage) / 100;
+
+  // Typical scale/verticalScale/moderateScale (based on base design)
+  const scale = (size: number) => (width / BASE_WIDTH) * size;
+  const verticalScale = (size: number) => (height / BASE_HEIGHT) * size;
+  const moderateScale = (size: number, factor = 0.5) => size + (scale(size) - size) * factor;
 
   const horizontalPadding = isTablet ? 32 : Math.min(Math.max(width * 0.04, 16), 24);
 
@@ -91,6 +101,9 @@ export function useResponsive() {
     isTablet,
     wp,
     hp,
+    scale, // ✅ added
+    verticalScale, // ✅ added
+    moderateScale, // ✅ added
     horizontalPadding,
     home,
     wallet,
