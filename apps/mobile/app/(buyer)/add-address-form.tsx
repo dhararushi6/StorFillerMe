@@ -23,7 +23,7 @@ import SHOP_ICON from '@/assets/icons/storefront (2) 1.png';
 import WAREHOUSE_ICON from '@/assets/icons/warehouse 1.png';
 
 /* ============================================================
-   CUSTOM INPUT
+   CUSTOM INPUT (single line)
 ============================================================ */
 
 interface CustomTextInputProps {
@@ -85,12 +85,18 @@ export default function BuyerAddAddressFormScreen() {
 
   const [shopName, setShopName] = useState('');
   const [address, setAddress] = useState('');
+  const [pincode, setPincode] = useState('');
   const [landmark, setLandmark] = useState('');
   const [addressType, setAddressType] = useState<AddressType>('Shop');
 
+  // Focus states for the inline address/pincode row
+  const [addressFocused, setAddressFocused] = useState(false);
+  const [pincodeFocused, setPincodeFocused] = useState(false);
+
+  // Only shopName, address, and pincode are mandatory
   const isFormComplete = useMemo(() => {
-    return shopName.trim().length > 0 && address.trim().length > 0 && landmark.trim().length > 0;
-  }, [shopName, address, landmark]);
+    return shopName.trim().length > 0 && address.trim().length > 0 && pincode.trim().length > 0;
+  }, [shopName, address, pincode]);
 
   const handleBack = useCallback(() => {
     router.push('/(buyer)/add-address' as any);
@@ -101,23 +107,17 @@ export default function BuyerAddAddressFormScreen() {
       return;
     }
 
-    /*
-      Store only shop name + address in AddressContext —
-      the location list and map card show just these two
-      fields, so the landmark ("Delivery Details") is kept
-      out of the stored address text.
-    */
-
     addAddress({
       id: Date.now().toString(),
       title: shopName.trim(),
       address: address.trim(),
+      pincode: pincode.trim(),
       isSelected: true,
       type: addressType,
     } as any);
 
     router.push('/(buyer)/location');
-  }, [isFormComplete, shopName, address, landmark, addressType, addAddress]);
+  }, [isFormComplete, shopName, address, pincode, addressType, addAddress]);
 
   return React.createElement(
     SafeAreaView,
@@ -195,18 +195,89 @@ export default function BuyerAddAddressFormScreen() {
           placeholder: 'Enter shop name',
         }),
 
-        React.createElement(CustomTextInput, {
-          label: 'Address',
-          value: address,
-          onChangeText: setAddress,
-          placeholder: 'House / Shop No. / Street / Area / PIN Code',
-        }),
+        /* ====================================================
+           ADDRESS + PINCODE ROW (with separate headings)
+        ==================================================== */
+
+        React.createElement(
+          View,
+          { style: styles.rowContainer },
+
+          // Address column
+          React.createElement(
+            View,
+            { style: styles.addressColumn },
+            React.createElement(Text, { style: styles.label }, 'Address'),
+            React.createElement(
+              View,
+              { style: styles.inputWrapper },
+              React.createElement(TextInput, {
+                style: styles.textInput,
+                value: address,
+                onChangeText: setAddress,
+                placeholder: '',
+                underlineColorAndroid: 'transparent',
+                cursorColor: COLORS.text.location,
+                selectionColor: COLORS.text.location,
+                onFocus: () => setAddressFocused(true),
+                onBlur: () => setAddressFocused(false),
+              }),
+              address.length === 0 && !addressFocused
+                ? React.createElement(
+                    Text,
+                    {
+                      style: styles.customPlaceholder,
+                      pointerEvents: 'none',
+                    },
+                    'House / Shop No. / Street / Area',
+                  )
+                : null,
+            ),
+          ),
+
+          // Pincode column
+          React.createElement(
+            View,
+            { style: styles.pincodeColumn },
+            React.createElement(Text, { style: styles.label }, 'Pincode'),
+            React.createElement(
+              View,
+              { style: styles.inputWrapper },
+              React.createElement(TextInput, {
+                style: styles.textInput,
+                value: pincode,
+                onChangeText: setPincode,
+                placeholder: '',
+                underlineColorAndroid: 'transparent',
+                cursorColor: COLORS.text.location,
+                selectionColor: COLORS.text.location,
+                keyboardType: 'number-pad',
+                onFocus: () => setPincodeFocused(true),
+                onBlur: () => setPincodeFocused(false),
+              }),
+              pincode.length === 0 && !pincodeFocused
+                ? React.createElement(
+                    Text,
+                    {
+                      style: styles.customPlaceholder,
+                      pointerEvents: 'none',
+                    },
+                    'Enter PIN Code',
+                  )
+                : null,
+            ),
+          ),
+        ),
+
+        /* ====================================================
+           DELIVERY DETAILS (optional)
+        ==================================================== */
 
         React.createElement(CustomTextInput, {
           label: 'Delivery Details',
           value: landmark,
           onChangeText: setLandmark,
-          placeholder: 'Landmark',
+          placeholder: 'Landmark (optional)',
         }),
 
         /* ====================================================
@@ -378,7 +449,7 @@ const styles = StyleSheet.create({
   },
 
   /* ========================================================
-     INPUT LINE
+     INPUT LINE (shared)
   ======================================================== */
 
   inputWrapper: {
@@ -395,23 +466,14 @@ const styles = StyleSheet.create({
     height: SIZES.inputUnderlineHeight,
     borderWidth: 0,
     borderRadius: 0,
-
     paddingHorizontal: 0,
-
-    /*
-      Keeps typed text vertically aligned with
-      the underline.
-    */
     paddingTop: SIZES.inputPaddingTop,
     paddingBottom: 0,
-
     fontFamily: FONT_FAMILY.regular,
     fontSize: FONT_SIZE.md,
     lineHeight: LINE_HEIGHT.md,
-
     color: COLORS.text.primary,
     backgroundColor: 'transparent',
-
     outlineStyle: 'none',
   } as any,
 
@@ -419,16 +481,32 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 0,
     right: 0,
-
     top: SIZES.inputPlaceholderTop,
-
     fontFamily: FONT_FAMILY.regular,
     fontSize: FONT_SIZE.xs,
     lineHeight: LINE_HEIGHT.sm,
-
     color: COLORS.text.secondary,
-
     pointerEvents: 'none',
+  },
+
+  /* ========================================================
+     ADDRESS + PINCODE ROW
+  ======================================================== */
+
+  rowContainer: {
+    flexDirection: 'row',
+    gap: SPACING.md,
+    alignItems: 'flex-start', // Aligns labels at the top
+  },
+
+  addressColumn: {
+    flex: 2,
+    gap: SPACING.sm,
+  },
+
+  pincodeColumn: {
+    flex: 1,
+    gap: SPACING.sm,
   },
 
   /* ========================================================
@@ -444,13 +522,10 @@ const styles = StyleSheet.create({
   typeCard: {
     width: SIZES.addressTypeCardWidth,
     height: SIZES.addressTypeCardHeight,
-
     paddingTop: SIZES.addressTypePaddingTop,
     paddingBottom: SPACING.md,
     paddingHorizontal: SPACING.md,
-
     borderRadius: RADIUS.xl,
-
     flexDirection: 'column',
     alignItems: 'flex-start',
     justifyContent: 'space-between',
@@ -495,9 +570,7 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     height: SIZES.saveButtonHeight,
     borderRadius: RADIUS.md,
-
     backgroundColor: COLORS.orange.lightActive,
-
     justifyContent: 'center',
     alignItems: 'center',
   },
