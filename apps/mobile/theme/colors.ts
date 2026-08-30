@@ -26,6 +26,9 @@ export const COLORS = {
     // Add-address (map) screen
     actionButton: '#D45C25',
     shopTitleAccent: '#B33C03',
+
+    // ★ New color for the disabled save button
+    disabledButtonBackground: '#CC5D2852', // <-- added
   },
 
   yellow: {

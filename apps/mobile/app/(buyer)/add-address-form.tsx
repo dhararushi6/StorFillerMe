@@ -536,7 +536,7 @@ const styles = StyleSheet.create({
   },
 
   typeCardWarehouseSelected: {
-    backgroundColor: COLORS.cart.couponCard,
+    backgroundColor: COLORS.orange.card, // changed from COLORS.cart.couponCard
   },
 
   typeCardUnselected: {
@@ -570,7 +570,7 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     height: SIZES.saveButtonHeight,
     borderRadius: RADIUS.md,
-    backgroundColor: COLORS.orange.lightActive,
+    backgroundColor: COLORS.orange.disabledButtonBackground, // changed from COLORS.orange.lightActive
     justifyContent: 'center',
     alignItems: 'center',
   },
