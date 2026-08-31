@@ -31,4 +31,9 @@ export const SIZES = {
 
   helpButtonWidth: 60,
   helpButtonHeight: 27,
+
+  helpModalMaxWidth: 450,
+  helpModalTopicHeight: 64,
+  helpModalHandleWidth: 60,
+  helpModalHandleHeight: 4,
 } as const;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ActivityIndicator, Image, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
 
@@ -6,7 +6,7 @@ import downloadIcon from '@/assets/icons/download.png';
 
 import { AppText } from '@/components/common/AppText';
 import { ScreenHeader } from '@/components/common/ScreenHeader';
-
+import { OrderHelpModal } from '@/components/order/OrderHelpModal';
 import { OrderBill } from '@/components/order/OrderBill';
 import { OrderDeliveryDetails } from '@/components/order/OrderDeliveryDetails';
 import { OrderProductItem } from '@/components/order/OrderProductItem';
@@ -20,7 +20,7 @@ export default function OrderDetailsScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
 
   const { data: orders = [], isLoading, isError } = useOrders();
-
+  const [helpVisible, setHelpVisible] = useState(false);
   const order = orders.find((item) => item.id === id);
 
   if (isLoading) {
@@ -60,6 +60,7 @@ export default function OrderDetailsScreen() {
         fallbackRoute="/(buyer)/orders"
         rightElement={
           <Pressable
+            onPress={() => setHelpVisible(true)}
             accessibilityRole="button"
             accessibilityLabel="Help"
             hitSlop={8}
@@ -118,6 +119,14 @@ export default function OrderDetailsScreen() {
         {/* Rating */}
         <OrderRating />
       </ScrollView>
+      <OrderHelpModal
+        visible={helpVisible}
+        onClose={() => setHelpVisible(false)}
+        onTopicPress={(topic) => {
+          setHelpVisible(false);
+          console.log('Selected help topic:', topic.id);
+        }}
+      />
     </View>
   );
 }
