@@ -46,3 +46,36 @@ export const ORDER_STATUS_CONFIG: Record<
     backgroundColor: COLORS.orange.light,
   },
 };
+
+export const HELP_TOPICS = [
+  {
+    id: 'missing-items',
+    title: 'Missing items',
+    description: 'Some items are missing from my order',
+  },
+  {
+    id: 'wrong-items',
+    title: 'Wrong items received',
+    description: 'I received wrong products',
+  },
+  {
+    id: 'damaged-items',
+    title: 'Damaged items',
+    description: 'I received damaged or broken items',
+  },
+  {
+    id: 'delivery-issue',
+    title: 'Delivery issue',
+    description: 'Order not delivered / Late delivery',
+  },
+  {
+    id: 'invoice-issue',
+    title: 'Invoice issue',
+    description: 'Problem with invoice or billing',
+  },
+  {
+    id: 'payment-issue',
+    title: 'Payment issue',
+    description: 'Payment failed or wrong amount deducted',
+  },
+] as const;

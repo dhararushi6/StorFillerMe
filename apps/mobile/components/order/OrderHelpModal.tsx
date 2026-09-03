@@ -5,51 +5,14 @@ import { AppIcon } from '@/components/common/AppIcon';
 import { AppText } from '@/components/common/AppText';
 
 import { COLORS, FONT_FAMILY, FONT_SIZE, RADIUS, SIZES, SPACING, useResponsive } from '@/theme';
-
-interface OrderHelpTopic {
-  id: string;
-  title: string;
-  description: string;
-}
+import { HELP_TOPICS } from '@/features/orders/orders.constants';
+export type OrderHelpTopic = (typeof HELP_TOPICS)[number];
 
 interface OrderHelpModalProps {
   visible: boolean;
   onClose: () => void;
   onTopicPress?: (topic: OrderHelpTopic) => void;
 }
-
-const HELP_TOPICS: OrderHelpTopic[] = [
-  {
-    id: 'missing-items',
-    title: 'Missing items',
-    description: 'Some items are missing from my order',
-  },
-  {
-    id: 'wrong-items',
-    title: 'Wrong items received',
-    description: 'I received Wrong products',
-  },
-  {
-    id: 'damaged-items',
-    title: 'Damaged items',
-    description: 'I Received damaged or broken items',
-  },
-  {
-    id: 'delivery-issue',
-    title: 'Delivery issue',
-    description: 'Order not delivered / Late delivery',
-  },
-  {
-    id: 'invoice-issue',
-    title: 'Invoice issue',
-    description: 'Problem with invoice or billing',
-  },
-  {
-    id: 'payment-issue',
-    title: 'Payment issue',
-    description: 'Payment failed or wrong amount deducted',
-  },
-];
 
 export function OrderHelpModal({ visible, onClose, onTopicPress }: OrderHelpModalProps) {
   const { horizontalPadding } = useResponsive();
