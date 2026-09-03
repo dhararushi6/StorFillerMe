@@ -3,17 +3,13 @@ export const COLORS = {
     light: '#FAEFEA',
     lightHover: '#F7E7DF',
     lightActive: '#EFCDBC',
-
     normal: '#CC5D28',
     normalHover: '#B85424',
     normalActive: '#A34A20',
-
     dark: '#99461E',
     darkHover: '#7A3818',
     darkActive: '#5C2A12',
-
     darker: '#47210E',
-
     promoText: '#9D3E11',
     banner: '#EFA980',
     showcase: '#FECA7A',
@@ -22,41 +18,26 @@ export const COLORS = {
     typeUnselected: '#EFE3D5',
     disabledButton: '#E3C1B0',
     bottomBar: '#FAE2BB',
-
-    // Add-address (map) screen
     actionButton: '#D45C25',
     shopTitleAccent: '#B33C03',
-
-    // ★ New color for the disabled save button
-    disabledButtonBackground: '#CC5D2852', // <-- added
+    disabledButtonBackground: '#CC5D2852',
   },
-
   yellow: {
     light: '#FEFEFD',
     lightHover: '#FDFDFB',
     lightActive: '#FCFBF8',
-
     normal: '#F6F2E7',
     normalHover: '#DDDAD0',
     normalActive: '#C5C2B9',
-
     dark: '#B9B6AD',
     darkHover: '#94918B',
     darkActive: '#6F6D68',
-
     darker: '#565551',
   },
-
-  // Figma header background
   header: '#FFF1CB',
-
-  // Figma address card background
   background: '#F6F2E7',
-
   backgroundSecondary: '#FAF6EE',
-
   surface: '#FFFFFF',
-
   text: {
     primary: '#111111',
     secondary: '#666666',
@@ -66,12 +47,10 @@ export const COLORS = {
     inverseSecondary: '#DDDDDD',
     danger: '#D64545',
   },
-
   deal: {
     card: '#FFF1CC',
     inner: '#CC5D281A',
   },
-
   cart: {
     billCalculation: '#EFCDBC99',
     billHeader: '#FAE2BB',
@@ -80,39 +59,37 @@ export const COLORS = {
     couponCard: '#CC5D281A',
     recommendations: '#E9A37B',
   },
-
   payment: {
     amountBanner: '#D8E6FD',
     amountText: '#2563EB',
     card: '#FFF1CB',
     dashedBorder: '#D4C5A9',
   },
-
-  // Add-address map screen
   map: {
     background: '#E8E3D5',
     badge: '#FBE4C0',
   },
-
   green: {
     light: '#DDF7D0',
     normal: '#1EA836',
   },
-
   border: '#E5DED2',
   borderDark: '#C8C4BC',
   borderStrong: '#6A6A6A',
   borderSubtle: 'rgba(0,0,0,0.1)',
-
   success: '#1EA836',
   successLight: '#DDF7D0',
   warning: '#F2A900',
   danger: '#D64545',
-
   rating: '#F2A900',
-
   overlay: 'rgba(17, 17, 17, 0.55)',
-
   white: '#FFFFFF',
   black: '#000000',
+
+  // --- NEW ---
+  shopScreenBackground: '#FFFBF2',
+  shopCardBackground: '#FFF0D7',
+  photoBoxBackground: '#FFF1DA',
+  errorLight: '#FDECEC',
+  overlayLight: 'rgba(0,0,0,0.35)',
 } as const;

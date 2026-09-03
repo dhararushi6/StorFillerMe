@@ -22,8 +22,8 @@ export const FONT_SIZE = {
   xxl: 22,
   xxxl: 28,
   display: 32,
-
   badge: 13,
+  extraLarge: 20, // added for modal titles, etc.
 } as const;
 
 export const LINE_HEIGHT = {
@@ -38,8 +38,9 @@ export const LINE_HEIGHT = {
   category: 14.4,
   label: 16.8,
   typeText: 19.2,
-
   badge: 17,
   cardTitle: 15,
   buttonText: 18,
+  small: 17, // added for shop name, etc.
+  medium: 21, // added for modal message
 } as const;

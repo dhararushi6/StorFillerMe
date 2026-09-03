@@ -5,4 +5,6 @@ export const ICON_SIZES = {
   lg: 24,
   xl: 28,
   xxl: 32,
+  xxxl: 36, // new
+  huge: 110, // new (for success icon)
 } as const;

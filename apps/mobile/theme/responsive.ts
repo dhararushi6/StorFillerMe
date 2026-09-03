@@ -92,6 +92,15 @@ export function useResponsive() {
     qtyButtonHeight: isSmall ? 28 : 32,
   };
 
+  // ★ Shop Photo screen — 2-column image grid (added)
+  const shopPhotoGridGap = isSmall ? 10 : 12;
+  const shopPhoto = {
+    gridGap: shopPhotoGridGap,
+    gridCardWidth: Math.floor((width - horizontalPadding * 2 - shopPhotoGridGap) / 2),
+    gridCardHeight: isSmall ? 108 : 122,
+    placeholderIconSize: isSmall ? 28 : 32,
+  };
+
   return {
     width,
     height,
@@ -101,13 +110,14 @@ export function useResponsive() {
     isTablet,
     wp,
     hp,
-    scale, // ✅ added
-    verticalScale, // ✅ added
-    moderateScale, // ✅ added
+    scale,
+    verticalScale,
+    moderateScale,
     horizontalPadding,
     home,
     wallet,
     product,
     cart,
+    shopPhoto, // ★ added
   };
 }
