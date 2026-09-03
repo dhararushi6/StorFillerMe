@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 import {
   Modal,
   View,
@@ -9,7 +9,6 @@ import {
   Pressable,
   useWindowDimensions,
   Platform,
-  Alert,
 } from 'react-native';
 import {
   COLORS,
@@ -22,28 +21,16 @@ import {
   LINE_HEIGHT,
   useResponsive,
 } from '../../theme';
+import {
+  SHOP_PHOTO_STRINGS,
+  CAMERA_METRICS,
+  useActionSheetLayout,
+  useWebCamera,
+  PhotoActionSheetProps,
+} from '../../constants/Shop photo.constants';
 
 import cameraIcon from '../../assets/icons/camera.png';
 import galleryIcon from '../../assets/icons/gallery.png';
-
-interface PhotoActionSheetProps {
-  visible: boolean;
-  onCamera: (imageUri: string) => void;
-  onGallery: () => void;
-  onCancel: () => void;
-}
-
-// Local constants for camera UI (not shared across the app)
-const BASE_SCREEN_WIDTH = 375;
-const BASE_ICON_SIZE = 56;
-const MIN_ICON_SIZE = 48;
-const MAX_ICON_SIZE = 80;
-const ICON_LABEL_GAP = 4;
-const VIDEO_ASPECT_RATIO = 3 / 4;
-const CAPTURE_BUTTON_OUTER = 76;
-const CAPTURE_BUTTON_INNER = 62;
-const CAPTURE_BUTTON_INNER_BORDER = 3;
-const PREVIEW_QUALITY = 0.9;
 
 export function PhotoActionSheet({
   visible,
@@ -54,129 +41,18 @@ export function PhotoActionSheet({
   const { width } = useWindowDimensions();
   const { horizontalPadding } = useResponsive();
 
-  const [cameraVisible, setCameraVisible] = useState(false);
-  const [capturedImage, setCapturedImage] = useState<string | null>(null);
+  const { iconSize, iconLabelGap } = useActionSheetLayout(width);
 
-  const videoRef = useRef<HTMLVideoElement | null>(null);
-  const streamRef = useRef<MediaStream | null>(null);
-
-  const scale = width / BASE_SCREEN_WIDTH;
-
-  const iconSize = Math.min(MAX_ICON_SIZE, Math.max(MIN_ICON_SIZE, BASE_ICON_SIZE * scale));
-
-  const stopCamera = () => {
-    if (streamRef.current) {
-      streamRef.current.getTracks().forEach((track) => track.stop());
-      streamRef.current = null;
-    }
-  };
-
-  const handleCamera = async () => {
-    if (Platform.OS !== 'web') {
-      Alert.alert('Camera', 'Camera capture is currently supported in the web version.');
-      return;
-    }
-
-    try {
-      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-        Alert.alert('Camera Not Supported', 'Your browser does not support camera access.');
-        return;
-      }
-
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: true,
-        audio: false,
-      });
-
-      streamRef.current = stream;
-      setCapturedImage(null);
-      setCameraVisible(true);
-
-      setTimeout(() => {
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream;
-          videoRef.current.play();
-        }
-      }, 100);
-    } catch (error) {
-      console.log('Camera error:', error);
-      Alert.alert('Camera Permission', 'Please allow camera access in your browser.');
-    }
-  };
-
-  const capturePhoto = () => {
-    if (!videoRef.current) {
-      return;
-    }
-
-    const video = videoRef.current;
-
-    const canvas = document.createElement('canvas');
-
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-
-    const context = canvas.getContext('2d');
-
-    if (!context) {
-      Alert.alert('Error', 'Unable to capture photo.');
-      return;
-    }
-
-    context.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-    const imageUri = canvas.toDataURL('image/jpeg', PREVIEW_QUALITY);
-
-    stopCamera();
-
-    setCapturedImage(imageUri);
-  };
-
-  const uploadPhoto = () => {
-    if (!capturedImage) {
-      return;
-    }
-
-    onCamera(capturedImage);
-
-    setCapturedImage(null);
-    setCameraVisible(false);
-  };
-
-  const retakePhoto = async () => {
-    setCapturedImage(null);
-
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: true,
-        audio: false,
-      });
-
-      streamRef.current = stream;
-
-      setTimeout(() => {
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream;
-          videoRef.current.play();
-        }
-      }, 100);
-    } catch {
-      // ✅ No parameter needed – ESLint no longer complains
-      Alert.alert('Camera Permission', 'Unable to reopen camera.');
-    }
-  };
-
-  const closeCamera = () => {
-    stopCamera();
-    setCapturedImage(null);
-    setCameraVisible(false);
-  };
-
-  useEffect(() => {
-    return () => {
-      stopCamera();
-    };
-  }, []);
+  const {
+    cameraVisible,
+    capturedImage,
+    videoRef,
+    handleCamera,
+    capturePhoto,
+    uploadPhoto,
+    retakePhoto,
+    closeCamera,
+  } = useWebCamera(onCamera);
 
   return (
     <>
@@ -205,12 +81,11 @@ export function PhotoActionSheet({
                   style={{
                     width: iconSize,
                     height: iconSize,
-                    marginBottom: ICON_LABEL_GAP,
+                    marginBottom: iconLabelGap,
                   }}
                   resizeMode="contain"
                 />
-
-                <Text style={styles.optionLabel}>Camera</Text>
+                <Text style={styles.optionLabel}>{SHOP_PHOTO_STRINGS.cameraLabel}</Text>
               </TouchableOpacity>
 
               {/* GALLERY */}
@@ -220,17 +95,16 @@ export function PhotoActionSheet({
                   style={{
                     width: iconSize,
                     height: iconSize,
-                    marginBottom: ICON_LABEL_GAP,
+                    marginBottom: iconLabelGap,
                   }}
                   resizeMode="contain"
                 />
-
-                <Text style={styles.optionLabel}>Gallery</Text>
+                <Text style={styles.optionLabel}>{SHOP_PHOTO_STRINGS.galleryLabel}</Text>
               </TouchableOpacity>
             </View>
 
             <TouchableOpacity style={styles.cancelButton} onPress={onCancel} activeOpacity={0.8}>
-              <Text style={styles.cancelText}>Cancel</Text>
+              <Text style={styles.cancelText}>{SHOP_PHOTO_STRINGS.cancelLabel}</Text>
             </TouchableOpacity>
           </Pressable>
         </Pressable>
@@ -247,7 +121,7 @@ export function PhotoActionSheet({
           <View style={styles.cameraScreen}>
             {!capturedImage ? (
               <>
-                <Text style={styles.cameraTitle}>Take Photo</Text>
+                <Text style={styles.cameraTitle}>{SHOP_PHOTO_STRINGS.takePhotoTitle}</Text>
 
                 <View style={styles.videoContainer}>
                   {React.createElement('video', {
@@ -272,12 +146,12 @@ export function PhotoActionSheet({
                   onPress={closeCamera}
                   activeOpacity={0.8}
                 >
-                  <Text style={styles.closeCameraText}>Cancel</Text>
+                  <Text style={styles.closeCameraText}>{SHOP_PHOTO_STRINGS.cancelLabel}</Text>
                 </TouchableOpacity>
               </>
             ) : (
               <>
-                <Text style={styles.cameraTitle}>Photo Preview</Text>
+                <Text style={styles.cameraTitle}>{SHOP_PHOTO_STRINGS.photoPreviewTitle}</Text>
 
                 <View style={styles.previewContainer}>
                   <Image
@@ -292,7 +166,7 @@ export function PhotoActionSheet({
                   onPress={uploadPhoto}
                   activeOpacity={0.8}
                 >
-                  <Text style={styles.uploadText}>Upload Photo</Text>
+                  <Text style={styles.uploadText}>{SHOP_PHOTO_STRINGS.uploadPhotoButton}</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
@@ -300,7 +174,7 @@ export function PhotoActionSheet({
                   onPress={retakePhoto}
                   activeOpacity={0.8}
                 >
-                  <Text style={styles.retakeText}>Retake</Text>
+                  <Text style={styles.retakeText}>{SHOP_PHOTO_STRINGS.retakeButton}</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
@@ -308,7 +182,7 @@ export function PhotoActionSheet({
                   onPress={closeCamera}
                   activeOpacity={0.8}
                 >
-                  <Text style={styles.closeCameraText}>Cancel</Text>
+                  <Text style={styles.closeCameraText}>{SHOP_PHOTO_STRINGS.cancelLabel}</Text>
                 </TouchableOpacity>
               </>
             )}
@@ -376,8 +250,8 @@ const styles = StyleSheet.create({
   },
   videoContainer: {
     width: '100%',
-    maxWidth: 600,
-    aspectRatio: VIDEO_ASPECT_RATIO,
+    maxWidth: CAMERA_METRICS.maxWidth,
+    aspectRatio: CAMERA_METRICS.videoAspectRatio,
     overflow: 'hidden',
     borderRadius: RADIUS.xxl,
     backgroundColor: COLORS.black,
@@ -386,27 +260,27 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     objectFit: 'cover',
-  } as any, // ⚠️ warning only – not blocking
+  } as any,
   captureButton: {
-    width: CAPTURE_BUTTON_OUTER,
-    height: CAPTURE_BUTTON_OUTER,
-    borderRadius: CAPTURE_BUTTON_OUTER / 2,
+    width: CAMERA_METRICS.captureButtonOuter,
+    height: CAMERA_METRICS.captureButtonOuter,
+    borderRadius: CAMERA_METRICS.captureButtonOuter / 2,
     backgroundColor: COLORS.white,
     marginTop: SPACING.xxl,
     alignItems: 'center',
     justifyContent: 'center',
   },
   captureButtonInner: {
-    width: CAPTURE_BUTTON_INNER,
-    height: CAPTURE_BUTTON_INNER,
-    borderRadius: CAPTURE_BUTTON_INNER / 2,
-    borderWidth: CAPTURE_BUTTON_INNER_BORDER,
+    width: CAMERA_METRICS.captureButtonInner,
+    height: CAMERA_METRICS.captureButtonInner,
+    borderRadius: CAMERA_METRICS.captureButtonInner / 2,
+    borderWidth: CAMERA_METRICS.captureButtonInnerBorder,
     borderColor: COLORS.black,
   },
   previewContainer: {
     width: '100%',
-    maxWidth: 600,
-    aspectRatio: VIDEO_ASPECT_RATIO,
+    maxWidth: CAMERA_METRICS.maxWidth,
+    aspectRatio: CAMERA_METRICS.videoAspectRatio,
     borderRadius: RADIUS.xxl,
     overflow: 'hidden',
     backgroundColor: COLORS.black,
@@ -417,7 +291,7 @@ const styles = StyleSheet.create({
   },
   uploadButton: {
     width: '100%',
-    maxWidth: 600,
+    maxWidth: CAMERA_METRICS.maxWidth,
     height: SIZES.buttonHeight,
     marginTop: SPACING.xxl,
     borderRadius: RADIUS.lg,
@@ -432,7 +306,7 @@ const styles = StyleSheet.create({
   },
   retakeButton: {
     width: '100%',
-    maxWidth: 600,
+    maxWidth: CAMERA_METRICS.maxWidth,
     height: SIZES.smallButtonHeight,
     marginTop: SPACING.md,
     borderRadius: RADIUS.lg,

@@ -13,28 +13,25 @@ import {
   SIZES,
   ICON_SIZES,
 } from '../../theme';
+import {
+  SHOP_PHOTO_STRINGS,
+  MODAL_METRICS,
+  PhotoAddedModalProps,
+} from '../../constants/Shop photo.constants';
 
-// Replaced require() with import
 import checkIcon from '../../assets/icons/Shop images (7).png';
-
-interface PhotoAddedModalProps {
-  visible: boolean;
-  onDone: () => void;
-  title?: string;
-  message?: string;
-}
 
 export function PhotoAddedModal({
   visible,
   onDone,
-  title = 'Photo Added!',
-  message = 'Your shop photo has been\nadded successfully',
+  title = SHOP_PHOTO_STRINGS.successTitle,
+  message = SHOP_PHOTO_STRINGS.successMessage,
 }: PhotoAddedModalProps) {
   const insets = useSafeAreaInsets();
 
   const handleDone = () => {
     onDone();
-    router.replace('/(buyer)/profile');
+    router.replace(SHOP_PHOTO_STRINGS.routes.profile as any);
   };
 
   return (
@@ -57,8 +54,12 @@ export function PhotoAddedModal({
 
           <Text style={styles.message}>{message}</Text>
 
-          <TouchableOpacity style={styles.doneButton} onPress={handleDone} activeOpacity={0.85}>
-            <Text style={styles.doneText}>Done</Text>
+          <TouchableOpacity
+            style={styles.doneButton}
+            onPress={handleDone}
+            activeOpacity={MODAL_METRICS.activeOpacity}
+          >
+            <Text style={styles.doneText}>{SHOP_PHOTO_STRINGS.doneLabel}</Text>
           </TouchableOpacity>
         </Pressable>
       </View>
@@ -113,7 +114,7 @@ const styles = StyleSheet.create({
     lineHeight: LINE_HEIGHT.medium,
     color: COLORS.black,
     textAlign: 'center',
-    maxWidth: 250,
+    maxWidth: MODAL_METRICS.messageMaxWidth,
     marginBottom: SPACING.xl,
   },
   doneButton: {

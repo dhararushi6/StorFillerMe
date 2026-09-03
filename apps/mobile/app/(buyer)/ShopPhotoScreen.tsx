@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   View,
   Text,
@@ -25,37 +25,31 @@ import {
   SIZES,
   useResponsive,
 } from '../../theme';
+import {
+  SHOP_PHOTO_STRINGS,
+  DEFAULT_SHOP_DETAILS,
+  IMAGE_PICKER_CONFIG,
+  HIT_SLOPS,
+  createInitialPhotoSlots,
+  applyPhotoToSlots,
+  removePhotoFromSlots,
+  validateImageAsset,
+  useShopPhotoLayout,
+  useShopPhotoUpload,
+  ShopPhotoScreenProps,
+  PhotoSlot,
+} from '../../constants/Shop photo.constants';
 import { PhotoActionSheet } from './PhotoActionSheet';
 import { PhotoAddedModal } from './PhotoAddedModal';
 
-// Replaced require() with import
 import backIcon from '../../assets/icons/Arrow 10 (1).png';
 import editIcon from '../../assets/icons/edit 1.png';
 import imageIcon from '../../assets/icons/image 2.png';
 import storefrontIcon from '../../assets/icons/storefront (1) 2.png';
 
-interface ShopPhotoScreenProps {
-  shopName?: string;
-  shopAddress?: string;
-  onBack?: () => void;
-  onEditShop?: () => void;
-  onUpload?: (photos: string[]) => void | Promise<void>;
-}
-
-const PHOTO_SLOTS = 4;
-const MAX_FILE_SIZE_MB = 10;
-const BASE_SCREEN_WIDTH = 402;
-// FIGMA_FRAME_RADIUS removed – not used
-const FIGMA_HORIZONTAL_PADDING = 24;
-const GRID_GAP_RATIO = (211 - 24 - 167) / BASE_SCREEN_WIDTH;
-const FIGMA_BOX_ASPECT_RATIO = 167 / 100;
-const COLUMNS = 2;
-const MIN_SCALE = 0.85;
-const MAX_SCALE = 1.35;
-
 export function ShopPhotoScreen({
-  shopName = 'Jagadeesh kirana shop',
-  shopAddress = 'opposite: petrol bunk, B.C.Road, Gajuwaka, Visakhapatnam.',
+  shopName = DEFAULT_SHOP_DETAILS.shopName,
+  shopAddress = DEFAULT_SHOP_DETAILS.shopAddress,
   onBack,
   onEditShop,
   onUpload,
@@ -63,13 +57,25 @@ export function ShopPhotoScreen({
   const { horizontalPadding: themeHorizontalPadding } = useResponsive();
   const { width: screenWidth } = useWindowDimensions();
 
-  const [photos, setPhotos] = useState<(string | null)[]>(Array(PHOTO_SLOTS).fill(null));
+  const [photos, setPhotos] = useState<PhotoSlot[]>(createInitialPhotoSlots());
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [actionSheetVisible, setActionSheetVisible] = useState(false);
   const [successVisible, setSuccessVisible] = useState(false);
-  const [isUploading, setIsUploading] = useState(false);
-  const [uploadProgress, setUploadProgress] = useState(0);
-  const [uploadError, setUploadError] = useState<string | null>(null);
+
+  const handleUploadSuccess = useCallback(() => setSuccessVisible(true), []);
+
+  const { isUploading, uploadProgress, uploadError, handleUpload, setUploadError } =
+    useShopPhotoUpload(onUpload, handleUploadSuccess);
+
+  const {
+    horizontalPadding,
+    gridGap,
+    itemWidth,
+    placeholderIconSize,
+    labelFontSize,
+    labelLineHeight,
+    boxAspectRatio,
+  } = useShopPhotoLayout(screenWidth, themeHorizontalPadding);
 
   const openActionSheet = (index: number) => {
     setActiveIndex(index);
@@ -83,32 +89,13 @@ export function ShopPhotoScreen({
 
   const applyPhoto = (uri: string) => {
     if (activeIndex === null) return;
-    setPhotos((prev) => {
-      const next = [...prev];
-      next[activeIndex] = uri;
-      return next;
-    });
+    setPhotos((prev) => applyPhotoToSlots(prev, activeIndex, uri));
     closeActionSheet();
     setUploadError(null);
   };
 
-  const removePhoto = (index: number) => {
-    setPhotos((prev) => {
-      const next = [...prev];
-      next[index] = null;
-      return next;
-    });
-  };
-
-  const validateAsset = (asset: ImagePicker.ImagePickerAsset): string | null => {
-    const isImage =
-      asset.mimeType?.startsWith('image/') ?? /\.(jpg|jpeg|png|webp|heic)$/i.test(asset.uri);
-
-    if (!isImage) return 'Please select a valid image file (JPG, PNG, or WEBP).';
-    if (asset.fileSize && asset.fileSize > MAX_FILE_SIZE_MB * 1024 * 1024) {
-      return `Image is too large. Please choose a file under ${MAX_FILE_SIZE_MB}MB.`;
-    }
-    return null;
+  const handleRemovePhoto = (index: number) => {
+    setPhotos((prev) => removePhotoFromSlots(prev, index));
   };
 
   const handleCameraCapture = (imageUri: string) => {
@@ -121,33 +108,31 @@ export function ShopPhotoScreen({
 
       if (status !== 'granted') {
         Alert.alert(
-          'Permission needed',
-          'Gallery access is required to select photos. Please enable it in your device settings.',
-          [{ text: 'OK' }],
+          SHOP_PHOTO_STRINGS.alerts.permissionTitle,
+          SHOP_PHOTO_STRINGS.alerts.permissionMsg,
+          [{ text: SHOP_PHOTO_STRINGS.okLabel }],
         );
         return;
       }
 
       closeActionSheet();
 
-      const result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsEditing: true,
-        aspect: [4, 3],
-        quality: 0.8,
-      });
+      const result = await ImagePicker.launchImageLibraryAsync(IMAGE_PICKER_CONFIG);
 
       if (!result.canceled && result.assets?.[0]) {
-        const error = validateAsset(result.assets[0]);
+        const error = validateImageAsset(result.assets[0]);
         if (error) {
-          Alert.alert('Invalid photo', error);
+          Alert.alert(SHOP_PHOTO_STRINGS.alerts.invalidPhotoTitle, error);
           return;
         }
         applyPhoto(result.assets[0].uri);
       }
     } catch (error) {
       console.warn('Gallery error:', error);
-      Alert.alert('Gallery Error', 'Unable to open the gallery. Please try again.');
+      Alert.alert(
+        SHOP_PHOTO_STRINGS.alerts.galleryErrorTitle,
+        SHOP_PHOTO_STRINGS.alerts.galleryErrorMsg,
+      );
     }
   };
 
@@ -155,56 +140,12 @@ export function ShopPhotoScreen({
     if (onEditShop) {
       onEditShop();
     } else {
-      router.push('/(buyer)/location');
+      router.push(SHOP_PHOTO_STRINGS.routes.location as any);
     }
   };
 
   const selectedCount = photos.filter(Boolean).length;
   const canUpload = selectedCount > 0 && !isUploading;
-
-  const handleUpload = () => {
-    if (!canUpload) return;
-    const validPhotos = photos.filter(Boolean) as string[];
-
-    setIsUploading(true);
-    setUploadProgress(0);
-    setUploadError(null);
-
-    const interval = setInterval(() => {
-      setUploadProgress((prev) => {
-        const next = prev + 10;
-        if (next >= 100) {
-          clearInterval(interval);
-          setTimeout(async () => {
-            try {
-              await onUpload?.(validPhotos);
-              setIsUploading(false);
-              setUploadProgress(0);
-              setSuccessVisible(true);
-            } catch {
-              setIsUploading(false);
-              setUploadProgress(0);
-              setUploadError('Upload failed. Please check your connection and try again.');
-            }
-          }, 200);
-          return 100;
-        }
-        return next;
-      });
-    }, 150);
-  };
-
-  const rawScale = screenWidth / BASE_SCREEN_WIDTH;
-  const scale = Math.min(MAX_SCALE, Math.max(MIN_SCALE, rawScale));
-  const horizontalPadding = themeHorizontalPadding ?? FIGMA_HORIZONTAL_PADDING * scale;
-
-  const gridGap = screenWidth * GRID_GAP_RATIO;
-  const contentWidth = screenWidth - horizontalPadding * 2;
-  const itemWidth = (contentWidth - gridGap * (COLUMNS - 1)) / COLUMNS;
-
-  const placeholderIconSize = ICON_SIZES.xxxl * scale;
-  const labelFontSize = FONT_SIZE.sm * scale;
-  const labelLineHeight = LINE_HEIGHT.sm * scale;
 
   return (
     <View style={styles.container}>
@@ -215,10 +156,10 @@ export function ShopPhotoScreen({
       />
 
       <View style={styles.header}>
-        <TouchableOpacity onPress={onBack} hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}>
+        <TouchableOpacity onPress={onBack} hitSlop={HIT_SLOPS.headerBack}>
           <Image source={backIcon} style={styles.backIcon} resizeMode="contain" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Shop Photo</Text>
+        <Text style={styles.headerTitle}>{SHOP_PHOTO_STRINGS.headerTitle}</Text>
       </View>
 
       <ScrollView
@@ -240,14 +181,14 @@ export function ShopPhotoScreen({
             style={styles.editButton}
             onPress={handleEdit}
             activeOpacity={0.7}
-            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+            hitSlop={HIT_SLOPS.editButton}
           >
             <Image source={editIcon} style={styles.editIcon} resizeMode="contain" />
-            <Text style={styles.editText}>Edit</Text>
+            <Text style={styles.editText}>{SHOP_PHOTO_STRINGS.editLabel}</Text>
           </TouchableOpacity>
         </View>
 
-        <Text style={styles.sectionTitle}>Shop Images</Text>
+        <Text style={styles.sectionTitle}>{SHOP_PHOTO_STRINGS.sectionTitle}</Text>
 
         <View style={[styles.grid, { marginHorizontal: -gridGap / 2 }]}>
           {photos.map((photo, index) => (
@@ -263,7 +204,7 @@ export function ShopPhotoScreen({
               ]}
             >
               <TouchableOpacity
-                style={[styles.photoBox, { width: itemWidth, aspectRatio: FIGMA_BOX_ASPECT_RATIO }]}
+                style={[styles.photoBox, { width: itemWidth, aspectRatio: boxAspectRatio }]}
                 onPress={() => openActionSheet(index)}
                 activeOpacity={0.7}
               >
@@ -286,7 +227,7 @@ export function ShopPhotoScreen({
                         { fontSize: labelFontSize, lineHeight: labelLineHeight },
                       ]}
                     >
-                      Add Shop Photo
+                      {SHOP_PHOTO_STRINGS.addPhotoLabel}
                     </Text>
                   </>
                 )}
@@ -295,11 +236,11 @@ export function ShopPhotoScreen({
               {photo && (
                 <TouchableOpacity
                   style={styles.removeButton}
-                  onPress={() => removePhoto(index)}
-                  hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+                  onPress={() => handleRemovePhoto(index)}
+                  hitSlop={HIT_SLOPS.removeButton}
                   activeOpacity={0.8}
                 >
-                  <Text style={styles.removeButtonText}>✕</Text>
+                  <Text style={styles.removeButtonText}>{SHOP_PHOTO_STRINGS.removeSymbol}</Text>
                 </TouchableOpacity>
               )}
             </View>
@@ -318,7 +259,7 @@ export function ShopPhotoScreen({
           {isUploading && (
             <View style={styles.progressWrap}>
               <View style={styles.progressHeader}>
-                <Text style={styles.progressLabel}>Uploading photos</Text>
+                <Text style={styles.progressLabel}>{SHOP_PHOTO_STRINGS.uploadingStatus}</Text>
                 <Text style={styles.progressPercent}>{uploadProgress}%</Text>
               </View>
               <View style={styles.progressTrack}>
@@ -329,11 +270,13 @@ export function ShopPhotoScreen({
 
           <TouchableOpacity
             style={[styles.uploadButton, !canUpload && styles.uploadButtonDisabled]}
-            onPress={handleUpload}
+            onPress={() => handleUpload(photos)}
             disabled={!canUpload}
             activeOpacity={0.8}
           >
-            <Text style={styles.uploadButtonText}>{isUploading ? 'Uploading...' : 'Upload'}</Text>
+            <Text style={styles.uploadButtonText}>
+              {isUploading ? SHOP_PHOTO_STRINGS.uploadingLabel : SHOP_PHOTO_STRINGS.uploadLabel}
+            </Text>
           </TouchableOpacity>
         </View>
       </SafeAreaView>
