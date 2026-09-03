@@ -381,8 +381,8 @@ export const shopPhotoScreenStyles = StyleSheet.create({
   },
   shopAddress: {
     fontFamily: FONT_FAMILY.regular,
-    fontSize: FONT_SIZE.xxs,
-    lineHeight: LINE_HEIGHT.xxs,
+    fontSize: FONT_SIZE.xs,
+    lineHeight: LINE_HEIGHT.xs,
     color: COLORS.black,
   },
   editButton: {

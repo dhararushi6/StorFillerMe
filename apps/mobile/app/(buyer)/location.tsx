@@ -1,22 +1,14 @@
 import React, { useCallback } from 'react';
-import { Image, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { Image, Pressable, ScrollView, View } from 'react-native';
 import { router } from 'expo-router';
 
 import { AppText } from '@/components/common/AppText';
-import { LOCATION_STRINGS } from '@/constants/location';
+import { LOCATION_STRINGS, getLocationStyles } from '@/constants/location';
 import { useAddresses, type Address } from './AddressContext';
 
-import { COLORS } from '@/theme/colors';
-import { FONT_FAMILY, FONT_SIZE, LINE_HEIGHT } from '@/theme/typography';
-import { RADIUS } from '@/theme/radius';
-import { SIZES } from '@/theme/sizes';
-import { SPACING } from '@/theme/spacing';
 import { useResponsive } from '@/theme/responsive';
 
-/* ============================================================
-   FIGMA ICONS
-============================================================ */
-
+// Icons
 import ArrowIcon from '../../assets/icons/Arrow 10.png';
 import CaretRightIcon from '../../assets/icons/caret-right (1) 13.png';
 import MapPinIcon from '../../assets/icons/map-pin (4) 5.png';
@@ -26,15 +18,16 @@ import TrashIcon from '../../assets/icons/trash 2.png';
 
 export default function BuyerLocationScreen() {
   const { horizontalPadding } = useResponsive();
+  const styles = getLocationStyles(horizontalPadding);
 
   const { addresses, removeAddress, selectAddress } = useAddresses();
 
   const handleBack = useCallback(() => {
-    router.push('/(buyer)/home' as any);
+    router.push(LOCATION_STRINGS.routes.home);
   }, []);
 
   const handleAddNewAddress = useCallback(() => {
-    router.push('/(buyer)/add-address' as any);
+    router.push(LOCATION_STRINGS.routes.addAddress);
   }, []);
 
   const handleDeleteAddress = useCallback(
@@ -47,7 +40,7 @@ export default function BuyerLocationScreen() {
   const handleSelectAddress = useCallback(
     (id: string) => {
       selectAddress(id);
-      router.push('/(buyer)/home' as any);
+      router.push(LOCATION_STRINGS.routes.home);
     },
     [selectAddress],
   );
@@ -55,15 +48,15 @@ export default function BuyerLocationScreen() {
   return (
     <View style={styles.screen}>
       <Pressable style={styles.backdrop} onPress={handleBack} />
-      <View style={[styles.sheetContainer, { paddingHorizontal: horizontalPadding }]}>
+      <View style={styles.sheetContainer}>
         <View style={styles.header}>
           <View style={styles.headerLeft}>
-            <Pressable onPress={handleBack} hitSlop={SPACING.md} style={styles.headerIconButton}>
+            <Pressable onPress={handleBack} hitSlop={12} style={styles.headerIconButton}>
               <Image source={ArrowIcon} style={styles.backIcon} />
             </Pressable>
             <AppText style={styles.headerTitleText}>{LOCATION_STRINGS.headerTitle}</AppText>
           </View>
-          <Pressable onPress={handleBack} hitSlop={SPACING.md} style={styles.headerIconButton}>
+          <Pressable onPress={handleBack} hitSlop={12} style={styles.headerIconButton}>
             <Image source={CloseIcon} style={styles.closeIcon} />
           </Pressable>
         </View>
@@ -105,7 +98,7 @@ export default function BuyerLocationScreen() {
                   </Pressable>
                   <Pressable
                     onPress={() => handleDeleteAddress(item.id)}
-                    hitSlop={SPACING.sm}
+                    hitSlop={12}
                     style={styles.deleteButton}
                   >
                     <Image source={TrashIcon} style={styles.trashIcon} />
@@ -119,167 +112,3 @@ export default function BuyerLocationScreen() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    backgroundColor: COLORS.background,
-    justifyContent: 'flex-end',
-  },
-  backdrop: {
-    flex: 1,
-  },
-  sheetContainer: {
-    backgroundColor: COLORS.surface,
-    borderTopLeftRadius: RADIUS.none,
-    borderTopRightRadius: RADIUS.none,
-    paddingTop: SPACING.sm,
-    paddingBottom: SPACING.xxxl,
-    maxHeight: '60%',
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: SPACING.sm,
-    marginBottom: SPACING.md,
-  },
-  headerLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: SPACING.md,
-  },
-  headerIconButton: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  backIcon: {
-    width: SIZES.iconSmall,
-    height: SIZES.iconSmall,
-    tintColor: COLORS.text.primary,
-    resizeMode: 'contain',
-  },
-  closeIcon: {
-    width: SIZES.iconMedium,
-    height: SIZES.iconMedium,
-    resizeMode: 'contain',
-  },
-  headerTitleText: {
-    fontFamily: FONT_FAMILY.semiBold,
-    fontSize: FONT_SIZE.md,
-    lineHeight: LINE_HEIGHT.md,
-    color: COLORS.text.primary,
-  },
-  scrollContent: {
-    paddingBottom: SPACING.xxxl,
-  },
-  addAddressRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: SPACING.sm,
-    marginBottom: SPACING.lg,
-  },
-  addAddressLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: SPACING.md,
-  },
-  addIconBox: {
-    width: SIZES.iconMedium,
-    height: SIZES.iconMedium,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  plusIcon: {
-    width: SIZES.iconMedium,
-    height: SIZES.iconMedium,
-    resizeMode: 'contain',
-  },
-  addAddressText: {
-    fontFamily: FONT_FAMILY.semiBold,
-    fontSize: FONT_SIZE.sm,
-    lineHeight: LINE_HEIGHT.sm,
-    color: COLORS.text.primary,
-  },
-  caretRightIcon: {
-    width: SIZES.iconLarge,
-    height: SIZES.iconLarge,
-    resizeMode: 'contain',
-  },
-  sectionHeading: {
-    fontFamily: FONT_FAMILY.medium,
-    fontSize: FONT_SIZE.xs,
-    lineHeight: LINE_HEIGHT.xs,
-    color: COLORS.text.primary,
-    marginBottom: SPACING.sm,
-  },
-  addressList: {
-    gap: SPACING.md,
-  },
-  addressCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: COLORS.orange.card,
-    borderRadius: RADIUS.xs,
-    borderWidth: SIZES.borderThin,
-    borderColor: COLORS.borderSubtle,
-    paddingHorizontal: SPACING.md,
-    paddingVertical: SPACING.sm,
-    minHeight: SIZES.addressCardHeight,
-  },
-  selectedAddressCard: {
-    borderColor: COLORS.orange.normal,
-  },
-  cardLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flex: 1,
-    gap: SPACING.sm,
-  },
-  pinIconBox: {
-    width: SIZES.iconMedium,
-    height: SIZES.iconMedium,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  mapPinIcon: {
-    width: SIZES.iconMedium,
-    height: SIZES.iconMedium,
-    resizeMode: 'contain',
-  },
-  addressTextContainer: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  shopTitle: {
-    fontFamily: FONT_FAMILY.semiBold,
-    fontSize: FONT_SIZE.xs,
-    lineHeight: LINE_HEIGHT.xs,
-    color: COLORS.orange.normal,
-  },
-  addressBody: {
-    fontFamily: FONT_FAMILY.regular,
-    fontSize: FONT_SIZE.xs,
-    lineHeight: LINE_HEIGHT.xs,
-    color: COLORS.text.primary,
-  },
-  deleteButton: {
-    paddingLeft: SPACING.sm,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  trashIcon: {
-    width: SIZES.iconMedium,
-    height: SIZES.iconMedium,
-    resizeMode: 'contain',
-  },
-  emptyText: {
-    fontFamily: FONT_FAMILY.regular,
-    fontSize: FONT_SIZE.sm,
-    color: COLORS.text.secondary,
-    textAlign: 'center',
-    marginTop: SPACING.lg,
-  },
-});

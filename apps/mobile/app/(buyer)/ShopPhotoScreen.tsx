@@ -13,9 +13,9 @@ import {
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { router } from 'expo-router';
-import { useResponsive, COLORS, SPACING } from '../../theme';
-import { PhotoActionSheet } from './PhotoActionSheet';
-import { PhotoAddedModal } from './PhotoAddedModal';
+import { useResponsive, COLORS, SPACING, ICON_SIZES, FONT_SIZE, LINE_HEIGHT } from '../../theme';
+import { PhotoActionSheet } from './shopphotoaction';
+import { PhotoAddedModal } from './shopphotoadded';
 import backIcon from '../../assets/icons/Arrow 10 (1).png';
 import editIcon from '../../assets/icons/edit 1.png';
 import imageIcon from '../../assets/icons/image 2.png';
@@ -35,7 +35,7 @@ import {
   applyPhotoToSlots,
   validateAsset,
   shopPhotoScreenStyles as styles,
-} from '../../constants/ShopPhoto.constants';
+} from '../../constants/ShopPhoto';
 
 export function ShopPhotoScreen({
   shopName = DEFAULT_SHOP_DETAILS.shopName,
@@ -159,9 +159,9 @@ export function ShopPhotoScreen({
   const gridGap = screenWidth * GRID_GAP_RATIO;
   const contentWidth = screenWidth - horizontalPadding * 2;
   const itemWidth = (contentWidth - gridGap * (COLUMNS - 1)) / COLUMNS;
-  const placeholderIconSize = 56 * scale;
-  const labelFontSize = 14 * scale;
-  const labelLineHeight = 20 * scale;
+  const placeholderIconSize = ICON_SIZES.xl * scale;
+  const labelFontSize = FONT_SIZE.xs * scale;
+  const labelLineHeight = LINE_HEIGHT.xxs * scale;
 
   return (
     <View style={styles.container}>
@@ -235,7 +235,7 @@ export function ShopPhotoScreen({
                       style={{
                         width: placeholderIconSize,
                         height: placeholderIconSize,
-                        marginBottom: 8,
+                        marginBottom: SPACING.xs,
                       }}
                       resizeMode="contain"
                     />

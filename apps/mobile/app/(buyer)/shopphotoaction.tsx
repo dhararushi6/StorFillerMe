@@ -22,7 +22,7 @@ import {
   ICON_LABEL_GAP,
   PREVIEW_QUALITY,
   actionSheetStyles as styles,
-} from '../../constants/ShopPhoto.constants';
+} from '../../constants/ShopPhoto';
 
 export function PhotoActionSheet({
   visible,

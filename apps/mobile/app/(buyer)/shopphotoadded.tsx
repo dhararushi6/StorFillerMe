@@ -4,10 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { SPACING } from '../../theme';
 import checkIcon from '../../assets/icons/Shop images (7).png';
-import {
-  PhotoAddedModalProps,
-  photoAddedModalStyles as styles,
-} from '../../constants/ShopPhoto.constants';
+import { PhotoAddedModalProps, photoAddedModalStyles as styles } from '../../constants/ShopPhoto';
 
 export function PhotoAddedModal({
   visible,
