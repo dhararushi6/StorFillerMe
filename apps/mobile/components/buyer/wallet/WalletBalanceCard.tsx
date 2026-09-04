@@ -2,7 +2,7 @@ import React from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
 
 import { AppText } from '@/components/common/AppText';
-import { FONT_FAMILY, FONT_SIZE, LINE_HEIGHT, SPACING } from '@/theme';
+import { COLORS, FONT_FAMILY, FONT_SIZE, LINE_HEIGHT, SPACING } from '@/theme';
 
 interface WalletBalanceCardProps {
   title: string;
@@ -50,11 +50,11 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     padding: SPACING.lg,
     justifyContent: 'space-between',
-    backgroundColor: '#CC5D28',
+    backgroundColor: COLORS.orange.normal,
     ...Platform.select({
       web: {
         backgroundImage: 'linear-gradient(135deg, #CC5D28 0%, #6B2605 100%)',
-      } as any,
+      } as Record<string, unknown>,
     }),
     overflow: 'hidden',
   },

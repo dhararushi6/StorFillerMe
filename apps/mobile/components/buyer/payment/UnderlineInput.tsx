@@ -1,5 +1,12 @@
 import React from 'react';
-import { Platform, StyleSheet, TextInput, type TextInputProps, View, type ViewStyle } from 'react-native';
+import {
+  Platform,
+  StyleSheet,
+  TextInput,
+  type TextInputProps,
+  View,
+  type ViewStyle,
+} from 'react-native';
 
 import { AppText } from '@/components/common/AppText';
 import { COLORS, FONT_FAMILY, FONT_SIZE, SPACING } from '@/theme';
@@ -39,7 +46,7 @@ const styles = StyleSheet.create({
 
   input: {
     borderBottomWidth: 1,
-    borderBottomColor: '#555555',
+    borderBottomColor: '#000000',
     borderTopWidth: 0,
     borderLeftWidth: 0,
     borderRightWidth: 0,
@@ -54,7 +61,7 @@ const styles = StyleSheet.create({
       web: {
         outlineStyle: 'none',
         outlineWidth: 0,
-      } as any,
+      } as Record<string, unknown>,
     }),
   },
 });

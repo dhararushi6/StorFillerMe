@@ -6,7 +6,7 @@ import paytmImg from '@/assets/icons/upi-group-106.png';
 import superMoneyImg from '@/assets/icons/upi-group-107.png';
 import naviImg from '@/assets/icons/upi-group-108.png';
 import { AppText } from '@/components/common/AppText';
-import { COLORS, FONT_FAMILY, FONT_SIZE, RADIUS, SPACING } from '@/theme';
+import { COLORS, FONT_FAMILY, FONT_SIZE, LINE_HEIGHT, RADIUS, SPACING } from '@/theme';
 
 interface PaymentUpiSectionProps {
   title: string;
@@ -88,14 +88,16 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: COLORS.payment.card,
     borderRadius: RADIUS.lg,
-    paddingHorizontal: SPACING.md + 2,
+    paddingHorizontal: SPACING.md,
     paddingTop: SPACING.md,
     paddingBottom: SPACING.lg,
   },
 
   title: {
-    fontFamily: FONT_FAMILY.bold,
-    fontSize: FONT_SIZE.sm + 1,
+    fontFamily: FONT_FAMILY.medium,
+    fontSize: FONT_SIZE.sm,
+    lineHeight: LINE_HEIGHT.category,
+    color: COLORS.black,
   },
 
   dashedDivider: {
@@ -131,7 +133,7 @@ const styles = StyleSheet.create({
   },
 
   phonePeText: {
-    color: '#FFFFFF',
+    color: COLORS.text.inverse,
     fontSize: 23,
     fontFamily: FONT_FAMILY.bold,
     lineHeight: 27,

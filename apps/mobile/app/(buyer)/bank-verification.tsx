@@ -8,7 +8,15 @@ import { ScreenHeader } from '@/components/common/ScreenHeader';
 import { AppText } from '@/components/common/AppText';
 import { AppButton } from '@/components/ui/AppButton';
 import { BANK_VERIFICATION_SCREEN } from '@/constants/payment';
-import { COLORS, FONT_FAMILY, FONT_SIZE, LINE_HEIGHT, RADIUS, SPACING, useResponsive } from '@/theme';
+import {
+  COLORS,
+  FONT_FAMILY,
+  FONT_SIZE,
+  LINE_HEIGHT,
+  RADIUS,
+  SPACING,
+  useResponsive,
+} from '@/theme';
 
 export default function BuyerBankVerificationScreen() {
   const insets = useSafeAreaInsets();
@@ -140,14 +148,14 @@ const styles = StyleSheet.create({
   description: {
     fontFamily: FONT_FAMILY.medium,
     fontSize: FONT_SIZE.lg,
-    lineHeight: LINE_HEIGHT.lg,
+    lineHeight: LINE_HEIGHT.paragraph,
     color: COLORS.black,
   },
 
   phoneText: {
     fontFamily: FONT_FAMILY.medium,
     fontSize: FONT_SIZE.lg,
-    lineHeight: LINE_HEIGHT.lg,
+    lineHeight: LINE_HEIGHT.paragraph,
     color: COLORS.orange.normal,
   },
 
@@ -161,17 +169,19 @@ const styles = StyleSheet.create({
 
   resendText: {
     fontFamily: FONT_FAMILY.medium,
-    fontSize: FONT_SIZE.sm + 1,
+    fontSize: FONT_SIZE.md,
+    lineHeight: LINE_HEIGHT.helper,
   },
 
   timerText: {
-    fontFamily: FONT_FAMILY.bold,
+    fontFamily: FONT_FAMILY.semiBold,
     color: COLORS.orange.normal,
   },
 
   resendActionText: {
-    fontFamily: FONT_FAMILY.bold,
-    fontSize: FONT_SIZE.sm + 1,
+    fontFamily: FONT_FAMILY.semiBold,
+    fontSize: FONT_SIZE.md,
+    lineHeight: LINE_HEIGHT.helper,
     color: COLORS.orange.normal,
   },
 

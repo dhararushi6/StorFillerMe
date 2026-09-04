@@ -6,7 +6,16 @@ import { router, useLocalSearchParams } from 'expo-router';
 import processingIllustration from '@/assets/images/processing-payment.png';
 import { AppText } from '@/components/common/AppText';
 import { PAYMENTS_SCREEN, PROCESSING_PAYMENT_SCREEN } from '@/constants/payment';
-import { COLORS, FONT_FAMILY, FONT_SIZE, LINE_HEIGHT, RADIUS, SIZES, SPACING, useResponsive } from '@/theme';
+import {
+  COLORS,
+  FONT_FAMILY,
+  FONT_SIZE,
+  LINE_HEIGHT,
+  RADIUS,
+  SIZES,
+  SPACING,
+  useResponsive,
+} from '@/theme';
 
 export default function BuyerProcessingPaymentScreen() {
   const insets = useSafeAreaInsets();
@@ -72,7 +81,7 @@ const styles = StyleSheet.create({
   },
 
   header: {
-    minHeight: SIZES.headerLargeHeight,
+    minHeight: SIZES.headerCompactHeight,
     backgroundColor: COLORS.header,
     borderBottomLeftRadius: RADIUS.header,
     borderBottomRightRadius: RADIUS.header,
@@ -113,7 +122,7 @@ const styles = StyleSheet.create({
     fontFamily: FONT_FAMILY.regular,
     fontSize: FONT_SIZE.lg,
     lineHeight: LINE_HEIGHT.md,
-    color: '#3C3C3C',
+    color: COLORS.text.body,
     textAlign: 'center',
     maxWidth: 260,
   },

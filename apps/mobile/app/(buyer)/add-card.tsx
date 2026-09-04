@@ -34,7 +34,16 @@ export default function BuyerAddCardScreen() {
     }
   }, []);
 
+  const isCardNumberValid = cardNumber.replace(/\D/g, '').length === 16;
+  const isExpiryValid = expiryDate.replace(/\D/g, '').length === 4;
+  const isCvvValid = cvv.length >= 3 && cvv.length <= 4;
+  const isNameValid = cardHolderName.trim().length >= 2;
+
+  const isFormValid = isCardNumberValid && isExpiryValid && isCvvValid && isNameValid;
+
   const handlePay = useCallback(() => {
+    if (!isFormValid) return;
+
     router.push({
       pathname: '/(buyer)/bank-verification',
       params: {
@@ -42,7 +51,7 @@ export default function BuyerAddCardScreen() {
         from: params.from || 'cart',
       },
     });
-  }, [params.from, totalAmount]);
+  }, [isFormValid, params.from, totalAmount]);
 
   const sidePadding = {
     paddingHorizontal: horizontalPadding,
@@ -103,6 +112,7 @@ export default function BuyerAddCardScreen() {
             <AppButton
               title={`${ADD_CARD_SCREEN.payButtonLabel}  ₹ ${totalAmount}`}
               onPress={handlePay}
+              disabled={!isFormValid}
               style={styles.payButton}
             />
           </View>

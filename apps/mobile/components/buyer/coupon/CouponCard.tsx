@@ -14,7 +14,7 @@ interface CouponCardProps {
 }
 
 export function CouponCard({ coupon, onApply, onTermsPress }: CouponCardProps) {
-  const accentColor = coupon.variant === 'success' ? '#009411' : '#FF0000';
+  const accentColor = coupon.variant === 'success' ? COLORS.green.dark : COLORS.text.danger;
   const iconSource = coupon.variant === 'success' ? sealPercentGreenIcon : sealPercentRedIcon;
 
   return (
@@ -25,9 +25,7 @@ export function CouponCard({ coupon, onApply, onTermsPress }: CouponCardProps) {
           <Image source={iconSource} style={styles.badgeIcon} resizeMode="contain" />
 
           <View style={styles.codeGroup}>
-            <AppText style={styles.codeText}>
-              {coupon.code}
-            </AppText>
+            <AppText style={styles.codeText}>{coupon.code}</AppText>
 
             <AppText style={[styles.discountText, { color: accentColor }]}>
               {coupon.discount}
@@ -42,16 +40,12 @@ export function CouponCard({ coupon, onApply, onTermsPress }: CouponCardProps) {
           hitSlop={8}
           style={({ pressed }) => [pressed && styles.pressed]}
         >
-          <AppText style={styles.applyText}>
-            {COUPON_SCREEN.applyButton}
-          </AppText>
+          <AppText style={styles.applyText}>{COUPON_SCREEN.applyButton}</AppText>
         </Pressable>
       </View>
 
       {/* Minimum Order Value */}
-      <AppText style={styles.minOrderText}>
-        {coupon.minOrderText}
-      </AppText>
+      <AppText style={styles.minOrderText}>{coupon.minOrderText}</AppText>
 
       {/* Divider */}
       <View style={styles.divider} />
@@ -113,7 +107,7 @@ const styles = StyleSheet.create({
     fontFamily: FONT_FAMILY.medium,
     fontSize: FONT_SIZE.md,
     lineHeight: 17,
-    color: '#000000',
+    color: COLORS.black,
   },
 
   discountText: {
@@ -126,14 +120,14 @@ const styles = StyleSheet.create({
     fontFamily: FONT_FAMILY.medium,
     fontSize: FONT_SIZE.md,
     lineHeight: 17,
-    color: '#000000',
+    color: COLORS.black,
   },
 
   minOrderText: {
     fontFamily: FONT_FAMILY.regular,
     fontSize: FONT_SIZE.sm,
     lineHeight: 14,
-    color: '#000000',
+    color: COLORS.black,
     marginTop: 10,
   },
 

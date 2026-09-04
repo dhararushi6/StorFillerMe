@@ -8,7 +8,7 @@ import { AppText } from '@/components/common/AppText';
 import { ScreenHeader } from '@/components/common/ScreenHeader';
 import { AppButton } from '@/components/ui/AppButton';
 import { PAYMENT_SUCCESS_SCREEN, PAYMENTS_SCREEN } from '@/constants/payment';
-import { COLORS, FONT_FAMILY, FONT_SIZE, SPACING, useResponsive } from '@/theme';
+import { COLORS, FONT_FAMILY, FONT_SIZE, LINE_HEIGHT, SPACING, useResponsive } from '@/theme';
 
 export default function BuyerWalletSuccessScreen() {
   const insets = useSafeAreaInsets();
@@ -42,10 +42,7 @@ export default function BuyerWalletSuccessScreen() {
 
   return (
     <View style={styles.screen}>
-      <ScreenHeader
-        title={PAYMENT_SUCCESS_SCREEN.headerTitle}
-        fallbackRoute="/(buyer)/wallet"
-      />
+      <ScreenHeader title={PAYMENT_SUCCESS_SCREEN.headerTitle} fallbackRoute="/(buyer)/wallet" />
 
       <ScrollView
         showsVerticalScrollIndicator={false}
@@ -57,9 +54,7 @@ export default function BuyerWalletSuccessScreen() {
             <Ionicons name="checkmark" size={48} color={COLORS.white} />
           </View>
 
-          <AppText style={styles.title}>
-            {PAYMENT_SUCCESS_SCREEN.title}
-          </AppText>
+          <AppText style={styles.title}>{PAYMENT_SUCCESS_SCREEN.title}</AppText>
 
           <AppText style={styles.subtitle}>
             {formattedAmount} {PAYMENT_SUCCESS_SCREEN.subtitleSuffix}
@@ -70,12 +65,8 @@ export default function BuyerWalletSuccessScreen() {
         <View style={styles.receiptCard}>
           {/* Top Section: Wallet Balance */}
           <View style={styles.balanceSection}>
-            <AppText style={styles.cardLabel}>
-              {PAYMENT_SUCCESS_SCREEN.walletBalanceLabel}
-            </AppText>
-            <AppText style={styles.cardBalance}>
-              ₹ {formattedAmount}
-            </AppText>
+            <AppText style={styles.cardLabel}>{PAYMENT_SUCCESS_SCREEN.walletBalanceLabel}</AppText>
+            <AppText style={styles.cardBalance}>₹ {formattedAmount}</AppText>
           </View>
 
           {/* Solid White Divider */}
@@ -87,14 +78,10 @@ export default function BuyerWalletSuccessScreen() {
               <AppText style={styles.cardLabel}>
                 {PAYMENT_SUCCESS_SCREEN.paymentMethodLabel}
               </AppText>
-              <AppText style={styles.cardSubText}>
-                Card number: hergunigk6789
-              </AppText>
+              <AppText style={styles.cardSubText}>Card number: hergunigk6789</AppText>
             </View>
 
-            <AppText style={styles.cardBrand}>
-              VISA
-            </AppText>
+            <AppText style={styles.cardBrand}>VISA</AppText>
           </View>
 
           {/* Solid White Divider */}
@@ -138,16 +125,10 @@ export default function BuyerWalletSuccessScreen() {
           },
         ]}
       >
-        <AppButton
-          title={PAYMENT_SUCCESS_SCREEN.viewWalletLabel}
-          onPress={handleViewWallet}
-        />
+        <AppButton title={PAYMENT_SUCCESS_SCREEN.viewWalletLabel} onPress={handleViewWallet} />
 
         <Pressable
-          style={({ pressed }) => [
-            styles.goHomeButton,
-            pressed && styles.goHomeButtonPressed,
-          ]}
+          style={({ pressed }) => [styles.goHomeButton, pressed && styles.goHomeButtonPressed]}
           onPress={handleGoHome}
           accessibilityRole="button"
           accessibilityLabel={PAYMENT_SUCCESS_SCREEN.goHomeLabel}
@@ -182,11 +163,11 @@ const styles = StyleSheet.create({
     width: 88,
     height: 88,
     borderRadius: 44,
-    backgroundColor: '#009411',
+    backgroundColor: COLORS.green.dark,
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: SPACING.md + 2,
-    shadowColor: '#009411',
+    shadowColor: COLORS.green.dark,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.2,
     shadowRadius: 8,
@@ -197,15 +178,15 @@ const styles = StyleSheet.create({
     fontFamily: FONT_FAMILY.medium,
     fontSize: 20,
     lineHeight: 24,
-    color: '#009411',
+    color: COLORS.green.dark,
     textAlign: 'center',
   },
 
   subtitle: {
     fontFamily: FONT_FAMILY.regular,
-    fontSize: 14,
-    lineHeight: 18,
-    color: '#444444',
+    fontSize: FONT_SIZE.lg,
+    lineHeight: LINE_HEIGHT.subtitle,
+    color: COLORS.text.body,
     textAlign: 'center',
     marginTop: 4,
   },

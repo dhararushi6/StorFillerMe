@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import {
+  Image,
   KeyboardAvoidingView,
   Platform,
   Pressable,
@@ -12,11 +13,21 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useLocalSearchParams } from 'expo-router';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
+import paperclipIcon from '@/assets/icons/paperclip.png';
 import { OrderHeaderSection } from '@/components/buyer/order';
 import { AppText } from '@/components/common/AppText';
 import { ScreenHeader } from '@/components/common/ScreenHeader';
 import { TRACK_ORDER_SCREEN } from '@/constants/order';
-import { COLORS, FONT_FAMILY, SPACING, useResponsive } from '@/theme';
+import {
+  COLORS,
+  FONT_FAMILY,
+  FONT_SIZE,
+  LINE_HEIGHT,
+  RADIUS,
+  SIZES,
+  SPACING,
+  useResponsive,
+} from '@/theme';
 
 interface ChatMessage {
   id: string;
@@ -158,7 +169,7 @@ export default function BuyerChatScreen() {
                     accessibilityRole="button"
                     accessibilityLabel="Close suggestions"
                   >
-                    <Ionicons name="close" size={18} color="#FFFFFF" />
+                    <Ionicons name="close" size={18} color={COLORS.white} />
                   </Pressable>
                 </View>
 
@@ -178,7 +189,7 @@ export default function BuyerChatScreen() {
                     >
                       <AppText style={styles.quickHelpOptionText}>{option}</AppText>
 
-                      <Ionicons name="chevron-forward" size={16} color="#000000" />
+                      <Ionicons name="chevron-forward" size={16} color={COLORS.black} />
                     </Pressable>
                   ))}
                 </View>
@@ -199,7 +210,7 @@ export default function BuyerChatScreen() {
             <TextInput
               style={styles.textInput}
               placeholder="Type your message..."
-              placeholderTextColor="#777777"
+              placeholderTextColor={COLORS.text.placeholder}
               value={messageText}
               onChangeText={setMessageText}
               onSubmitEditing={() => handleSendMessage()}
@@ -212,7 +223,7 @@ export default function BuyerChatScreen() {
               accessibilityLabel="Attach file"
               style={styles.attachButton}
             >
-              <Ionicons name="attach-outline" size={22} color="#CC5D28" />
+              <Image source={paperclipIcon} style={styles.paperclipIcon} resizeMode="contain" />
             </Pressable>
           </View>
 
@@ -223,7 +234,7 @@ export default function BuyerChatScreen() {
             accessibilityLabel="Send message"
             style={({ pressed }) => [styles.sendButton, pressed && styles.pressed]}
           >
-            <Ionicons name="send" size={20} color="#FFFFFF" style={styles.sendIcon} />
+            <Ionicons name="send" size={20} color={COLORS.white} style={styles.sendIcon} />
           </Pressable>
         </View>
       </KeyboardAvoidingView>
@@ -253,7 +264,7 @@ const styles = StyleSheet.create({
   },
 
   dateBadge: {
-    backgroundColor: '#CC5D28',
+    backgroundColor: COLORS.orange.normal,
     borderRadius: 20,
     paddingHorizontal: 16,
     paddingVertical: 4,
@@ -262,7 +273,7 @@ const styles = StyleSheet.create({
   dateBadgeText: {
     fontFamily: FONT_FAMILY.medium,
     fontSize: 12,
-    color: '#FFFFFF',
+    color: COLORS.text.inverse,
   },
 
   messageBubble: {
@@ -280,7 +291,7 @@ const styles = StyleSheet.create({
 
   supportBubble: {
     alignSelf: 'flex-start',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: COLORS.surface,
     borderWidth: 1,
     borderColor: '#E2E8F0',
   },
@@ -292,11 +303,11 @@ const styles = StyleSheet.create({
   },
 
   userMessageText: {
-    color: '#FFFFFF',
+    color: COLORS.text.inverse,
   },
 
   supportMessageText: {
-    color: '#000000',
+    color: COLORS.black,
   },
 
   messageTime: {
@@ -320,24 +331,24 @@ const styles = StyleSheet.create({
   },
 
   quickHelpCard: {
-    width: 240,
-    backgroundColor: '#FFFFFF',
-    borderRadius: 14,
+    width: SIZES.quickHelpCardWidth,
+    backgroundColor: COLORS.surface,
+    borderRadius: RADIUS.lg,
     overflow: 'hidden',
     borderWidth: 1,
     borderColor: 'rgba(204, 93, 40, 0.20)',
     ...Platform.select({
       ios: {
-        shadowColor: '#000000',
+        shadowColor: COLORS.black,
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.1,
-        shadowRadius: 6,
+        shadowRadius: 8,
       },
       android: {
         elevation: 3,
       },
       web: {
-        boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.08)',
+        boxShadow: '0px 2px 16px rgba(0, 0, 0, 0.10)',
       },
     }),
   },
@@ -346,7 +357,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: '#CC5D28',
+    backgroundColor: COLORS.orange.normal,
     paddingHorizontal: 12,
     paddingVertical: 10,
   },
@@ -354,7 +365,7 @@ const styles = StyleSheet.create({
   quickHelpHeaderTitle: {
     fontFamily: FONT_FAMILY.medium,
     fontSize: 13,
-    color: '#FFFFFF',
+    color: COLORS.text.inverse,
     flex: 1,
   },
 
@@ -376,9 +387,10 @@ const styles = StyleSheet.create({
   },
 
   quickHelpOptionText: {
-    fontFamily: FONT_FAMILY.regular,
-    fontSize: 13,
-    color: '#111111',
+    fontFamily: FONT_FAMILY.medium,
+    fontSize: FONT_SIZE.sm,
+    lineHeight: LINE_HEIGHT.category,
+    color: COLORS.black,
   },
 
   bottomInputBar: {
@@ -396,7 +408,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(204, 93, 40, 0.08)',
     borderRadius: 12,
     borderWidth: 0.8,
-    borderColor: '#CC5D28',
+    borderColor: COLORS.orange.normal,
     height: 48,
     paddingHorizontal: 12,
   },
@@ -405,7 +417,7 @@ const styles = StyleSheet.create({
     flex: 1,
     fontFamily: FONT_FAMILY.regular,
     fontSize: 14,
-    color: '#000000',
+    color: COLORS.black,
     height: '100%',
     paddingVertical: 0,
     ...Platform.select({
@@ -420,11 +432,16 @@ const styles = StyleSheet.create({
     padding: 4,
   },
 
+  paperclipIcon: {
+    width: 22,
+    height: 22,
+  },
+
   sendButton: {
     width: 48,
     height: 48,
     borderRadius: 24,
-    backgroundColor: '#CC5D28',
+    backgroundColor: COLORS.orange.normal,
     alignItems: 'center',
     justifyContent: 'center',
   },

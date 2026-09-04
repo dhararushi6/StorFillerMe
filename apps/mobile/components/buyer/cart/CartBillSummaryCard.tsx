@@ -81,7 +81,7 @@ export function CartBillSummaryCard({
             <AppText variant="bodyMedium" color="primary" style={styles.totalLabel}>
               {totalAmountLabel}
             </AppText>
-            <AppText variant="subheading" color="primary" style={styles.totalValue}>
+            <AppText variant="bodyMedium" color="primary" style={styles.totalValue}>
               ₹ {totalAmount}
             </AppText>
           </View>
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
 
   cardHeader: {
     backgroundColor: COLORS.cart.billHeader,
-    paddingHorizontal: SPACING.lg,
+    paddingHorizontal: SPACING.md,
     paddingVertical: SPACING.md,
     borderBottomWidth: 1,
     borderBottomColor: COLORS.orange.normal,
@@ -138,7 +138,8 @@ const styles = StyleSheet.create({
 
   cardBody: {
     backgroundColor: COLORS.cart.billCalculation,
-    padding: SPACING.lg,
+    paddingHorizontal: SPACING.md,
+    paddingVertical: SPACING.lg,
     gap: SPACING.md,
   },
 
@@ -149,7 +150,9 @@ const styles = StyleSheet.create({
   },
 
   rowLabel: {
-    textTransform: 'capitalize',
+    fontFamily: FONT_FAMILY.medium,
+    fontSize: FONT_SIZE.sm,
+    lineHeight: LINE_HEIGHT.category,
   },
 
   dottedLabelContainer: {
@@ -169,11 +172,15 @@ const styles = StyleSheet.create({
   },
 
   totalLabel: {
-    fontFamily: FONT_FAMILY.bold,
+    fontFamily: FONT_FAMILY.medium,
+    fontSize: FONT_SIZE.sm,
+    lineHeight: LINE_HEIGHT.category,
   },
 
   totalValue: {
     fontFamily: FONT_FAMILY.bold,
+    fontSize: FONT_SIZE.md,
+    lineHeight: LINE_HEIGHT.amount,
   },
 
   savingsBanner: {
@@ -185,14 +192,17 @@ const styles = StyleSheet.create({
   },
 
   savingsText: {
-    fontFamily: FONT_FAMILY.bold,
-    color: COLORS.success,
+    fontFamily: FONT_FAMILY.medium,
+    fontSize: FONT_SIZE.sm,
+    lineHeight: LINE_HEIGHT.note,
+    color: COLORS.green.dark,
   },
 
   cancellationCard: {
     backgroundColor: COLORS.cart.cancellation,
     borderRadius: RADIUS.lg,
-    padding: SPACING.lg,
+    paddingHorizontal: SPACING.md,
+    paddingVertical: SPACING.md - 2,
     gap: SPACING.xs,
   },
 
@@ -204,6 +214,7 @@ const styles = StyleSheet.create({
   },
 
   cancellationDescription: {
-    lineHeight: 16,
+    fontSize: FONT_SIZE.sm,
+    lineHeight: LINE_HEIGHT.category,
   },
 });

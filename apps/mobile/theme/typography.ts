@@ -33,4 +33,9 @@ export const LINE_HEIGHT = {
   display: 38,
   hero: 53,
   category: 14.4,
+  note: 15.6,
+  amount: 16.8,
+  helper: 18.2,
+  subtitle: 19.2,
+  paragraph: 20.8,
 } as const;

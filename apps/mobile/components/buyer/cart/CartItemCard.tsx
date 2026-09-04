@@ -3,7 +3,15 @@ import { Image, Pressable, StyleSheet, View } from 'react-native';
 
 import { AppIcon } from '@/components/common/AppIcon';
 import { AppText } from '@/components/common/AppText';
-import { COLORS, FONT_FAMILY, FONT_SIZE, LINE_HEIGHT, RADIUS, SPACING, useResponsive } from '@/theme';
+import {
+  COLORS,
+  FONT_FAMILY,
+  FONT_SIZE,
+  LINE_HEIGHT,
+  RADIUS,
+  SPACING,
+  useResponsive,
+} from '@/theme';
 
 interface CartItemCardProps {
   name: string;
@@ -209,8 +217,9 @@ const styles = StyleSheet.create({
   },
 
   qtyText: {
-    fontFamily: FONT_FAMILY.semiBold,
-    fontSize: FONT_SIZE.md,
+    fontFamily: FONT_FAMILY.medium,
+    fontSize: FONT_SIZE.sm,
+    lineHeight: LINE_HEIGHT.category,
     color: COLORS.white,
   },
 });

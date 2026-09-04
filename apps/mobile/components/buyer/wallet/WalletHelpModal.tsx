@@ -89,7 +89,7 @@ export function WalletHelpModal({
               accessibilityLabel={WALLET_SUPPORT_MODAL.call.title}
             >
               <View style={styles.iconWrapper}>
-                <Ionicons name="call-outline" size={22} color="#009411" />
+                <Ionicons name="call-outline" size={22} color={COLORS.green.dark} />
               </View>
 
               <View style={styles.textContainer}>
@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
   },
 
   sheet: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: COLORS.surface,
     borderRadius: 20,
     paddingHorizontal: 16,
     paddingTop: 12,
@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'rgba(204, 93, 40, 0.10)',
     borderWidth: 0.4,
-    borderColor: '#CC5D28',
+    borderColor: COLORS.orange.normal,
     borderRadius: 12,
     height: 64,
     paddingHorizontal: 14,
@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'rgba(0, 148, 17, 0.10)',
     borderWidth: 0.4,
-    borderColor: '#009411',
+    borderColor: COLORS.green.dark,
     borderRadius: 12,
     height: 64,
     paddingHorizontal: 14,

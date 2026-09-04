@@ -5,7 +5,15 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 
 import { AppText } from '@/components/common/AppText';
 import { EXIT_PAYMENT_MODAL } from '@/constants/payment';
-import { COLORS, FONT_FAMILY, FONT_SIZE, RADIUS, SPACING, useResponsive } from '@/theme';
+import {
+  COLORS,
+  FONT_FAMILY,
+  FONT_SIZE,
+  LINE_HEIGHT,
+  RADIUS,
+  SPACING,
+  useResponsive,
+} from '@/theme';
 
 interface ExitPaymentModalProps {
   visible: boolean;
@@ -107,7 +115,7 @@ const styles = StyleSheet.create({
     borderRadius: RADIUS.xl,
     padding: SPACING.lg,
     gap: SPACING.sm,
-    shadowColor: '#000',
+    shadowColor: COLORS.black,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.15,
     shadowRadius: 12,
@@ -127,9 +135,9 @@ const styles = StyleSheet.create({
 
   description: {
     fontFamily: FONT_FAMILY.regular,
-    fontSize: FONT_SIZE.xs + 1,
-    lineHeight: 18,
-    color: '#333333',
+    fontSize: FONT_SIZE.sm,
+    lineHeight: LINE_HEIGHT.category,
+    color: COLORS.black,
     marginVertical: SPACING.xs,
   },
 

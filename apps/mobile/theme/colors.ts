@@ -45,6 +45,10 @@ export const COLORS = {
 
   text: {
     primary: '#111111',
+    strong: '#333333',
+    body: '#3C3C3C',
+    detail: '#535353',
+    placeholder: '#646464',
     secondary: '#666666',
     muted: '#9D9D9D',
     inverse: '#FFFFFF',
@@ -89,6 +93,8 @@ export const COLORS = {
 
   border: '#E5DED2',
   borderStrong: '#6A6A6A',
+
+  inactive: '#8E98A8',
 
   success: '#1EA836',
   successLight: '#DDF7D0',

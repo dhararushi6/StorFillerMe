@@ -5,7 +5,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import truckFillIcon from '@/assets/icons/truck-fill.png';
 import { AppText } from '@/components/common/AppText';
 import { TRACK_ORDER_SCREEN } from '@/constants/order';
-import { COLORS, FONT_FAMILY, FONT_SIZE, RADIUS, SPACING } from '@/theme';
+import { COLORS, FONT_FAMILY, FONT_SIZE, LINE_HEIGHT, RADIUS, SPACING } from '@/theme';
 
 interface OrderHeaderSectionProps {
   orderId?: string;
@@ -38,7 +38,7 @@ export function OrderHeaderSection({
 
         {/* Confirmed Badge */}
         <View style={styles.confirmedBadge}>
-          <Ionicons name="checkmark-circle" size={18} color="#009411" />
+          <Ionicons name="checkmark-circle" size={18} color={COLORS.green.dark} />
           <AppText style={styles.confirmedText}>{confirmedText}</AppText>
         </View>
       </View>
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
 
   orderIdHeaderRow: {
     flexDirection: 'row',
-    alignItems: 'flex-start',
+    alignItems: 'flex-end',
     justifyContent: 'space-between',
   },
 
@@ -76,22 +76,24 @@ const styles = StyleSheet.create({
 
   orderIdLabel: {
     fontFamily: FONT_FAMILY.regular,
-    fontSize: FONT_SIZE.md,
-    color: '#444444',
+    fontSize: FONT_SIZE.lg,
+    lineHeight: LINE_HEIGHT.subtitle,
+    color: COLORS.black,
   },
 
   orderIdValue: {
     fontFamily: FONT_FAMILY.semiBold,
-    fontSize: 20,
-    lineHeight: 24,
-    color: '#000000',
+    fontSize: FONT_SIZE.title,
+    lineHeight: LINE_HEIGHT.lg,
+    color: COLORS.black,
     marginTop: 2,
   },
 
   placedDateText: {
     fontFamily: FONT_FAMILY.regular,
     fontSize: FONT_SIZE.sm,
-    color: '#666666',
+    lineHeight: LINE_HEIGHT.category,
+    color: COLORS.black,
     marginTop: 2,
   },
 
@@ -99,13 +101,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
-    marginTop: SPACING.xs,
   },
 
   confirmedText: {
-    fontFamily: FONT_FAMILY.semiBold,
+    fontFamily: FONT_FAMILY.medium,
     fontSize: FONT_SIZE.md,
-    color: '#009411',
+    lineHeight: LINE_HEIGHT.amount,
+    color: COLORS.green.dark,
   },
 
   deliveryBanner: {
@@ -131,19 +133,21 @@ const styles = StyleSheet.create({
   deliveryAtLabel: {
     fontFamily: FONT_FAMILY.regular,
     fontSize: 13,
-    color: '#111111',
+    color: COLORS.text.primary,
   },
 
   deliveryWindowText: {
     fontFamily: FONT_FAMILY.semiBold,
     fontSize: 14,
+    lineHeight: 17,
     color: COLORS.orange.normal,
   },
 
   deliveryNotice: {
     fontFamily: FONT_FAMILY.regular,
     fontSize: FONT_SIZE.sm,
-    color: '#555555',
+    lineHeight: LINE_HEIGHT.category,
+    color: COLORS.black,
     marginTop: -4,
   },
 });

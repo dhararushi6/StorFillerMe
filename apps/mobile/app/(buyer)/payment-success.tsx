@@ -8,7 +8,15 @@ import { AppText } from '@/components/common/AppText';
 import { ScreenHeader } from '@/components/common/ScreenHeader';
 import { AppButton } from '@/components/ui/AppButton';
 import { ORDER_SUCCESS_SCREEN } from '@/constants/payment';
-import { COLORS, FONT_FAMILY, FONT_SIZE, RADIUS, SPACING, useResponsive } from '@/theme';
+import {
+  COLORS,
+  FONT_FAMILY,
+  FONT_SIZE,
+  LINE_HEIGHT,
+  RADIUS,
+  SPACING,
+  useResponsive,
+} from '@/theme';
 
 export default function BuyerPaymentSuccessScreen() {
   const insets = useSafeAreaInsets();
@@ -51,10 +59,7 @@ export default function BuyerPaymentSuccessScreen() {
 
   return (
     <View style={styles.screen}>
-      <ScreenHeader
-        title={ORDER_SUCCESS_SCREEN.headerTitle}
-        fallbackRoute="/(buyer)/home"
-      />
+      <ScreenHeader title={ORDER_SUCCESS_SCREEN.headerTitle} fallbackRoute="/(buyer)/home" />
 
       <ScrollView
         showsVerticalScrollIndicator={false}
@@ -172,10 +177,7 @@ export default function BuyerPaymentSuccessScreen() {
           },
         ]}
       >
-        <AppButton
-          title={ORDER_SUCCESS_SCREEN.trackOrderLabel}
-          onPress={handleTrackOrder}
-        />
+        <AppButton title={ORDER_SUCCESS_SCREEN.trackOrderLabel} onPress={handleTrackOrder} />
 
         <Pressable
           style={({ pressed }) => [
@@ -228,15 +230,18 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    fontFamily: FONT_FAMILY.bold,
-    fontSize: 22,
+    fontFamily: FONT_FAMILY.medium,
+    fontSize: 20,
+    lineHeight: 24,
+    color: '#000000',
     textAlign: 'center',
   },
 
   subtitle: {
     fontFamily: FONT_FAMILY.regular,
-    fontSize: FONT_SIZE.md,
-    color: '#666666',
+    fontSize: 16,
+    lineHeight: 19,
+    color: '#000000',
     textAlign: 'center',
     marginTop: 4,
   },
@@ -255,9 +260,10 @@ const styles = StyleSheet.create({
   },
 
   orderIdLabel: {
-    fontSize: 11,
-    opacity: 0.85,
-    fontFamily: FONT_FAMILY.regular,
+    fontSize: 12,
+    lineHeight: 14,
+    fontFamily: FONT_FAMILY.medium,
+    color: '#FFFFFF',
   },
 
   orderIdRow: {
@@ -267,8 +273,9 @@ const styles = StyleSheet.create({
   },
 
   orderIdText: {
-    fontFamily: FONT_FAMILY.bold,
-    fontSize: 16,
+    fontFamily: FONT_FAMILY.semiBold,
+    fontSize: FONT_SIZE.md,
+    lineHeight: LINE_HEIGHT.amount,
   },
 
   copyButtonText: {
@@ -298,13 +305,15 @@ const styles = StyleSheet.create({
 
   detailLabel: {
     fontSize: 12,
-    opacity: 0.85,
-    fontFamily: FONT_FAMILY.regular,
+    lineHeight: 14,
+    fontFamily: FONT_FAMILY.medium,
+    color: '#FFFFFF',
   },
 
   detailValue: {
     fontFamily: FONT_FAMILY.semiBold,
-    fontSize: 13,
+    fontSize: FONT_SIZE.md,
+    lineHeight: LINE_HEIGHT.amount,
   },
 
   amountValue: {
@@ -363,9 +372,10 @@ const styles = StyleSheet.create({
   },
 
   deliveryLabel: {
-    fontSize: 11,
-    opacity: 0.85,
-    fontFamily: FONT_FAMILY.regular,
+    fontSize: 12,
+    lineHeight: 14,
+    fontFamily: FONT_FAMILY.medium,
+    color: '#FFFFFF',
   },
 
   deliveryWindow: {
@@ -397,6 +407,6 @@ const styles = StyleSheet.create({
   continueShoppingText: {
     fontFamily: FONT_FAMILY.bold,
     fontSize: FONT_SIZE.md,
-    color: '#CC5D28',
+    color: COLORS.orange.normal,
   },
 });

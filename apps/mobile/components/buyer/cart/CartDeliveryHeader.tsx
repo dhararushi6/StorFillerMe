@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
   addressText: {
     fontFamily: FONT_FAMILY.medium,
     fontSize: FONT_SIZE.sm,
-    lineHeight: LINE_HEIGHT.sm,
-    color: '#333333',
+    lineHeight: LINE_HEIGHT.note,
+    color: COLORS.text.strong,
   },
 });

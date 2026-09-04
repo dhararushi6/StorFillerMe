@@ -4,6 +4,7 @@ export const SIZES = {
   smallButtonHeight: 40,
 
   headerHeight: 56,
+  headerCompactHeight: 63,
   headerLargeHeight: 107,
   bottomTabHeight: 64,
 
@@ -14,6 +15,8 @@ export const SIZES = {
   showcaseCardWidth: 122,
   showcaseCardHeight: 132,
   showcaseImageHeight: 82,
+
+  quickHelpCardWidth: 224,
 
   chipHeight: 23,
   borderThin: 0.8,

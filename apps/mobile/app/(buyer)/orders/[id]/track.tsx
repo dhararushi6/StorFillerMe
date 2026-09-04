@@ -4,6 +4,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { router, useLocalSearchParams } from 'expo-router';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
+import downloadSimpleIcon from '@/assets/icons/download-simple.png';
+import shareNetworkIcon from '@/assets/icons/share-network.png';
 import ashirvaadAttaImg from '@/assets/images/home/ashirvaad-mp-atta.png';
 import fortuneOilImg from '@/assets/images/home/fortune-sunlite-oil.png';
 import toorDalImg from '@/assets/images/home/tata-sampann-toor-dal.png';
@@ -11,7 +13,16 @@ import { OrderHeaderSection } from '@/components/buyer/order';
 import { AppText } from '@/components/common/AppText';
 import { ScreenHeader } from '@/components/common/ScreenHeader';
 import { DEFAULT_TIMELINE_STEPS, TRACK_ORDER_SCREEN } from '@/constants/order';
-import { COLORS, FONT_FAMILY, FONT_SIZE, RADIUS, SPACING, useResponsive } from '@/theme';
+import {
+  COLORS,
+  FONT_FAMILY,
+  FONT_SIZE,
+  ICON_SIZES,
+  LINE_HEIGHT,
+  RADIUS,
+  SPACING,
+  useResponsive,
+} from '@/theme';
 
 export default function BuyerTrackOrderScreen() {
   const insets = useSafeAreaInsets();
@@ -159,7 +170,7 @@ export default function BuyerTrackOrderScreen() {
 
         {/* Alert Card (Rectangle 367) */}
         <View style={styles.alertCard}>
-          <Ionicons name="alert-circle" size={18} color="#C87C01" />
+          <Ionicons name="alert-circle" size={18} color="#CC5D28" />
           <AppText style={styles.alertText}>{TRACK_ORDER_SCREEN.alertNotice}</AppText>
         </View>
 
@@ -203,7 +214,7 @@ export default function BuyerTrackOrderScreen() {
             hitSlop={8}
             style={({ pressed }) => [styles.outlineButton, pressed && styles.pressed]}
           >
-            <Ionicons name="download-outline" size={18} color={COLORS.orange.normal} />
+            <Image source={downloadSimpleIcon} style={styles.actionIcon} resizeMode="contain" />
             <AppText style={styles.outlineButtonText}>
               {TRACK_ORDER_SCREEN.downloadInvoiceLabel}
             </AppText>
@@ -216,7 +227,7 @@ export default function BuyerTrackOrderScreen() {
             hitSlop={8}
             style={({ pressed }) => [styles.outlineButton, pressed && styles.pressed]}
           >
-            <Ionicons name="share-social-outline" size={18} color={COLORS.orange.normal} />
+            <Image source={shareNetworkIcon} style={styles.actionIcon} resizeMode="contain" />
             <AppText style={styles.outlineButtonText}>{TRACK_ORDER_SCREEN.shareOrderLabel}</AppText>
           </Pressable>
         </View>
@@ -244,7 +255,7 @@ const styles = StyleSheet.create({
   },
 
   addressCard: {
-    backgroundColor: '#FAE2BB',
+    backgroundColor: COLORS.orange.card,
     borderRadius: 12,
     padding: SPACING.md,
     gap: 3,
@@ -253,33 +264,33 @@ const styles = StyleSheet.create({
   addressTitle: {
     fontFamily: FONT_FAMILY.semiBold,
     fontSize: 13,
-    color: '#000000',
+    color: COLORS.black,
   },
 
   storeName: {
     fontFamily: FONT_FAMILY.semiBold,
     fontSize: 13,
-    color: '#000000',
+    color: COLORS.black,
     marginTop: 2,
   },
 
   addressLine: {
     fontFamily: FONT_FAMILY.medium,
-    fontSize: 12,
-    lineHeight: 16,
-    color: '#535353',
+    fontSize: FONT_SIZE.sm,
+    lineHeight: LINE_HEIGHT.note,
+    color: COLORS.text.detail,
   },
 
   phoneText: {
     fontFamily: FONT_FAMILY.regular,
-    fontSize: 12,
-    color: '#535353',
+    fontSize: FONT_SIZE.sm,
+    color: COLORS.text.detail,
     marginTop: 2,
   },
 
   phoneNumber: {
     fontFamily: FONT_FAMILY.medium,
-    color: '#000000',
+    color: COLORS.black,
   },
 
   statusSection: {
@@ -290,7 +301,7 @@ const styles = StyleSheet.create({
   statusSectionTitle: {
     fontFamily: FONT_FAMILY.semiBold,
     fontSize: FONT_SIZE.lg,
-    color: '#000000',
+    color: COLORS.black,
   },
 
   timelineContainer: {
@@ -317,11 +328,11 @@ const styles = StyleSheet.create({
   },
 
   timelineDotActive: {
-    backgroundColor: '#009411',
+    backgroundColor: COLORS.green.dark,
   },
 
   timelineDotInactive: {
-    backgroundColor: '#8E98A8',
+    backgroundColor: COLORS.inactive,
   },
 
   timelineTopLine: {
@@ -343,11 +354,11 @@ const styles = StyleSheet.create({
   },
 
   timelineLineActive: {
-    backgroundColor: '#009411',
+    backgroundColor: COLORS.green.dark,
   },
 
   timelineLineInactive: {
-    backgroundColor: '#8E98A8',
+    backgroundColor: COLORS.inactive,
   },
 
   timelineContentCol: {
@@ -369,22 +380,22 @@ const styles = StyleSheet.create({
     fontFamily: FONT_FAMILY.medium,
     fontSize: 14,
     lineHeight: 18,
-    color: '#CC5D28',
+    color: COLORS.orange.normal,
   },
 
   stepTimestamp: {
     fontFamily: FONT_FAMILY.regular,
     fontSize: 12,
-    color: '#000000',
+    color: COLORS.black,
   },
 
   alertCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#FAE2BB',
+    backgroundColor: COLORS.orange.card,
     borderRadius: 8,
     borderWidth: 0.8,
-    borderColor: '#C87C01',
+    borderColor: '#CC5D28',
     paddingHorizontal: SPACING.md,
     minHeight: 40,
     gap: SPACING.sm,
@@ -395,7 +406,7 @@ const styles = StyleSheet.create({
     fontFamily: FONT_FAMILY.regular,
     fontSize: 12,
     lineHeight: 16,
-    color: '#C87C01',
+    color: '#CC5D28',
   },
 
   orderSummaryCard: {
@@ -417,7 +428,7 @@ const styles = StyleSheet.create({
   summaryTitle: {
     fontFamily: FONT_FAMILY.semiBold,
     fontSize: 14,
-    color: '#000000',
+    color: COLORS.black,
   },
 
   summaryCount: {
@@ -463,7 +474,7 @@ const styles = StyleSheet.create({
   summaryTotal: {
     fontFamily: FONT_FAMILY.semiBold,
     fontSize: FONT_SIZE.lg,
-    color: '#000000',
+    color: COLORS.black,
   },
 
   actionButtonsRow: {
@@ -475,21 +486,26 @@ const styles = StyleSheet.create({
 
   outlineButton: {
     flex: 1,
-    height: 42,
-    borderRadius: 8,
+    borderRadius: RADIUS.md,
     borderWidth: 1,
     borderColor: COLORS.orange.normal,
     backgroundColor: COLORS.white,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 8,
-    paddingVertical: 12,
+    gap: SPACING.sm,
+    padding: SPACING.md,
+  },
+
+  actionIcon: {
+    width: ICON_SIZES.base,
+    height: ICON_SIZES.base,
   },
 
   outlineButtonText: {
-    fontFamily: FONT_FAMILY.medium,
-    fontSize: 13,
+    fontFamily: FONT_FAMILY.regular,
+    fontSize: FONT_SIZE.md,
+    lineHeight: LINE_HEIGHT.amount,
     color: COLORS.orange.normal,
   },
 

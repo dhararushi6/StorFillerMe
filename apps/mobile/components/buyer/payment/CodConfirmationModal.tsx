@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
     maxWidth: 440,
     width: '100%',
     alignSelf: 'center',
-    shadowColor: '#000',
+    shadowColor: COLORS.black,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.15,
     shadowRadius: 12,
@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
     fontFamily: FONT_FAMILY.regular,
     fontSize: FONT_SIZE.md,
     lineHeight: 20,
-    color: '#333333',
+    color: COLORS.text.strong,
     marginVertical: SPACING.xs,
   },
 

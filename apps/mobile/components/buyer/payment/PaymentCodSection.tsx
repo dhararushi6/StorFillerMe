@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     backgroundColor: COLORS.payment.card,
     borderRadius: RADIUS.lg,
-    paddingHorizontal: SPACING.md + 2,
+    paddingHorizontal: SPACING.md,
     paddingVertical: SPACING.md + 2,
   },
 

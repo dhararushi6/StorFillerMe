@@ -82,7 +82,7 @@ export default function BuyerSupportScreen() {
                 </View>
               </View>
 
-              <Ionicons name="chevron-forward" size={20} color="#000000" />
+              <Ionicons name="chevron-forward" size={20} color={COLORS.black} />
             </Pressable>
 
             {/* Call Us Card (Rectangle 368) */}
@@ -94,7 +94,7 @@ export default function BuyerSupportScreen() {
               style={({ pressed }) => [styles.callCard, pressed && styles.pressed]}
             >
               <View style={styles.cardLeftGroup}>
-                <Ionicons name="call-outline" size={26} color="#009411" />
+                <Ionicons name="call-outline" size={26} color={COLORS.green.dark} />
 
                 <View style={styles.cardTextCol}>
                   <AppText style={styles.cardMainTitle}>{SUPPORT_SCREEN.callUsTitle}</AppText>
@@ -102,7 +102,7 @@ export default function BuyerSupportScreen() {
                 </View>
               </View>
 
-              <Ionicons name="chevron-forward" size={20} color="#000000" />
+              <Ionicons name="chevron-forward" size={20} color={COLORS.black} />
             </Pressable>
           </View>
         </View>
@@ -131,14 +131,14 @@ const styles = StyleSheet.create({
   helpTitle: {
     fontFamily: FONT_FAMILY.semiBold,
     fontSize: 16,
-    color: '#000000',
+    color: COLORS.black,
   },
 
   helpSubtitle: {
     fontFamily: FONT_FAMILY.regular,
     fontSize: 12,
     lineHeight: 14,
-    color: '#3C3C3C',
+    color: COLORS.text.body,
     marginBottom: SPACING.sm,
   },
 
@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 148, 17, 0.10)',
     borderRadius: 12,
     borderWidth: 0.4,
-    borderColor: '#009411',
+    borderColor: COLORS.green.dark,
     paddingHorizontal: SPACING.lg,
     paddingVertical: 12,
     minHeight: 64,
@@ -193,7 +193,7 @@ const styles = StyleSheet.create({
     fontFamily: FONT_FAMILY.medium,
     fontSize: 12,
     lineHeight: 14,
-    color: '#000000',
+    color: COLORS.black,
   },
 
   chatSubText: {
@@ -207,7 +207,7 @@ const styles = StyleSheet.create({
     fontFamily: FONT_FAMILY.semiBold,
     fontSize: 12,
     lineHeight: 14,
-    color: '#009411',
+    color: COLORS.green.dark,
   },
 
   pressed: {
