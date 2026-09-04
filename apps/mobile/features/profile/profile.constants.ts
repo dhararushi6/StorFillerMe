@@ -9,6 +9,7 @@ import {
   PROFILE_SHOP_PHOTOS,
   PROFILE_WALLET,
 } from './profile.assets';
+import type { ProfileMenuItem } from './profile.types';
 
 export const PROFILE_QUICK_ACTIONS = {
   orders: {
@@ -26,7 +27,7 @@ export const PROFILE_QUICK_ACTIONS = {
   },
 } as const;
 
-export const PROFILE_MENU_ITEMS = [
+export const PROFILE_MENU_ITEMS: ProfileMenuItem[] = [
   {
     id: 'address',
     title: 'Save Address',
@@ -46,7 +47,6 @@ export const PROFILE_MENU_ITEMS = [
     title: 'Help & Support',
     subtitle: "We're here to help you",
     icon: PROFILE_HELP,
-    route: '/(buyer)/support',
   },
 
   {
