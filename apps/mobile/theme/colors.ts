@@ -85,7 +85,7 @@ export const COLORS = {
 
   border: '#E5DED2',
   borderStrong: '#6A6A6A',
-
+  imageUpload: '#F0F0F0',
   success: '#1EA836',
   successLight: '#DDF7D0',
   warning: '#F2A900',

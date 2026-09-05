@@ -36,4 +36,10 @@ export const SIZES = {
   helpModalTopicHeight: 64,
   helpModalHandleWidth: 60,
   helpModalHandleHeight: 4,
+
+  issueDetailsImageBoxWidth: 100,
+  issueDetailsImageBoxHeight: 100,
+  issueDetailsNoticeHeight: 36,
+  issueChangeButtonWidth: 75,
+  issueChangeButtonHeight: 22,
 } as const;
