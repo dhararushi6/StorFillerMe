@@ -19,6 +19,10 @@ export const COLORS = {
     showcase: '#FECA7A',
     card: '#FAE2BB',
     bottomBar: '#FAE2BB',
+    chatBubble: '#FDEDDA',
+    borderAlpha30: 'rgba(204, 93, 40, 0.30)',
+    borderAlpha25: 'rgba(204, 93, 40, 0.25)',
+    bgAlpha10: 'rgba(204, 93, 40, 0.10)',
   },
 
   yellow: {

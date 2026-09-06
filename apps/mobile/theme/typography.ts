@@ -6,6 +6,8 @@ export const FONT_FAMILY = {
 } as const;
 
 export const FONT_SIZE = {
+  micro: 8,
+  tiny: 9,
   xxs: 10,
   xs: 11,
   sm: 12,
@@ -21,6 +23,8 @@ export const FONT_SIZE = {
 } as const;
 
 export const LINE_HEIGHT = {
+  micro: 10,
+  tiny: 12,
   xxs: 12,
   xs: 14,
   sm: 16,
