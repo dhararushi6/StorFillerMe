@@ -1,14 +1,18 @@
 export const RADIUS = {
-  none: 0, // ✅ added
+  none: 0,
+  xxs: 2,
   xs: 4,
   sm: 6,
+  smd: 7,
   md: 8,
   lg: 12,
   xl: 16,
   xxl: 20,
   xxxl: 24,
+  circle: 26,
   huge: 32,
+  headerCompact: 38,
   header: 40,
-  pill: 999, // used for fully rounded buttons/pills
-  full: 999, // ✅ alias for pill – or you can use `pill` directly
+  pill: 999,
+  full: 999,
 } as const;

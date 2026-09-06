@@ -118,6 +118,6 @@ export function useResponsive() {
     wallet,
     product,
     cart,
-    shopPhoto, // ★ added
+    shopPhoto,
   };
 }

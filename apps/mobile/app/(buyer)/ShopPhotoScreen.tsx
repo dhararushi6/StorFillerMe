@@ -22,7 +22,6 @@ import imageIcon from '../../assets/icons/image 2.png';
 import storefrontIcon from '../../assets/icons/storefront (1) 2.png';
 import {
   ShopPhotoScreenProps,
-  // PHOTO_SLOTS removed – not used
   BASE_SCREEN_WIDTH,
   FIGMA_HORIZONTAL_PADDING,
   GRID_GAP_RATIO,
@@ -54,6 +53,15 @@ export function ShopPhotoScreen({
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [uploadError, setUploadError] = useState<string | null>(null);
+
+  // Back handler – navigate to profile if no custom onBack is provided
+  const handleBack = () => {
+    if (onBack) {
+      onBack();
+    } else {
+      router.replace('/(buyer)/profile');
+    }
+  };
 
   const openActionSheet = (index: number) => {
     setActiveIndex(index);
@@ -179,7 +187,10 @@ export function ShopPhotoScreen({
           },
         ]}
       >
-        <TouchableOpacity onPress={onBack} hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}>
+        <TouchableOpacity
+          onPress={handleBack}
+          hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
+        >
           <Image source={backIcon} style={styles.backIcon} resizeMode="contain" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Shop Photo</Text>

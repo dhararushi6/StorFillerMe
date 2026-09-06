@@ -1,7 +1,8 @@
 import React from 'react';
-import { Pressable, StyleSheet, Text } from 'react-native';
+import { Pressable, StyleSheet } from 'react-native';
 
-import { COLORS } from '../constants/colors';
+import { AppText } from '@/components/common/AppText';
+import { COLORS, FONT_FAMILY, FONT_SIZE, RADIUS, SIZES } from '@/theme';
 
 type Props = {
   title: string;
@@ -14,16 +15,18 @@ export default function PrimaryButton({ title, onPress }: Props) {
       style={({ pressed }) => [styles.button, pressed && styles.pressed]}
       onPress={onPress}
     >
-      <Text style={styles.text}>{title}</Text>
+      <AppText variant="bodyMedium" color="inverse" style={styles.text}>
+        {title}
+      </AppText>
     </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
   button: {
-    height: 48,
-    borderRadius: 6,
-    backgroundColor: COLORS.primary,
+    height: SIZES.buttonHeight,
+    borderRadius: RADIUS.md,
+    backgroundColor: COLORS.orange.normal,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -33,8 +36,7 @@ const styles = StyleSheet.create({
   },
 
   text: {
-    color: COLORS.white,
-    fontSize: 15,
-    fontWeight: '600',
+    fontFamily: FONT_FAMILY.semiBold,
+    fontSize: FONT_SIZE.sm,
   },
 });

@@ -22,6 +22,7 @@ export const COLORS = {
     shopTitleAccent: '#B33C03',
     disabledButtonBackground: '#CC5D2852',
   },
+
   yellow: {
     light: '#FEFEFD',
     lightHover: '#FDFDFB',
@@ -34,10 +35,12 @@ export const COLORS = {
     darkActive: '#6F6D68',
     darker: '#565551',
   },
+
   header: '#FFF1CB',
   background: '#F6F2E7',
   backgroundSecondary: '#FAF6EE',
   surface: '#FFFFFF',
+
   text: {
     primary: '#111111',
     secondary: '#666666',
@@ -47,10 +50,18 @@ export const COLORS = {
     inverseSecondary: '#DDDDDD',
     danger: '#D64545',
   },
+
   deal: {
     card: '#FFF1CC',
     inner: '#CC5D281A',
   },
+
+  order: {
+    card: '#FFF0D7',
+    productBackground: '#CC5D281A',
+    delivered: '#296601',
+  },
+
   cart: {
     billCalculation: '#EFCDBC99',
     billHeader: '#FAE2BB',
@@ -59,34 +70,47 @@ export const COLORS = {
     couponCard: '#CC5D281A',
     recommendations: '#E9A37B',
   },
+
   payment: {
     amountBanner: '#D8E6FD',
     amountText: '#2563EB',
     card: '#FFF1CB',
     dashedBorder: '#D4C5A9',
   },
+
   map: {
     background: '#E8E3D5',
     badge: '#FBE4C0',
   },
+
   green: {
     light: '#DDF7D0',
     normal: '#1EA836',
   },
+
+  referEarn: {
+    cardBackground: '#FFF5E5',
+    cardBorder: '#DABFFF99',
+    illustrationShadow: '#E9DCFD',
+    modalOverlay: 'rgba(0,0,0,0.45)',
+  },
+
   border: '#E5DED2',
   borderDark: '#C8C4BC',
   borderStrong: '#6A6A6A',
   borderSubtle: 'rgba(0,0,0,0.1)',
+
   success: '#1EA836',
   successLight: '#DDF7D0',
   warning: '#F2A900',
   danger: '#D64545',
   rating: '#F2A900',
+
   overlay: 'rgba(17, 17, 17, 0.55)',
+
   white: '#FFFFFF',
   black: '#000000',
 
-  // --- NEW ---
   shopScreenBackground: '#FFFBF2',
   shopCardBackground: '#FFF0D7',
   photoBoxBackground: '#FFF1DA',
