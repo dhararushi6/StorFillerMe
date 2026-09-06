@@ -55,6 +55,22 @@ export default function BuyerTrackOrderScreen() {
     // Share order handler
   }, []);
 
+  const handleStepPress = useCallback(
+    (stepTitle: string) => {
+      if (stepTitle.toLowerCase() === 'delivered') {
+        router.push({
+          pathname: '/(buyer)/delivery-success',
+          params: {
+            orderId,
+            amount: totalAmount.toString(),
+            itemsCount,
+          },
+        });
+      }
+    },
+    [itemsCount, orderId, totalAmount],
+  );
+
   const sidePadding = {
     paddingHorizontal: horizontalPadding,
   };
@@ -153,7 +169,8 @@ export default function BuyerTrackOrderScreen() {
                   </View>
 
                   {/* Right Column: Title & Date */}
-                  <View
+                  <Pressable
+                    onPress={() => handleStepPress(step.title)}
                     style={[styles.timelineContentCol, !isLast && styles.timelineContentSpacing]}
                   >
                     <View style={styles.titleRowWrapper}>
@@ -161,7 +178,7 @@ export default function BuyerTrackOrderScreen() {
                     </View>
 
                     <AppText style={styles.stepTimestamp}>{step.timestamp}</AppText>
-                  </View>
+                  </Pressable>
                 </View>
               );
             })}

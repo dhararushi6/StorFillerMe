@@ -20,7 +20,8 @@ export const TRACK_ORDER_SCREEN = {
 
   deliveryAddressTitle: 'Delivery Address',
   storeName: 'Jagadeesh Kirana store',
-  addressLine: 'H.No 12-4-56, Near bus Stand, Kappegalu Village, Bellary District Karnataka - 583101',
+  addressLine:
+    'H.No 12-4-56, Near bus Stand, Kappegalu Village, Bellary District Karnataka - 583101',
   phonePrefix: 'Phone:',
   phoneNumber: '1234567890',
 
@@ -77,3 +78,22 @@ export const DEFAULT_TIMELINE_STEPS: TimelineStep[] = [
     isCompleted: false,
   },
 ];
+
+export const ORDER_DELIVERED_SCREEN = {
+  headerTitle: 'Order Delivered',
+  title: 'Delivered Successful!',
+  subtitle: 'Your Order has been delivered on',
+  deliveredDate: '04 Aug 2025, 09:25 AM',
+  orderIdLabel: 'Order ID',
+  defaultOrderId: '#SF2345678990',
+  copyLabel: 'Copy',
+  amountPaidLabel: 'Amount Paid',
+  defaultAmount: 9200,
+  itemsOrderedLabel: 'Items Ordered',
+  defaultItemsCount: '26 Items',
+  paymentTimeLabel: 'Payment & Time',
+  defaultPaymentTime: '03 Aug, 2025, 09:00 PM',
+  deliveryAtLabel: 'Delivery at',
+  defaultDeliveryWindow: 'Tomorrow, 10:00 AM - 11:00 AM',
+  backToHomeLabel: 'Back to Home',
+} as const;
