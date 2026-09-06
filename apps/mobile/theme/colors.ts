@@ -62,6 +62,9 @@ export const COLORS = {
   },
   order: {
     card: '#FFF0D7',
+    summaryCard: '#FFF3E0',
+    alertCard: '#FAE2BB',
+    border: '#C87C01',
     productBackground: '#CC5D281A',
     delivered: '#296601',
   },

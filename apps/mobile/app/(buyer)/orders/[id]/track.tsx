@@ -17,9 +17,9 @@ import {
   COLORS,
   FONT_FAMILY,
   FONT_SIZE,
-  ICON_SIZES,
   LINE_HEIGHT,
   RADIUS,
+  SIZES,
   SPACING,
   useResponsive,
 } from '@/theme';
@@ -392,10 +392,10 @@ const styles = StyleSheet.create({
   alertCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: COLORS.orange.card,
-    borderRadius: 8,
-    borderWidth: 0.8,
-    borderColor: '#CC5D28',
+    backgroundColor: COLORS.order.alertCard,
+    borderRadius: RADIUS.md,
+    borderWidth: SIZES.borderThin,
+    borderColor: COLORS.order.border,
     paddingHorizontal: SPACING.md,
     minHeight: 40,
     gap: SPACING.sm,
@@ -404,16 +404,16 @@ const styles = StyleSheet.create({
   alertText: {
     flex: 1,
     fontFamily: FONT_FAMILY.regular,
-    fontSize: 12,
-    lineHeight: 16,
-    color: '#CC5D28',
+    fontSize: FONT_SIZE.sm,
+    lineHeight: LINE_HEIGHT.sm,
+    color: COLORS.orange.normal,
   },
 
   orderSummaryCard: {
-    backgroundColor: '#FFF3E0',
-    borderRadius: 8,
-    borderWidth: 0.8,
-    borderColor: '#C87C01',
+    backgroundColor: COLORS.order.summaryCard,
+    borderRadius: RADIUS.md,
+    borderWidth: SIZES.borderThin,
+    borderColor: COLORS.order.border,
     padding: SPACING.md,
     gap: SPACING.md,
     minHeight: 100,
@@ -427,14 +427,14 @@ const styles = StyleSheet.create({
 
   summaryTitle: {
     fontFamily: FONT_FAMILY.semiBold,
-    fontSize: 14,
+    fontSize: FONT_SIZE.md,
     color: COLORS.black,
   },
 
   summaryCount: {
     fontFamily: FONT_FAMILY.regular,
     fontSize: FONT_SIZE.sm,
-    color: '#555555',
+    color: COLORS.text.secondary,
   },
 
   summaryProductsRow: {
@@ -466,7 +466,7 @@ const styles = StyleSheet.create({
 
   moreItemsText: {
     fontFamily: FONT_FAMILY.medium,
-    fontSize: 11,
+    fontSize: FONT_SIZE.xs,
     color: COLORS.orange.normal,
     marginLeft: 2,
   },
@@ -486,6 +486,7 @@ const styles = StyleSheet.create({
 
   outlineButton: {
     flex: 1,
+    height: 42,
     borderRadius: RADIUS.md,
     borderWidth: 1,
     borderColor: COLORS.orange.normal,
@@ -494,18 +495,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: SPACING.sm,
-    padding: SPACING.md,
+    paddingVertical: SPACING.md,
+    paddingHorizontal: SPACING.sm,
   },
 
   actionIcon: {
-    width: ICON_SIZES.base,
-    height: ICON_SIZES.base,
+    width: 18,
+    height: 18,
+    tintColor: COLORS.orange.normal,
   },
 
   outlineButtonText: {
     fontFamily: FONT_FAMILY.regular,
-    fontSize: FONT_SIZE.md,
-    lineHeight: LINE_HEIGHT.amount,
+    fontSize: 13,
+    lineHeight: 18,
     color: COLORS.orange.normal,
   },
 
