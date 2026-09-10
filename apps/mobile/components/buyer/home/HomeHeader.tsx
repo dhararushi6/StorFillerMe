@@ -6,11 +6,12 @@ import cartIcon from '@/assets/icons/cart.png';
 import walletIcon from '@/assets/icons/wallet.png';
 import { AppIcon } from '@/components/common/AppIcon';
 import { AppText } from '@/components/common/AppText';
-import { COLORS, RADIUS, SIZES, SPACING, useResponsive } from '@/theme';
+import { COLORS, FONT_FAMILY, RADIUS, SIZES, SPACING, useResponsive } from '@/theme';
 
 interface HomeHeaderProps {
   location?: string;
   walletBalance?: number;
+  cartCount?: number;
   onLocationPress?: () => void;
   onWalletPress?: () => void;
   onCartPress?: () => void;
@@ -19,6 +20,7 @@ interface HomeHeaderProps {
 export function HomeHeader({
   location = 'Kolar, Karnataka',
   walletBalance = 500,
+  cartCount = 0,
   onLocationPress,
   onWalletPress,
   onCartPress,
@@ -94,7 +96,7 @@ export function HomeHeader({
             style={styles.cartButton}
             onPress={onCartPress}
             accessibilityRole="button"
-            accessibilityLabel="Cart"
+            accessibilityLabel={`Cart with ${cartCount} items`}
             hitSlop={8}
           >
             <Image
@@ -108,6 +110,12 @@ export function HomeHeader({
               ]}
               resizeMode="contain"
             />
+
+            {cartCount > 0 && (
+              <View style={styles.cartBadge}>
+                <AppText style={styles.cartBadgeText}>{cartCount}</AppText>
+              </View>
+            )}
           </Pressable>
         </View>
       </View>
@@ -162,5 +170,24 @@ const styles = StyleSheet.create({
 
   cartIcon: {
     resizeMode: 'contain',
+  },
+
+  cartBadge: {
+    position: 'absolute',
+    top: -4,
+    right: -6,
+    backgroundColor: COLORS.surface,
+    borderRadius: RADIUS.pill,
+    minWidth: 16,
+    height: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 3,
+  },
+
+  cartBadgeText: {
+    fontSize: 10,
+    fontFamily: FONT_FAMILY.bold,
+    color: COLORS.orange.normal,
   },
 });

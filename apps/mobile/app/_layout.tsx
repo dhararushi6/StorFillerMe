@@ -9,14 +9,14 @@ import semiBoldFont from '@/assets/fonts/SchibstedGrotesk-SemiBold.ttf';
 import { QueryProvider } from '@/providers/QueryProvider';
 
 export default function RootLayout() {
-  const [fontsLoaded] = useFonts({
+  const [fontsLoaded, fontError] = useFonts({
     'SchibstedGrotesk-Regular': regularFont,
     'SchibstedGrotesk-Medium': mediumFont,
     'SchibstedGrotesk-SemiBold': semiBoldFont,
     'SchibstedGrotesk-Bold': boldFont,
   });
 
-  if (!fontsLoaded) {
+  if (!fontsLoaded && !fontError) {
     return null;
   }
 

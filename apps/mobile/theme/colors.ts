@@ -19,6 +19,10 @@ export const COLORS = {
     showcase: '#FECA7A',
     card: '#FAE2BB',
     bottomBar: '#FAE2BB',
+    chatBubble: '#FDEDDA',
+    borderAlpha30: 'rgba(204, 93, 40, 0.30)',
+    borderAlpha25: 'rgba(204, 93, 40, 0.25)',
+    bgAlpha10: 'rgba(204, 93, 40, 0.10)',
   },
 
   yellow: {
@@ -45,11 +49,15 @@ export const COLORS = {
 
   text: {
     primary: '#111111',
+    strong: '#333333',
+    body: '#3C3C3C',
+    detail: '#535353',
+    placeholder: '#646464',
     secondary: '#666666',
-    muted: '#8A8A8A',
+    muted: '#9D9D9D',
     inverse: '#FFFFFF',
     inverseSecondary: '#DDDDDD',
-    danger: '#D64545',
+    danger: '#FF0000',
   },
 
   deal: {
@@ -58,6 +66,9 @@ export const COLORS = {
   },
   order: {
     card: '#FFF0D7',
+    summaryCard: '#FFF3E0',
+    alertCard: '#FAE2BB',
+    border: '#C87C01',
     productBackground: '#CC5D281A',
     delivered: '#296601',
   },
@@ -73,23 +84,35 @@ export const COLORS = {
 
   payment: {
     amountBanner: '#D8E6FD',
-    amountText: '#2563EB',
+    amountText: '#3A83FF',
     card: '#FFF1CB',
     dashedBorder: '#D4C5A9',
+  },
+
+  coupon: {
+    border: '#CEE0FE',
+  },
+
+  wallet: {
+    cardGradient: ['#CC5D28', '#6B2605'] as const,
   },
 
   green: {
     light: '#DDF7D0',
     normal: '#1EA836',
+    dark: '#009411',
   },
 
   border: '#E5DED2',
   borderStrong: '#6A6A6A',
+
+  inactive: '#8E98A8',
+
   imageUpload: '#F0F0F0',
   success: '#1EA836',
   successLight: '#DDF7D0',
   warning: '#F2A900',
-  danger: '#D64545',
+  danger: '#FF0000',
 
   rating: '#F2A900',
 

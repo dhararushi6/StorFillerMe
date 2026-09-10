@@ -13,6 +13,7 @@ import {
   PromoBanner,
   RiceVarietySection,
 } from '@/components/buyer/home';
+import { useCartStore } from '@/store';
 import {
   HOME_BEST_DEALS,
   HOME_CATEGORIES,
@@ -34,6 +35,8 @@ import { COLORS, FONT_SIZE, LINE_HEIGHT, RADIUS, SPACING, useResponsive } from '
 
 export default function BuyerHomeScreen() {
   const [searchQuery, setSearchQuery] = useState('');
+  const { getTotalCount } = useCartStore();
+  const cartCount = getTotalCount();
 
   const { horizontalPadding } = useResponsive();
 
@@ -73,11 +76,6 @@ export default function BuyerHomeScreen() {
     // Product/category destination can be wired when the catalog route is finalized.
   }, []);
 
-  const handleAddToCart = useCallback((productId: string) => {
-    // Cart integration will be connected to the cart store/API.
-    console.log('Add to cart:', productId);
-  }, []);
-
   return (
     <View style={styles.screen}>
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
@@ -86,6 +84,7 @@ export default function BuyerHomeScreen() {
           <HomeHeader
             location="Kolar, Karnataka"
             walletBalance={500}
+            cartCount={cartCount}
             onWalletPress={() => router.push('/(buyer)/wallet')}
             onCartPress={() => router.push('/(buyer)/cart')}
           />
@@ -130,7 +129,6 @@ export default function BuyerHomeScreen() {
             products={HOME_BEST_DEALS}
             horizontalPadding={horizontalPadding}
             onProductPress={handleProductPress}
-            onAddPress={handleAddToCart}
           />
           {/* Promo Banner */}
           <View
@@ -185,7 +183,6 @@ export default function BuyerHomeScreen() {
             <ProductDealList
               products={HOME_POPULAR_PRODUCTS}
               onProductPress={handleProductPress}
-              onAddPress={handleAddToCart}
             />
           </View>
           {/* Stationery Categories */}
@@ -262,7 +259,6 @@ export default function BuyerHomeScreen() {
             <ProductDealList
               products={HOME_BEST_DEALS}
               onProductPress={handleProductPress}
-              onAddPress={handleAddToCart}
             />
           </View>
           <RiceVarietySection
@@ -273,7 +269,6 @@ export default function BuyerHomeScreen() {
             exploreLabel="Explore All"
             horizontalPadding={horizontalPadding}
             onProductPress={handleProductPress}
-            onAddPress={handleAddToCart}
             onExplorePress={handleViewAllCategories}
           />
           {/* Personal Care & More */}
@@ -305,7 +300,6 @@ export default function BuyerHomeScreen() {
             <ProductDealList
               products={HOME_PERSONAL_CARE_PRODUCTS}
               onProductPress={handleProductPress}
-              onAddPress={handleAddToCart}
             />
           </View>
 
@@ -338,7 +332,6 @@ export default function BuyerHomeScreen() {
             <ProductDealList
               products={HOME_DRINKS_PRODUCTS}
               onProductPress={handleProductPress}
-              onAddPress={handleAddToCart}
             />
           </View>
 
@@ -371,7 +364,6 @@ export default function BuyerHomeScreen() {
             <ProductDealList
               products={HOME_GHEE_PRODUCTS}
               onProductPress={handleProductPress}
-              onAddPress={handleAddToCart}
             />
           </View>
           <View style={styles.bottomSpacing} />

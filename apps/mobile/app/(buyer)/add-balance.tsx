@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { Linking, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 
@@ -37,12 +37,12 @@ export default function BuyerAddBalanceScreen() {
 
   const handleChatPress = useCallback(() => {
     setIsHelpVisible(false);
-    router.push('/(buyer)/support');
+    router.push('/(buyer)/chat');
   }, []);
 
   const handleCallPress = useCallback(() => {
     setIsHelpVisible(false);
-    router.push('/(buyer)/support');
+    Linking.openURL('tel:1800123456');
   }, []);
 
   const handleTermsPress = useCallback(() => {
@@ -54,7 +54,7 @@ export default function BuyerAddBalanceScreen() {
     const amount = selectedOption ? selectedOption.amount : 500;
     router.push({
       pathname: '/(buyer)/payment',
-      params: { amount: amount.toString() },
+      params: { amount: amount.toString(), from: 'wallet' },
     });
   }, [selectedOptionId]);
 
@@ -123,7 +123,11 @@ export default function BuyerAddBalanceScreen() {
           },
         ]}
       >
-        <AppButton title={WALLET_SCREEN.submitLabel} onPress={handleAddToWallet} />
+        <AppButton
+          title={WALLET_SCREEN.submitLabel}
+          onPress={handleAddToWallet}
+          style={styles.confirmButton}
+        />
       </View>
 
       <WalletHelpModal
@@ -169,6 +173,12 @@ const styles = StyleSheet.create({
   footer: {
     paddingTop: SPACING.md,
     backgroundColor: COLORS.background,
+  },
+
+  confirmButton: {
+    height: 43,
+    borderRadius: RADIUS.xs,
+    backgroundColor: COLORS.orange.normal,
   },
 
   pressed: {

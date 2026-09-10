@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { AppText } from '@/components/common/AppText';
-import { COLORS, FONT_FAMILY, FONT_SIZE, RADIUS, SPACING } from '@/theme';
+import { COLORS, FONT_FAMILY, FONT_SIZE, LINE_HEIGHT, RADIUS, SPACING } from '@/theme';
 
 interface PaymentAmountBannerProps {
   label: string;
@@ -37,12 +37,14 @@ const styles = StyleSheet.create({
   label: {
     fontFamily: FONT_FAMILY.medium,
     fontSize: FONT_SIZE.md,
+    lineHeight: LINE_HEIGHT.md,
     color: COLORS.payment.amountText,
   },
 
   amount: {
-    fontFamily: FONT_FAMILY.bold,
+    fontFamily: FONT_FAMILY.medium,
     fontSize: FONT_SIZE.md,
+    lineHeight: LINE_HEIGHT.md,
     color: COLORS.payment.amountText,
   },
 });

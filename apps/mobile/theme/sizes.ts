@@ -6,6 +6,7 @@ export const SIZES = {
   compactButtonHeight: 32,
 
   headerHeight: 56,
+  headerCompactHeight: 63,
   headerLargeHeight: 107,
   bottomTabHeight: 64,
 
@@ -20,6 +21,12 @@ export const SIZES = {
   showcaseCardWidth: 122,
   showcaseCardHeight: 132,
   showcaseImageHeight: 82,
+
+  quickHelpCardWidth: 224,
+  chatBubbleWidth: 224,
+  chatThumbnailSize: 44,
+  ticketIconSize: 34,
+  onlineDotSize: 7,
 
   chipHeight: 23,
   borderThin: 0.8,

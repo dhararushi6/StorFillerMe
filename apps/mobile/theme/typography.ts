@@ -6,23 +6,40 @@ export const FONT_FAMILY = {
 } as const;
 
 export const FONT_SIZE = {
-  xs: 10,
+  micro: 8,
+  tiny: 9,
+  xxs: 10,
+  xs: 11,
   sm: 12,
   md: 14,
   lg: 16,
   xl: 18,
+  title: 20,
   xxl: 22,
+  heading: 24,
   xxxl: 28,
   display: 32,
+  hero: 44,
 } as const;
 
 export const LINE_HEIGHT = {
+  micro: 10,
+  tiny: 12,
+  xxs: 12,
   xs: 14,
   sm: 16,
   md: 20,
   lg: 24,
+  title: 24,
   xl: 28,
+  heading: 29,
   xxl: 32,
   display: 38,
+  hero: 53,
   category: 14.4,
+  note: 15.6,
+  amount: 16.8,
+  helper: 18.2,
+  subtitle: 19.2,
+  paragraph: 20.8,
 } as const;

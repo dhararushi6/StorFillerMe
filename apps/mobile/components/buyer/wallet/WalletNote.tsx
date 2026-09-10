@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    fontFamily: FONT_FAMILY.bold,
+    fontFamily: FONT_FAMILY.semiBold,
   },
 
   divider: {
