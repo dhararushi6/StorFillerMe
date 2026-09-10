@@ -6,6 +6,7 @@ import mediumFont from '@/assets/fonts/SchibstedGrotesk-Medium.ttf';
 import regularFont from '@/assets/fonts/SchibstedGrotesk-Regular.ttf';
 import semiBoldFont from '@/assets/fonts/SchibstedGrotesk-SemiBold.ttf';
 
+import { AddressProvider } from '@/app/(buyer)/AddressContext';
 import { QueryProvider } from '@/providers/QueryProvider';
 
 export default function RootLayout() {
@@ -22,11 +23,13 @@ export default function RootLayout() {
 
   return (
     <QueryProvider>
-      <Stack
-        screenOptions={{
-          headerShown: false,
-        }}
-      />
+      <AddressProvider>
+        <Stack
+          screenOptions={{
+            headerShown: false,
+          }}
+        />
+      </AddressProvider>
     </QueryProvider>
   );
 }

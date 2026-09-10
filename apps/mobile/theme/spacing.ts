@@ -1,4 +1,6 @@
 export const SPACING = {
+  none: 0,
+  xxs: 2,
   xs: 4,
   sm: 8,
   md: 12,
@@ -8,4 +10,13 @@ export const SPACING = {
   xxxl: 32,
   huge: 40,
   section: 48,
+
+  gap6: 6,
+  gap9: 9,
+  gap10: 10,
+  gap13: 13,
+  gap14: 14,
+  gap15: 15,
+  gap17: 17,
+  gap18: 18,
 } as const;

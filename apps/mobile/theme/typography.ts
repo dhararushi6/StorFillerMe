@@ -5,6 +5,13 @@ export const FONT_FAMILY = {
   bold: 'SchibstedGrotesk-Bold',
 } as const;
 
+export const FONT_WEIGHT = {
+  regular: '400',
+  medium: '500',
+  semiBold: '600',
+  bold: '700',
+} as const;
+
 export const FONT_SIZE = {
   micro: 8,
   tiny: 9,
@@ -19,7 +26,10 @@ export const FONT_SIZE = {
   heading: 24,
   xxxl: 28,
   display: 32,
-  hero: 44,
+  badge: 13,
+  extraLarge: 20,
+  heading: 26,
+  code: 19,
 } as const;
 
 export const LINE_HEIGHT = {
@@ -37,6 +47,14 @@ export const LINE_HEIGHT = {
   display: 38,
   hero: 53,
   category: 14.4,
+  label: 16.8,
+  typeText: 19.2,
+  badge: 17,
+  cardTitle: 15,
+  buttonText: 18,
+  small: 17,
+  medium: 21,
+  modalTitle: 23,
   note: 15.6,
   amount: 16.8,
   helper: 18.2,

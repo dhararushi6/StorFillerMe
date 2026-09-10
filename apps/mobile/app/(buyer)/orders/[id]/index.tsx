@@ -124,6 +124,7 @@ export default function OrderDetailsScreen() {
         onClose={() => setHelpVisible(false)}
         onTopicPress={(topic) => {
           setHelpVisible(false);
+          console.log('Selected help topic:', topic.id);
 
           router.push({
             pathname: '/(buyer)/orders/[id]/issue',

@@ -32,6 +32,21 @@ import {
   HOME_RICE_PRODUCTS,
 } from '@/constants/home';
 import { COLORS, FONT_SIZE, LINE_HEIGHT, RADIUS, SPACING, useResponsive } from '@/theme';
+import { useAddresses } from './AddressContext';
+
+/**
+ * Extracts the last two non-empty parts from a comma-separated address string.
+ * Example: "123 Main St, Kolar, Karnataka" => "Kolar, Karnataka"
+ */
+function extractAreaCity(address: string): string {
+  if (!address) return '';
+  const parts = address
+    .split(',')
+    .map((p) => p.trim())
+    .filter((p) => p.length > 0);
+  if (parts.length < 2) return parts.join(', ') || '';
+  return parts.slice(-2).join(', ');
+}
 
 export default function BuyerHomeScreen() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -39,6 +54,13 @@ export default function BuyerHomeScreen() {
   const cartCount = getTotalCount();
 
   const { horizontalPadding } = useResponsive();
+
+  const { selectedAddress } = useAddresses();
+
+  // Build location string: extract from address or fallback.
+  const locationDisplay = selectedAddress?.address
+    ? extractAreaCity(selectedAddress.address) || 'Kolar, Karnataka'
+    : 'Kolar, Karnataka';
 
   const handleCategoryPress = useCallback((categoryId: string) => {
     router.push({
@@ -72,31 +94,33 @@ export default function BuyerHomeScreen() {
   const handleProfilePress = useCallback(() => {
     router.push('/(buyer)/profile');
   }, []);
+
+  const handleLocationPress = useCallback(() => {
+    router.push('/(buyer)/location' as any);
+  }, []);
+
   const handlePromoPress = useCallback(() => {
     // Product/category destination can be wired when the catalog route is finalized.
+  }, []);
+
+  const handleAddToCart = useCallback((productId: string) => {
+    console.log('Add to cart:', productId);
   }, []);
 
   return (
     <View style={styles.screen}>
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
-        {/* Hero Section */}
         <View style={styles.heroSection}>
           <HomeHeader
-            location="Kolar, Karnataka"
+            location={locationDisplay}
             walletBalance={500}
+            onLocationPress={handleLocationPress}
             cartCount={cartCount}
             onWalletPress={() => router.push('/(buyer)/wallet')}
             onCartPress={() => router.push('/(buyer)/cart')}
           />
 
-          <View
-            style={[
-              styles.searchContainer,
-              {
-                paddingHorizontal: horizontalPadding,
-              },
-            ]}
-          >
+          <View style={[styles.searchContainer, { paddingHorizontal: horizontalPadding }]}>
             <HomeSearchBar
               value={searchQuery}
               onChangeText={setSearchQuery}
@@ -111,17 +135,9 @@ export default function BuyerHomeScreen() {
           />
         </View>
 
-        {/* Main Content */}
         <View style={styles.contentSection}>
           {/* Top Best Deal */}
-          <View
-            style={[
-              styles.sectionHeader,
-              {
-                paddingHorizontal: horizontalPadding,
-              },
-            ]}
-          >
+          <View style={[styles.sectionHeader, { paddingHorizontal: horizontalPadding }]}>
             <SectionHeader title="Top Best Deal" showViewAll={false} />
           </View>
 
@@ -131,14 +147,7 @@ export default function BuyerHomeScreen() {
             onProductPress={handleProductPress}
           />
           {/* Promo Banner */}
-          <View
-            style={[
-              styles.bannerSection,
-              {
-                paddingHorizontal: horizontalPadding,
-              },
-            ]}
-          >
+          <View style={[styles.bannerSection, { paddingHorizontal: horizontalPadding }]}>
             <PromoBanner
               title={HOME_PROMO.title}
               description={HOME_PROMO.description}
@@ -156,14 +165,7 @@ export default function BuyerHomeScreen() {
           </View>
 
           {/* Popular Products */}
-          <View
-            style={[
-              styles.popularSection,
-              {
-                paddingHorizontal: horizontalPadding,
-              },
-            ]}
-          >
+          <View style={[styles.popularSection, { paddingHorizontal: horizontalPadding }]}>
             <View style={styles.popularHeader}>
               <AppText variant="subheading" style={styles.popularTitle}>
                 Popular Products
@@ -232,14 +234,7 @@ export default function BuyerHomeScreen() {
           </View>
 
           {/* Household Cleaning Needs */}
-          <View
-            style={[
-              styles.productSection,
-              {
-                paddingHorizontal: horizontalPadding,
-              },
-            ]}
-          >
+          <View style={[styles.productSection, { paddingHorizontal: horizontalPadding }]}>
             <View style={styles.productSectionHeader}>
               <AppText variant="subheading" color="primary" style={styles.productSectionTitle}>
                 Household cleaning needs
@@ -272,14 +267,7 @@ export default function BuyerHomeScreen() {
             onExplorePress={handleViewAllCategories}
           />
           {/* Personal Care & More */}
-          <View
-            style={[
-              styles.productSection,
-              {
-                paddingHorizontal: horizontalPadding,
-              },
-            ]}
-          >
+          <View style={[styles.productSection, { paddingHorizontal: horizontalPadding }]}>
             <View style={styles.productSectionHeader}>
               <AppText variant="subheading" color="primary" style={styles.productSectionTitle}>
                 Personal care & more
@@ -304,14 +292,7 @@ export default function BuyerHomeScreen() {
           </View>
 
           {/* Drinks */}
-          <View
-            style={[
-              styles.productSection,
-              {
-                paddingHorizontal: horizontalPadding,
-              },
-            ]}
-          >
+          <View style={[styles.productSection, { paddingHorizontal: horizontalPadding }]}>
             <View style={styles.productSectionHeader}>
               <AppText variant="subheading" color="primary" style={styles.productSectionTitle}>
                 Drinks
@@ -336,14 +317,7 @@ export default function BuyerHomeScreen() {
           </View>
 
           {/* Ghee */}
-          <View
-            style={[
-              styles.productSection,
-              {
-                paddingHorizontal: horizontalPadding,
-              },
-            ]}
-          >
+          <View style={[styles.productSection, { paddingHorizontal: horizontalPadding }]}>
             <View style={styles.productSectionHeader}>
               <AppText variant="subheading" color="primary" style={styles.productSectionTitle}>
                 Ghee
@@ -461,8 +435,6 @@ const styles = StyleSheet.create({
     width: 18,
     backgroundColor: COLORS.orange.normal,
   },
-
-  /* Popular Products */
 
   popularSection: {
     marginTop: SPACING.lg,

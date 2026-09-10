@@ -36,17 +36,28 @@ export default function ProfileScreen() {
     // TODO: Navigate to profile edit screen
   }, []);
 
-  const handleMenuPress = useCallback((route?: string) => {
-    if (!route) {
+  const handleMenuPress = useCallback((item: { id: string; title: string; route?: string }) => {
+    if (item.id === 'shop-photos') {
+      router.push('/(buyer)/ShopPhotoScreen');
       return;
     }
 
-    router.push(route as never);
+    if (!item.route) {
+      return;
+    }
+    router.push(item.route as never);
   }, []);
 
+  // Generate promo code: first 4 letters of name + "100"
   const handleReferralPress = useCallback(() => {
-    router.push('/(buyer)/referral');
-  }, []);
+    const namePrefix = profile?.name ? profile.name.slice(0, 4).toUpperCase() : 'USER';
+    const promoCode = `${namePrefix}100`;
+
+    router.push({
+      pathname: '/(buyer)/ReferEarnScreen',
+      params: { referralCode: promoCode },
+    });
+  }, [profile]);
 
   const handleAccountItemPress = useCallback((id: string) => {
     if (id === 'logout') {
@@ -143,7 +154,7 @@ export default function ProfileScreen() {
               icon={item.icon}
               title={item.title}
               subtitle={item.subtitle}
-              onPress={() => handleMenuPress(item.route)}
+              onPress={() => handleMenuPress(item)}
             />
           ))}
         </View>
