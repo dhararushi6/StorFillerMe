@@ -13,13 +13,17 @@ export const FONT_WEIGHT = {
 } as const;
 
 export const FONT_SIZE = {
+  micro: 8,
+  tiny: 9,
   xxs: 10,
   xs: 11,
   sm: 12,
   md: 14,
   lg: 16,
   xl: 18,
+  title: 20,
   xxl: 22,
+  heading: 24,
   xxxl: 28,
   display: 32,
   badge: 13,
@@ -29,14 +33,19 @@ export const FONT_SIZE = {
 } as const;
 
 export const LINE_HEIGHT = {
-  xxs: 13,
+  micro: 10,
+  tiny: 12,
+  xxs: 12,
   xs: 14,
   sm: 16,
   md: 20,
   lg: 24,
+  title: 24,
   xl: 28,
+  heading: 29,
   xxl: 32,
   display: 38,
+  hero: 53,
   category: 14.4,
   label: 16.8,
   typeText: 19.2,
@@ -46,4 +55,9 @@ export const LINE_HEIGHT = {
   small: 17,
   medium: 21,
   modalTitle: 23,
+  note: 15.6,
+  amount: 16.8,
+  helper: 18.2,
+  subtitle: 19.2,
+  paragraph: 20.8,
 } as const;

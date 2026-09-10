@@ -2,7 +2,15 @@ import React from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { AppText } from '@/components/common/AppText';
-import { COLORS, FONT_FAMILY, RADIUS, SPACING, useResponsive } from '@/theme';
+import {
+  COLORS,
+  FONT_FAMILY,
+  FONT_SIZE,
+  LINE_HEIGHT,
+  RADIUS,
+  SPACING,
+  useResponsive,
+} from '@/theme';
 
 interface QuantityOption {
   id: string;
@@ -118,11 +126,16 @@ const styles = StyleSheet.create({
   },
 
   chipTextSelected: {
-    fontFamily: FONT_FAMILY.bold,
+    fontFamily: FONT_FAMILY.medium,
+    fontSize: FONT_SIZE.lg,
+    lineHeight: LINE_HEIGHT.subtitle,
   },
 
   chipTextUnselected: {
     fontFamily: FONT_FAMILY.medium,
+    fontSize: FONT_SIZE.lg,
+    lineHeight: LINE_HEIGHT.subtitle,
+    color: COLORS.inactive,
   },
 
   pressed: {

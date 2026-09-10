@@ -19,8 +19,3 @@ export const AUTH_CONTENT = {
     progress: 1,
   },
 };
-
-export const SPACING = {
-  horizontal: 22,
-  buttonHeight: 48,
-};

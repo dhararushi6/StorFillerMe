@@ -87,9 +87,9 @@ export function useResponsive() {
   const cart = {
     headerPaddingTop: isSmall ? 8 : 12,
     headerBottomRadius: isSmall ? 24 : 28,
-    itemImageSize: isSmall ? 68 : 76,
-    qtyButtonWidth: isSmall ? 68 : 76,
-    qtyButtonHeight: isSmall ? 28 : 32,
+    itemImageSize: isSmall ? 96 : 108,
+    qtyButtonWidth: isSmall ? 84 : 92,
+    qtyButtonHeight: isSmall ? 32 : 36,
   };
 
   // ★ Shop Photo screen — 2-column image grid (added)

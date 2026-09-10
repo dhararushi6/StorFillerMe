@@ -4,7 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { AppIcon } from '@/components/common/AppIcon';
 import { AppText } from '@/components/common/AppText';
-import { COLORS, FONT_FAMILY, SPACING, useResponsive } from '@/theme';
+import { COLORS, FONT_FAMILY, FONT_SIZE, LINE_HEIGHT, SPACING, useResponsive } from '@/theme';
 
 interface CartDeliveryHeaderProps {
   title: string;
@@ -68,7 +68,7 @@ export function CartDeliveryHeader({
       </View>
 
       <View style={styles.addressContainer}>
-        <AppText variant="caption" color="primary" numberOfLines={2} style={styles.addressText}>
+        <AppText variant="caption" numberOfLines={2} style={styles.addressText}>
           {address}
         </AppText>
       </View>
@@ -112,6 +112,9 @@ const styles = StyleSheet.create({
   },
 
   addressText: {
-    lineHeight: 16,
+    fontFamily: FONT_FAMILY.medium,
+    fontSize: FONT_SIZE.sm,
+    lineHeight: LINE_HEIGHT.note,
+    color: COLORS.text.strong,
   },
 });

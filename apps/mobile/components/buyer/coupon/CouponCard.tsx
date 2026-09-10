@@ -14,7 +14,7 @@ interface CouponCardProps {
 }
 
 export function CouponCard({ coupon, onApply, onTermsPress }: CouponCardProps) {
-  const accentColor = coupon.variant === 'success' ? COLORS.success : COLORS.danger;
+  const accentColor = coupon.variant === 'success' ? COLORS.green.dark : COLORS.text.danger;
   const iconSource = coupon.variant === 'success' ? sealPercentGreenIcon : sealPercentRedIcon;
 
   return (
@@ -25,11 +25,9 @@ export function CouponCard({ coupon, onApply, onTermsPress }: CouponCardProps) {
           <Image source={iconSource} style={styles.badgeIcon} resizeMode="contain" />
 
           <View style={styles.codeGroup}>
-            <AppText variant="bodyMedium" color="primary" style={styles.codeText}>
-              {coupon.code}
-            </AppText>
+            <AppText style={styles.codeText}>{coupon.code}</AppText>
 
-            <AppText variant="caption" style={[styles.discountText, { color: accentColor }]}>
+            <AppText style={[styles.discountText, { color: accentColor }]}>
               {coupon.discount}
             </AppText>
           </View>
@@ -42,23 +40,19 @@ export function CouponCard({ coupon, onApply, onTermsPress }: CouponCardProps) {
           hitSlop={8}
           style={({ pressed }) => [pressed && styles.pressed]}
         >
-          <AppText variant="bodyMedium" color="primary" style={styles.applyText}>
-            {COUPON_SCREEN.applyButton}
-          </AppText>
+          <AppText style={styles.applyText}>{COUPON_SCREEN.applyButton}</AppText>
         </Pressable>
       </View>
 
       {/* Minimum Order Value */}
-      <AppText variant="caption" color="primary" style={styles.minOrderText}>
-        {coupon.minOrderText}
-      </AppText>
+      <AppText style={styles.minOrderText}>{coupon.minOrderText}</AppText>
 
       {/* Divider */}
       <View style={styles.divider} />
 
       {/* Bottom Row: Validity & T&C */}
       <View style={styles.bottomRow}>
-        <AppText variant="caption" style={[styles.validityText, { color: accentColor }]}>
+        <AppText style={[styles.validityText, { color: accentColor }]}>
           {coupon.validityText}
         </AppText>
 
@@ -68,7 +62,7 @@ export function CouponCard({ coupon, onApply, onTermsPress }: CouponCardProps) {
           accessibilityLabel={`${coupon.code} terms and conditions`}
           hitSlop={8}
         >
-          <AppText variant="caption" style={[styles.termsText, { color: accentColor }]}>
+          <AppText style={[styles.termsText, { color: accentColor }]}>
             {COUPON_SCREEN.termsLabel}
           </AppText>
         </Pressable>
@@ -79,11 +73,12 @@ export function CouponCard({ coupon, onApply, onTermsPress }: CouponCardProps) {
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: COLORS.surface,
+    backgroundColor: COLORS.white,
     borderRadius: RADIUS.lg,
     borderWidth: 1,
-    borderColor: COLORS.border,
-    padding: SPACING.md,
+    borderColor: COLORS.coupon.border,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
     marginBottom: SPACING.md,
   },
 
@@ -105,34 +100,41 @@ const styles = StyleSheet.create({
   },
 
   codeGroup: {
-    gap: SPACING.xs / 2,
+    gap: 2,
   },
 
   codeText: {
-    fontFamily: FONT_FAMILY.bold,
+    fontFamily: FONT_FAMILY.medium,
     fontSize: FONT_SIZE.md,
+    lineHeight: 17,
+    color: COLORS.black,
   },
 
   discountText: {
-    fontFamily: FONT_FAMILY.bold,
-    fontSize: FONT_SIZE.sm,
+    fontFamily: FONT_FAMILY.medium,
+    fontSize: FONT_SIZE.md,
+    lineHeight: 17,
   },
 
   applyText: {
-    fontFamily: FONT_FAMILY.bold,
-    fontSize: FONT_SIZE.sm,
+    fontFamily: FONT_FAMILY.medium,
+    fontSize: FONT_SIZE.md,
+    lineHeight: 17,
+    color: COLORS.black,
   },
 
   minOrderText: {
     fontFamily: FONT_FAMILY.regular,
-    fontSize: FONT_SIZE.xs,
-    marginTop: SPACING.sm + 2,
+    fontSize: FONT_SIZE.sm,
+    lineHeight: 14,
+    color: COLORS.black,
+    marginTop: 10,
   },
 
   divider: {
     height: 1,
-    backgroundColor: COLORS.border,
-    marginVertical: SPACING.sm,
+    backgroundColor: '#EFEFEF',
+    marginVertical: 10,
   },
 
   bottomRow: {
@@ -142,13 +144,15 @@ const styles = StyleSheet.create({
   },
 
   validityText: {
-    fontFamily: FONT_FAMILY.medium,
-    fontSize: FONT_SIZE.xs,
+    fontFamily: FONT_FAMILY.regular,
+    fontSize: FONT_SIZE.sm,
+    lineHeight: 14,
   },
 
   termsText: {
-    fontFamily: FONT_FAMILY.bold,
-    fontSize: FONT_SIZE.xs,
+    fontFamily: FONT_FAMILY.medium,
+    fontSize: FONT_SIZE.sm,
+    lineHeight: 14,
     textDecorationLine: 'underline',
   },
 

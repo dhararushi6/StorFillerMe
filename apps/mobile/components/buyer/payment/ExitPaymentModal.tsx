@@ -5,7 +5,15 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 
 import { AppText } from '@/components/common/AppText';
 import { EXIT_PAYMENT_MODAL } from '@/constants/payment';
-import { COLORS, FONT_FAMILY, FONT_SIZE, RADIUS, SPACING, useResponsive } from '@/theme';
+import {
+  COLORS,
+  FONT_FAMILY,
+  FONT_SIZE,
+  LINE_HEIGHT,
+  RADIUS,
+  SPACING,
+  useResponsive,
+} from '@/theme';
 
 interface ExitPaymentModalProps {
   visible: boolean;
@@ -107,7 +115,7 @@ const styles = StyleSheet.create({
     borderRadius: RADIUS.xl,
     padding: SPACING.lg,
     gap: SPACING.sm,
-    shadowColor: '#000',
+    shadowColor: COLORS.black,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.15,
     shadowRadius: 12,
@@ -127,24 +135,24 @@ const styles = StyleSheet.create({
 
   description: {
     fontFamily: FONT_FAMILY.regular,
-    fontSize: FONT_SIZE.xs + 1,
-    lineHeight: 18,
-    color: '#333333',
+    fontSize: FONT_SIZE.sm,
+    lineHeight: LINE_HEIGHT.category,
+    color: COLORS.black,
     marginVertical: SPACING.xs,
   },
 
   buttonRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: SPACING.md,
+    gap: 10,
     marginTop: SPACING.xs,
   },
 
   exitButton: {
     flex: 1,
-    height: 44,
+    height: 42,
     borderRadius: RADIUS.pill,
-    borderWidth: 1,
+    borderWidth: 0.8,
     borderColor: COLORS.orange.normal,
     alignItems: 'center',
     justifyContent: 'center',
@@ -153,12 +161,13 @@ const styles = StyleSheet.create({
 
   exitButtonText: {
     fontFamily: FONT_FAMILY.medium,
-    fontSize: FONT_SIZE.sm,
+    fontSize: FONT_SIZE.md,
+    color: COLORS.text.primary,
   },
 
   continueButton: {
     flex: 1,
-    height: 44,
+    height: 42,
     borderRadius: RADIUS.pill,
     backgroundColor: COLORS.orange.normal,
     alignItems: 'center',
@@ -166,8 +175,9 @@ const styles = StyleSheet.create({
   },
 
   continueButtonText: {
-    fontFamily: FONT_FAMILY.bold,
-    fontSize: FONT_SIZE.sm,
+    fontFamily: FONT_FAMILY.medium,
+    fontSize: FONT_SIZE.md,
+    color: COLORS.white,
   },
 
   pressed: {

@@ -56,7 +56,7 @@ export function WalletQuickAdd({ title, options, selectedId, onSelect }: WalletQ
 
 const styles = StyleSheet.create({
   title: {
-    fontFamily: FONT_FAMILY.bold,
+    fontFamily: FONT_FAMILY.semiBold,
   },
 
   options: {

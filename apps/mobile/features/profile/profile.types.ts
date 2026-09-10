@@ -20,3 +20,12 @@ export interface ProfileQuickAction {
   icon: number;
   route?: string;
 }
+
+export interface ChatMessage {
+  id: string;
+  sender: 'user' | 'support';
+  senderName?: string;
+  text: string;
+  timestamp: string;
+  images?: number[];
+}

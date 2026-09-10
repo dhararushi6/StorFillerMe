@@ -181,10 +181,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: COLORS.surface,
+    backgroundColor: COLORS.white,
     borderRadius: RADIUS.md,
     borderWidth: 1,
-    borderColor: COLORS.border,
+    borderColor: COLORS.coupon.border,
     paddingHorizontal: SPACING.md,
     paddingVertical: SPACING.sm + 2,
   },
@@ -192,15 +192,16 @@ const styles = StyleSheet.create({
   textInput: {
     flex: 1,
     fontFamily: FONT_FAMILY.medium,
-    fontSize: FONT_SIZE.sm,
+    fontSize: FONT_SIZE.md,
     color: COLORS.text.primary,
     paddingVertical: 0,
     marginRight: SPACING.sm,
   },
 
   applyText: {
-    fontFamily: FONT_FAMILY.bold,
-    fontSize: FONT_SIZE.sm,
+    fontFamily: FONT_FAMILY.medium,
+    fontSize: FONT_SIZE.md,
+    color: COLORS.text.primary,
   },
 
   buttonPressed: {

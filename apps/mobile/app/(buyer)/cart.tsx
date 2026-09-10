@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useMemo, useRef } from 'react';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { router, useNavigation } from 'expo-router';
 
@@ -12,6 +12,7 @@ import {
   CartItemCard,
 } from '@/components/buyer/cart';
 import { ProductDealCard } from '@/components/buyer/home';
+import { useCartStore } from '@/store';
 import {
   CART_ACTIONS,
   CART_BILL_DATA,
@@ -22,8 +23,6 @@ import {
   CART_RECOMMENDATIONS,
   CART_SECTION_TITLES,
   CART_WALLET_DATA,
-  INITIAL_CART_ITEMS,
-  type CartItem,
 } from '@/constants/cart';
 import {
   COLORS,
@@ -38,7 +37,7 @@ import {
 
 export default function BuyerCartScreen() {
   const navigation = useNavigation();
-  const [cartItems, setCartItems] = useState<CartItem[]>(INITIAL_CART_ITEMS);
+  const { items: cartItems, addItem, incrementItem, decrementItem } = useCartStore();
   const scrollViewRef = useRef<ScrollView>(null);
   const billSectionY = useRef<number>(0);
 
@@ -52,20 +51,6 @@ export default function BuyerCartScreen() {
     router.replace('/(buyer)/home');
   }, [navigation]);
 
-  const handleIncrement = useCallback((id: string) => {
-    setCartItems((prev) =>
-      prev.map((item) => (item.id === id ? { ...item, quantity: item.quantity + 1 } : item)),
-    );
-  }, []);
-
-  const handleDecrement = useCallback((id: string) => {
-    setCartItems((prev) =>
-      prev
-        .map((item) => (item.id === id ? { ...item, quantity: item.quantity - 1 } : item))
-        .filter((item) => item.quantity > 0),
-    );
-  }, []);
-
   const handleProductPress = useCallback((productId: string) => {
     router.push({
       pathname: '/(buyer)/product/[id]',
@@ -73,44 +58,8 @@ export default function BuyerCartScreen() {
     });
   }, []);
 
-  const handleAddRecommendation = useCallback((productId: string) => {
-    const targetProduct = CART_RECOMMENDATIONS.products.find((p) => p.id === productId);
-    if (!targetProduct) return;
-
-    setCartItems((prev) => {
-      const existing = prev.find((item) => item.id === productId);
-      if (existing) {
-        return prev.map((item) =>
-          item.id === productId ? { ...item, quantity: item.quantity + 1 } : item,
-        );
-      }
-      return [
-        ...prev,
-        {
-          id: targetProduct.id,
-          name: targetProduct.name,
-          unit: targetProduct.unit,
-          price: targetProduct.price,
-          oldPrice: targetProduct.oldPrice,
-          quantity: 1,
-          image: targetProduct.image,
-        },
-      ];
-    });
-  }, []);
-
   const handleAddMoreItems = useCallback(() => {
     router.push('/(buyer)/category');
-  }, []);
-
-  const handleContinue = useCallback(() => {
-    router.push('/(buyer)/add-balance');
-  }, []);
-
-  const handleViewBillDetails = useCallback(() => {
-    if (billSectionY.current > 0) {
-      scrollViewRef.current?.scrollTo({ y: billSectionY.current, animated: true });
-    }
   }, []);
 
   // Calculated totals
@@ -126,6 +75,19 @@ export default function BuyerCartScreen() {
     if (cartItems.length === 0) return 0;
     return itemsTotal + CART_BILL_DATA.deliveryFeeAmount + CART_BILL_DATA.handlingFeeAmount;
   }, [itemsTotal, cartItems.length]);
+
+  const handleViewBillDetails = useCallback(() => {
+    if (billSectionY.current > 0) {
+      scrollViewRef.current?.scrollTo({ y: billSectionY.current, animated: true });
+    }
+  }, []);
+
+  const handleContinue = useCallback(() => {
+    router.push({
+      pathname: '/(buyer)/payment',
+      params: { amount: totalAmount.toString(), from: 'cart' },
+    });
+  }, [totalAmount]);
 
   return (
     <View style={styles.screen}>
@@ -145,10 +107,10 @@ export default function BuyerCartScreen() {
         {/* Free Delivery Tracker */}
         <View style={styles.freeDeliveryContainer}>
           <View style={styles.freeDeliveryHeader}>
-            <AppText variant="bodyMedium" color="primary" style={styles.boldText}>
+            <AppText variant="caption" style={styles.freeDeliveryTitle}>
               {CART_FREE_DELIVERY.title}
             </AppText>
-            <AppText variant="caption" color="primary" style={styles.boldText}>
+            <AppText variant="caption" style={styles.freeDeliveryPercent}>
               {CART_FREE_DELIVERY.percentageLabel}
             </AppText>
           </View>
@@ -204,8 +166,8 @@ export default function BuyerCartScreen() {
             oldPrice={item.oldPrice}
             quantity={item.quantity}
             image={item.image}
-            onIncrement={() => handleIncrement(item.id)}
-            onDecrement={() => handleDecrement(item.id)}
+            onIncrement={() => incrementItem(item.id)}
+            onDecrement={() => decrementItem(item.id)}
             onPress={() => handleProductPress(item.id)}
           />
         ))}
@@ -217,6 +179,7 @@ export default function BuyerCartScreen() {
             variant="primary"
             size="medium"
             onPress={handleAddMoreItems}
+            style={styles.addMoreButton}
           />
         </View>
 
@@ -273,18 +236,32 @@ export default function BuyerCartScreen() {
               { paddingHorizontal: horizontalPadding },
             ]}
           >
-            {CART_RECOMMENDATIONS.products.map((item) => (
-              <ProductDealCard
-                key={item.id}
-                name={item.name}
-                unit={item.unit}
-                price={item.price}
-                oldPrice={item.oldPrice}
-                image={item.image}
-                onPress={() => handleProductPress(item.id)}
-                onAddPress={() => handleAddRecommendation(item.id)}
-              />
-            ))}
+            {CART_RECOMMENDATIONS.products.map((item) => {
+              const cartItem = cartItems.find((i) => i.id === item.id);
+              const quantity = cartItem ? cartItem.quantity : 0;
+
+              return (
+                <ProductDealCard
+                  key={item.id}
+                  name={item.name}
+                  unit={item.unit}
+                  price={item.price}
+                  oldPrice={item.oldPrice}
+                  image={item.image}
+                  quantity={quantity}
+                  onPress={() => handleProductPress(item.id)}
+                  onAddPress={() => addItem(item)}
+                  onIncrement={() => {
+                    if (quantity === 0) {
+                      addItem(item);
+                    } else {
+                      incrementItem(item.id);
+                    }
+                  }}
+                  onDecrement={() => decrementItem(item.id)}
+                />
+              );
+            })}
           </ScrollView>
         </View>
 
@@ -353,6 +330,20 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
 
+  freeDeliveryTitle: {
+    fontFamily: FONT_FAMILY.medium,
+    fontSize: FONT_SIZE.sm,
+    lineHeight: LINE_HEIGHT.sm,
+    color: COLORS.black,
+  },
+
+  freeDeliveryPercent: {
+    fontFamily: FONT_FAMILY.medium,
+    fontSize: FONT_SIZE.sm,
+    lineHeight: LINE_HEIGHT.sm,
+    color: COLORS.black,
+  },
+
   freeDeliverySubRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -372,7 +363,7 @@ const styles = StyleSheet.create({
 
   progressTrack: {
     height: 6,
-    backgroundColor: COLORS.border,
+    backgroundColor: COLORS.header,
     borderRadius: RADIUS.pill,
     overflow: 'hidden',
   },
@@ -398,6 +389,12 @@ const styles = StyleSheet.create({
 
   buttonWrapper: {
     marginVertical: SPACING.xs,
+  },
+
+  addMoreButton: {
+    height: 43,
+    borderRadius: RADIUS.xs,
+    backgroundColor: COLORS.orange.normal,
   },
 
   couponCard: {

@@ -6,7 +6,7 @@ import rectangle376 from '@/assets/icons/Rectangle-376.png';
 import rectangle377 from '@/assets/icons/Rectangle-377.png';
 import { AppText } from '@/components/common/AppText';
 import { type WalletTransaction } from '@/constants/wallet';
-import { COLORS, FONT_FAMILY, FONT_SIZE, LINE_HEIGHT, SPACING } from '@/theme';
+import { COLORS, FONT_FAMILY, FONT_SIZE, LINE_HEIGHT, RADIUS, SPACING } from '@/theme';
 
 interface WalletTransactionItemProps {
   transaction: WalletTransaction;
@@ -52,16 +52,17 @@ const styles = StyleSheet.create({
   },
 
   iconContainer: {
-    width: 36,
-    height: 36,
+    width: 40,
+    height: 40,
+    borderRadius: RADIUS.pill,
     alignItems: 'center',
     justifyContent: 'center',
     position: 'relative',
   },
 
   badgeBg: {
-    width: 36,
-    height: 36,
+    width: 40,
+    height: 40,
     position: 'absolute',
   },
 
@@ -71,18 +72,22 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    fontFamily: FONT_FAMILY.bold,
-    fontSize: FONT_SIZE.sm + 1,
-    lineHeight: LINE_HEIGHT.sm + 2,
+    fontFamily: FONT_FAMILY.medium,
+    fontSize: FONT_SIZE.sm,
+    lineHeight: LINE_HEIGHT.category,
+    color: COLORS.black,
   },
 
   date: {
-    fontSize: FONT_SIZE.xs,
+    fontFamily: FONT_FAMILY.medium,
+    fontSize: FONT_SIZE.sm,
+    lineHeight: LINE_HEIGHT.category,
     color: COLORS.text.muted,
   },
 
   amount: {
-    fontFamily: FONT_FAMILY.bold,
-    fontSize: FONT_SIZE.md,
+    fontFamily: FONT_FAMILY.regular,
+    fontSize: FONT_SIZE.lg,
+    lineHeight: LINE_HEIGHT.md,
   },
 });

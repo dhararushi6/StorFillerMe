@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Platform, Pressable, StyleSheet, TextInput, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 
 import { AppIcon } from '@/components/common/AppIcon';
 import { AppText } from '@/components/common/AppText';
+import { AppInput } from '@/components/ui/AppInput';
 
 import { COLORS, FONT_FAMILY, FONT_SIZE, RADIUS, SIZES, SPACING } from '@/theme';
 
@@ -62,15 +63,15 @@ export function OrderRating({
       </View>
 
       <View style={styles.reviewBox}>
-        <TextInput
+        <AppInput
           value={review}
           onChangeText={handleReviewChange}
           maxLength={MAX_REVIEW_LENGTH}
           multiline
           textAlignVertical="top"
           placeholder="Write a review"
-          placeholderTextColor={COLORS.text.secondary}
-          style={[styles.input, Platform.OS === 'web' ? ({ outlineStyle: 'none' } as never) : null]}
+          inputContainerStyle={styles.inputContainer}
+          style={styles.input}
         />
 
         <AppText variant="caption" color="secondary" style={styles.counter}>
@@ -103,6 +104,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 
+  /*
+   * THIS is the design border.
+   * AppInput itself does not create a border.
+   */
   reviewBox: {
     minHeight: SIZES.reviewInputHeight,
     marginTop: SPACING.md,
@@ -114,6 +119,19 @@ const styles = StyleSheet.create({
     borderRadius: RADIUS.md,
   },
 
+  /*
+   * Remove AppInput's internal spacing because
+   * reviewBox already provides the Figma spacing.
+   */
+  inputContainer: {
+    minHeight: SIZES.reviewInputHeight,
+    paddingHorizontal: 0,
+    backgroundColor: 'transparent',
+  },
+
+  /*
+   * Actual TextInput remains borderless.
+   */
   input: {
     flex: 1,
     minHeight: SIZES.reviewInputHeight,
