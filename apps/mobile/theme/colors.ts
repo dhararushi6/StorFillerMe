@@ -108,6 +108,7 @@ export const COLORS = {
 
   inactive: '#8E98A8',
 
+  imageUpload: '#F0F0F0',
   success: '#1EA836',
   successLight: '#DDF7D0',
   warning: '#F2A900',
