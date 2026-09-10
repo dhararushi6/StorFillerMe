@@ -92,12 +92,17 @@ export const SIZES = {
   authWelcomeImageHeight: 400,
   authWelcomeImageTop: 0,
   authWelcomeTextGap: 1,
+  authProgressWidth: 31,
+  authProgressHeight: 3,
+  authBackArrowWidth: 28,
+  authBackArrowHeight: 28,
+  authCountryCodeWidth: 60,
+  authPhoneInputGap: 8,
   // --- Qurrath ---
   orderProductImage: 60,
   orderProductAsset: 64,
   orderProductRowHeight: 64,
   orderPriceWidth: 64,
-
   helpButtonWidth: 60,
   helpButtonHeight: 27,
 

@@ -13,7 +13,7 @@ export const FONT_WEIGHT = {
 } as const;
 
 export const FONT_SIZE = {
-  authTitle: 40,
+  authTitle: 32,
   micro: 8,
   tiny: 9,
   xxs: 10,

@@ -16,7 +16,7 @@ interface OtpInputProps {
   onChange: (otp: string) => void;
 }
 
-export function OtpInput({ length = 5, value, onChange }: OtpInputProps) {
+export function OtpInput({ length = 6, value, onChange }: OtpInputProps) {
   const inputsRef = useRef<(TextInput | null)[]>([]);
 
   const otpArray = Array.from({ length }, (_, i) => value[i] || '');

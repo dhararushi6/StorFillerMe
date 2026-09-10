@@ -37,7 +37,7 @@ export default function WelcomeScreen() {
               {AUTH_CONTENT.welcome.title}
             </AppText>
 
-            <AppText variant="body" color="secondary" style={styles.description}>
+            <AppText variant="body" color="primary" style={styles.description}>
               {AUTH_CONTENT.welcome.description}
             </AppText>
           </View>

@@ -26,7 +26,7 @@ interface AppInputProps extends TextInputProps {
   leftIcon?: IconName;
   rightIcon?: IconName;
   onRightIconPress?: () => void;
-
+  onFocusChange?: (focused: boolean) => void;
   containerStyle?: StyleProp<ViewStyle>;
   inputContainerStyle?: StyleProp<ViewStyle>;
 }
@@ -42,6 +42,7 @@ export function AppInput({
   leftIcon,
   rightIcon,
   onRightIconPress,
+  onFocusChange,
   containerStyle,
   inputContainerStyle,
   editable = true,
@@ -80,10 +81,12 @@ export function AppInput({
           placeholderTextColor={COLORS.text.muted}
           onFocus={(event) => {
             setFocused(true);
+            onFocusChange?.(true);
             textInputProps.onFocus?.(event);
           }}
           onBlur={(event) => {
             setFocused(false);
+            onFocusChange?.(false);
             textInputProps.onBlur?.(event);
           }}
           style={[
