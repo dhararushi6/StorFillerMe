@@ -33,7 +33,7 @@ export default function LanguageScreen() {
       return;
     }
 
-    // Next auth screen will be connected here.
+    router.push('/(auth)/shop-detail');
   };
 
   return (
