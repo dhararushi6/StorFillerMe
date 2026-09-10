@@ -76,13 +76,11 @@ export const SIZES = {
   actionSheetIconCircle: 56,
   successIconCircle: 72,
 
-  // --- NEW ---
   uploadButtonHeight: 41,
   shopCardMinHeight: 62,
   progressTrackHeight: 8,
   borderThick: 3,
 
-  // --- Qurrath ---
   orderProductImage: 60,
   orderProductAsset: 64,
   orderProductRowHeight: 64,
@@ -96,10 +94,38 @@ export const SIZES = {
   helpModalHandleWidth: 60,
   helpModalHandleHeight: 4,
 
-  // --- Refer & Earn screen ---
   referEarnModalHandleWidth: 34,
   referEarnModalHandleHeight: 2,
   stepRowMinHeight: 52,
   stepIconCircleSize: 52,
   gotItButtonHeight: 42,
+
+  // ──────────────────────────────────────────────
+  // Account Settings Screen
+  // ──────────────────────────────────────────────
+  accountHeaderHeight: 100,
+  settingsBackButton: 40,
+  backArrowFontSize: 24,
+  settingsIconCircle: 44,
+  helpCardMinHeight: 120,
+
+  // ──────────────────────────────────────────────
+  // Notification Screen
+  // ──────────────────────────────────────────────
+  toggleTrackWidth: 50,
+  toggleTrackHeight: 28,
+  toggleKnobSize: 24,
+  toggleKnobMargin: 2,
+  notificationHeaderHeight: 90,
+  notificationBackButton: 40,
+
+  // ──────────────────────────────────────────────
+  // Privacy Policy Screen
+  // ──────────────────────────────────────────────
+  privacyScreenMaxWidth: 500,
+  privacyHeaderHeight: 100,
+  privacyBackButton: 40,
+  privacyHeaderCaret: 20,
+  privacyAccordionMinHeight: 80,
+  privacyArrowBox: 24,
 } as const;

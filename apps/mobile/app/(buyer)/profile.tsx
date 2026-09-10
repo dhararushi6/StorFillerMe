@@ -66,7 +66,7 @@ export default function ProfileScreen() {
     }
 
     if (id === 'settings') {
-      // TODO: Navigate to account settings.
+      router.push('/(buyer)/accountsettings');
     }
   }, []);
 

@@ -26,6 +26,9 @@ export const FONT_SIZE = {
   extraLarge: 20,
   heading: 26,
   code: 19,
+  // Added for PrivacyPolicy.ts
+  title: 18,
+  subtitle: 14,
 } as const;
 
 export const LINE_HEIGHT = {
@@ -46,4 +49,10 @@ export const LINE_HEIGHT = {
   small: 17,
   medium: 21,
   modalTitle: 23,
+  // Added for PrivacyPolicy.ts
+  subtitle: 20,
+  description: 18,
 } as const;
+
+// Added for notification.ts
+export const LINE_HEIGHT_MULTIPLIER = 1.4;

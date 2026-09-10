@@ -19,4 +19,6 @@ export const SPACING = {
   gap15: 15,
   gap17: 17,
   gap18: 18,
+  // Added for PrivacyPolicy.ts
+  gap30: 30,
 } as const;

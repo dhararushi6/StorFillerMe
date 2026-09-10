@@ -13,6 +13,8 @@ export const RADIUS = {
   huge: 32,
   headerCompact: 38,
   header: 40,
+  // Added for PrivacyPolicy.ts
+  headerAlt: 40,
   pill: 999,
   full: 999,
 } as const;

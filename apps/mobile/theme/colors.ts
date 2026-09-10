@@ -41,6 +41,12 @@ export const COLORS = {
   backgroundSecondary: '#FAF6EE',
   surface: '#FFFFFF',
 
+  // Added for notification.tsx
+  toggle: {
+    off: '#D9D9D9',
+    on: '#CC5D28',
+  },
+
   text: {
     primary: '#111111',
     secondary: '#666666',
@@ -49,6 +55,9 @@ export const COLORS = {
     inverse: '#FFFFFF',
     inverseSecondary: '#DDDDDD',
     danger: '#D64545',
+    // Added for notification.ts and PrivacyPolicy.ts
+    tertiary: '#999999',
+    slate: '#475569',
   },
 
   deal: {
