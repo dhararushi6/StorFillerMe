@@ -2,6 +2,7 @@ import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 
 import { ProductDealCard } from './ProductDealCard';
+import { useCartStore } from '@/store';
 import { SPACING } from '@/theme';
 
 export interface ProductDealItem {
@@ -26,6 +27,8 @@ export function ProductDealList({
   onProductPress,
   onAddPress,
 }: ProductDealListProps) {
+  const { items, addItem, incrementItem, decrementItem } = useCartStore();
+
   return (
     <ScrollView
       horizontal
@@ -37,18 +40,37 @@ export function ProductDealList({
         },
       ]}
     >
-      {products.map((product) => (
-        <ProductDealCard
-          key={product.id}
-          name={product.name}
-          unit={product.unit}
-          price={product.price}
-          oldPrice={product.oldPrice}
-          image={product.image}
-          onPress={() => onProductPress?.(product.id)}
-          onAddPress={() => onAddPress?.(product.id)}
-        />
-      ))}
+      {products.map((product) => {
+        const cartItem = items.find((i) => i.id === product.id);
+        const quantity = cartItem ? cartItem.quantity : 0;
+
+        return (
+          <ProductDealCard
+            key={product.id}
+            name={product.name}
+            unit={product.unit}
+            price={product.price}
+            oldPrice={product.oldPrice}
+            image={product.image}
+            quantity={quantity}
+            onPress={() => onProductPress?.(product.id)}
+            onAddPress={() => {
+              if (onAddPress) {
+                onAddPress(product.id);
+              }
+              addItem(product);
+            }}
+            onIncrement={() => {
+              if (quantity === 0) {
+                addItem(product);
+              } else {
+                incrementItem(product.id);
+              }
+            }}
+            onDecrement={() => decrementItem(product.id)}
+          />
+        );
+      })}
     </ScrollView>
   );
 }

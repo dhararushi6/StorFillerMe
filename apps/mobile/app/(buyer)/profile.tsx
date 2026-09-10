@@ -70,6 +70,11 @@ export default function ProfileScreen() {
     }
   }, []);
 
+  /*
+   * Keep loading/error states lightweight for now.
+   * These can later be replaced by the project's shared
+   * LoadingState / ErrorState components.
+   */
   if (isLoading) {
     return (
       <View style={styles.stateContainer}>
@@ -93,6 +98,8 @@ export default function ProfileScreen() {
   return (
     <View style={styles.screen}>
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
+        {/* Header */}
+
         <ScreenHeader
           title="Profile"
           variant="orange"
@@ -113,6 +120,7 @@ export default function ProfileScreen() {
               <AppText variant="subheading" color="inverse" style={styles.userName}>
                 {profile.name}
               </AppText>
+
               <AppText variant="caption" color="inverse" style={styles.phone}>
                 {profile.phone}
               </AppText>
@@ -120,12 +128,15 @@ export default function ProfileScreen() {
           }
         />
 
+        {/* Orders / Wallet */}
+
         <View style={[styles.quickActions, { paddingHorizontal: horizontalPadding }]}>
           <ProfileQuickAction
             icon={PROFILE_QUICK_ACTIONS.orders.icon}
             title={PROFILE_QUICK_ACTIONS.orders.title}
             onPress={handleOrdersPress}
           />
+
           <ProfileQuickAction
             icon={PROFILE_QUICK_ACTIONS.wallet.icon}
             title={PROFILE_QUICK_ACTIONS.wallet.title}
@@ -133,6 +144,8 @@ export default function ProfileScreen() {
             onPress={handleWalletPress}
           />
         </View>
+
+        {/* Main profile menu */}
 
         <View style={[styles.menuSection, { paddingHorizontal: horizontalPadding }]}>
           {PROFILE_MENU_ITEMS.map((item) => (
@@ -146,9 +159,13 @@ export default function ProfileScreen() {
           ))}
         </View>
 
+        {/* Refer & Earn */}
+
         <View style={[styles.referralSection, { paddingHorizontal: horizontalPadding }]}>
           <ReferralBanner image={PROFILE_REFER_ICON} onPress={handleReferralPress} />
         </View>
+
+        {/* Account */}
 
         <View style={[styles.accountSection, { paddingHorizontal: horizontalPadding }]}>
           {PROFILE_ACCOUNT_ITEMS.map((item) => (

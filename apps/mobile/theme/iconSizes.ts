@@ -1,6 +1,7 @@
 export const ICON_SIZES = {
   xs: 14,
   sm: 16,
+  base: 18,
   md: 20,
   md2: 22, // new (Refer & Earn header info icon / copy icon)
   lg: 24,

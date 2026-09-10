@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { Linking, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 
@@ -29,12 +29,12 @@ export default function BuyerWalletScreen() {
 
   const handleChatPress = useCallback(() => {
     setIsHelpVisible(false);
-    router.push('/(buyer)/support');
+    router.push('/(buyer)/chat');
   }, []);
 
   const handleCallPress = useCallback(() => {
     setIsHelpVisible(false);
-    router.push('/(buyer)/support');
+    Linking.openURL('tel:1800123456');
   }, []);
 
   const handleAddBalance = useCallback(() => {

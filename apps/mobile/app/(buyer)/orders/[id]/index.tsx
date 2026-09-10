@@ -125,6 +125,16 @@ export default function OrderDetailsScreen() {
         onTopicPress={(topic) => {
           setHelpVisible(false);
           console.log('Selected help topic:', topic.id);
+
+          router.push({
+            pathname: '/(buyer)/orders/[id]/issue',
+            params: {
+              id: order.id,
+              issueId: topic.id,
+              issueTitle: topic.title,
+              issueDescription: topic.description,
+            },
+          });
         }}
       />
     </View>

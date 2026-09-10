@@ -3,16 +3,19 @@ import { Image, Pressable, StyleSheet, View } from 'react-native';
 
 import { AppIcon } from '@/components/common/AppIcon';
 import { AppText } from '@/components/common/AppText';
-import { COLORS, FONT_SIZE, RADIUS, SPACING } from '@/theme';
+import { COLORS, FONT_FAMILY, FONT_SIZE, RADIUS, SPACING } from '@/theme';
 
-interface ProductDealCardProps {
+export interface ProductDealCardProps {
   name: string;
   unit: string;
   price: number;
   oldPrice?: number;
   image: number;
+  quantity?: number;
   onPress?: () => void;
   onAddPress?: () => void;
+  onIncrement?: () => void;
+  onDecrement?: () => void;
 }
 
 export function ProductDealCard({
@@ -21,9 +24,14 @@ export function ProductDealCard({
   price,
   oldPrice,
   image,
+  quantity = 0,
   onPress,
   onAddPress,
+  onIncrement,
+  onDecrement,
 }: ProductDealCardProps) {
+  const isAdded = quantity > 0;
+
   return (
     <View style={styles.container}>
       <Pressable
@@ -58,15 +66,43 @@ export function ProductDealCard({
           )}
         </View>
 
-        <Pressable
-          style={styles.addButton}
-          onPress={onAddPress}
-          accessibilityRole="button"
-          accessibilityLabel={`Add ${name} to cart`}
-          hitSlop={6}
-        >
-          <AppIcon name="add" size="lg" color={COLORS.text.inverse} />
-        </Pressable>
+        {isAdded ? (
+          <View style={styles.qtyPill}>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel={`Decrease quantity of ${name}`}
+              hitSlop={6}
+              onPress={onDecrement}
+              style={styles.qtyButton}
+            >
+              <AppIcon name="remove" size="xs" color={COLORS.text.inverse} />
+            </Pressable>
+
+            <AppText variant="bodyMedium" style={styles.qtyText}>
+              {quantity}
+            </AppText>
+
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel={`Increase quantity of ${name}`}
+              hitSlop={6}
+              onPress={onIncrement}
+              style={styles.qtyButton}
+            >
+              <AppIcon name="add" size="xs" color={COLORS.text.inverse} />
+            </Pressable>
+          </View>
+        ) : (
+          <Pressable
+            style={styles.addButton}
+            onPress={onAddPress || onIncrement}
+            accessibilityRole="button"
+            accessibilityLabel={`Add ${name} to cart`}
+            hitSlop={6}
+          >
+            <AppIcon name="add" size="lg" color={COLORS.text.inverse} />
+          </Pressable>
+        )}
       </View>
     </View>
   );
@@ -132,6 +168,30 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: COLORS.orange.normal,
     borderRadius: 999,
+  },
+
+  qtyPill: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: COLORS.orange.normal,
+    borderRadius: RADIUS.pill,
+    height: 36,
+    minWidth: 76,
+    paddingHorizontal: SPACING.xs,
+  },
+
+  qtyButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: SPACING.xs / 2,
+  },
+
+  qtyText: {
+    fontFamily: FONT_FAMILY.semiBold,
+    fontSize: FONT_SIZE.md,
+    color: COLORS.white,
+    paddingHorizontal: SPACING.xs / 2,
   },
 
   pressed: {

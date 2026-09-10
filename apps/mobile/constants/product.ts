@@ -120,11 +120,17 @@ export function getProductById(id?: string | string[]) {
   return PRODUCT_CATALOG[DEFAULT_PRODUCT_ID];
 }
 
-export const PRODUCT_QUANTITY_OPTIONS = [
-  { id: '1kg', label: '1 kg' },
-  { id: '2kg', label: '2 kg' },
-  { id: '3kg', label: '3 kg' },
-  { id: '10kg', label: '10 kg' },
+export interface QuantityOption {
+  id: string;
+  label: string;
+  multiplier: number;
+}
+
+export const PRODUCT_QUANTITY_OPTIONS: readonly QuantityOption[] = [
+  { id: '1kg', label: '1 kg', multiplier: 1 },
+  { id: '2kg', label: '2 kg', multiplier: 2 },
+  { id: '3kg', label: '3 kg', multiplier: 3 },
+  { id: '10kg', label: '10 kg', multiplier: 10 },
 ] as const;
 
 export const PRODUCT_ADDRESS = {

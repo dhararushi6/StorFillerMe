@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import {
+  Platform,
   Pressable,
   StyleProp,
   StyleSheet,
   TextInput,
   TextInputProps,
+  TextStyle,
   View,
   ViewStyle,
 } from 'react-native';
@@ -12,7 +14,8 @@ import {
 import { AppIcon } from '@/components/common/AppIcon';
 import { AppText } from '@/components/common/AppText';
 import { type IconName } from '@/constants/icons';
-import { COLORS, FONT_FAMILY, FONT_SIZE, RADIUS, SIZES, SPACING } from '@/theme';
+
+import { COLORS, FONT_FAMILY, FONT_SIZE, SIZES, SPACING } from '@/theme';
 
 interface AppInputProps extends TextInputProps {
   label?: string;
@@ -23,9 +26,13 @@ interface AppInputProps extends TextInputProps {
   leftIcon?: IconName;
   rightIcon?: IconName;
   onRightIconPress?: () => void;
-
+  onFocusChange?: (focused: boolean) => void;
   containerStyle?: StyleProp<ViewStyle>;
+  inputContainerStyle?: StyleProp<ViewStyle>;
 }
+
+const webInputStyle =
+  Platform.OS === 'web' ? ({ outlineStyle: 'none' } as unknown as TextStyle) : undefined;
 
 export function AppInput({
   label,
@@ -35,13 +42,13 @@ export function AppInput({
   leftIcon,
   rightIcon,
   onRightIconPress,
+  onFocusChange,
   containerStyle,
+  inputContainerStyle,
   editable = true,
   ...textInputProps
 }: AppInputProps) {
   const [focused, setFocused] = useState(false);
-
-  const hasError = Boolean(error);
 
   return (
     <View style={containerStyle}>
@@ -59,14 +66,7 @@ export function AppInput({
         </View>
       )}
 
-      <View
-        style={[
-          styles.inputContainer,
-          focused && styles.focused,
-          hasError && styles.error,
-          !editable && styles.disabled,
-        ]}
-      >
+      <View style={[styles.inputContainer, inputContainerStyle]}>
         {leftIcon && (
           <AppIcon
             name={leftIcon}
@@ -81,16 +81,19 @@ export function AppInput({
           placeholderTextColor={COLORS.text.muted}
           onFocus={(event) => {
             setFocused(true);
+            onFocusChange?.(true);
             textInputProps.onFocus?.(event);
           }}
           onBlur={(event) => {
             setFocused(false);
+            onFocusChange?.(false);
             textInputProps.onBlur?.(event);
           }}
           style={[
             styles.input,
             textInputProps.multiline && styles.multiline,
             !editable && styles.disabledText,
+            webInputStyle,
             textInputProps.style,
           ]}
         />
@@ -137,38 +140,31 @@ const styles = StyleSheet.create({
   },
 
   required: {
-    marginLeft: 2,
+    marginLeft: SPACING.xs,
   },
 
+  /*
+   * AppInput itself has NO border.
+   * Screens/components decide whether they need one.
+   */
   inputContainer: {
     minHeight: SIZES.inputHeight,
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: COLORS.surface,
-    borderWidth: 1,
-    borderColor: COLORS.border,
-    borderRadius: RADIUS.md,
+    backgroundColor: 'transparent',
     paddingHorizontal: SPACING.md,
   },
 
-  focused: {
-    borderColor: COLORS.orange.normal,
-  },
-
-  error: {
-    borderColor: COLORS.danger,
-  },
-
-  disabled: {
-    backgroundColor: COLORS.yellow.lightActive,
-    borderColor: COLORS.yellow.normalActive,
-  },
-
+  /*
+   * Actual TextInput is completely borderless.
+   */
   input: {
     flex: 1,
     minHeight: SIZES.inputHeight,
     paddingVertical: 0,
     paddingHorizontal: SPACING.sm,
+    borderWidth: 0,
+    backgroundColor: 'transparent',
     color: COLORS.text.primary,
     fontFamily: FONT_FAMILY.regular,
     fontSize: FONT_SIZE.md,
@@ -176,7 +172,7 @@ const styles = StyleSheet.create({
 
   multiline: {
     paddingVertical: SPACING.md,
-    minHeight: 100,
+    minHeight: SIZES.reviewInputHeight,
     textAlignVertical: 'top',
   },
 

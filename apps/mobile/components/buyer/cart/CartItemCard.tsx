@@ -3,7 +3,15 @@ import { Image, Pressable, StyleSheet, View } from 'react-native';
 
 import { AppIcon } from '@/components/common/AppIcon';
 import { AppText } from '@/components/common/AppText';
-import { COLORS, FONT_FAMILY, RADIUS, SPACING, useResponsive } from '@/theme';
+import {
+  COLORS,
+  FONT_FAMILY,
+  FONT_SIZE,
+  LINE_HEIGHT,
+  RADIUS,
+  SPACING,
+  useResponsive,
+} from '@/theme';
 
 interface CartItemCardProps {
   name: string;
@@ -51,22 +59,22 @@ export function CartItemCard({
         </View>
 
         <View style={styles.detailsContainer}>
-          <AppText variant="bodyMedium" color="primary" numberOfLines={2} style={styles.name}>
+          <AppText variant="bodyMedium" numberOfLines={2} style={styles.name}>
             {name}
           </AppText>
 
-          <AppText variant="caption" color="muted" style={styles.unit}>
+          <AppText variant="caption" style={styles.unit}>
             {unit}
           </AppText>
 
           <View style={styles.priceRow}>
-            <AppText variant="subheading" color="primary" style={styles.price}>
+            <AppText variant="subheading" style={styles.price}>
               ₹ {price}
             </AppText>
 
             {oldPrice !== undefined && (
-              <AppText variant="caption" color="muted" style={styles.oldPrice}>
-                ₹{oldPrice}
+              <AppText variant="caption" style={styles.oldPrice}>
+                ₹ {oldPrice}
               </AppText>
             )}
           </View>
@@ -117,10 +125,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: COLORS.surface,
-    borderRadius: RADIUS.xl,
-    padding: SPACING.md,
-    marginBottom: SPACING.md,
+    backgroundColor: 'transparent',
+    paddingVertical: SPACING.xs,
+    marginBottom: SPACING.sm,
   },
 
   contentRow: {
@@ -136,43 +143,56 @@ const styles = StyleSheet.create({
   imageContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: COLORS.orange.light,
+    backgroundColor: COLORS.orange.bottomBar,
     borderRadius: RADIUS.lg,
     padding: SPACING.xs,
   },
 
   image: {
-    width: '85%',
-    height: '85%',
+    width: '88%',
+    height: '88%',
   },
 
   detailsContainer: {
     flex: 1,
     paddingHorizontal: SPACING.md,
     justifyContent: 'center',
+    gap: 2,
   },
 
   name: {
-    fontFamily: FONT_FAMILY.bold,
+    fontFamily: FONT_FAMILY.medium,
+    fontSize: FONT_SIZE.lg,
+    lineHeight: LINE_HEIGHT.md,
+    color: COLORS.black,
   },
 
   unit: {
-    marginTop: SPACING.xs / 2,
+    fontFamily: FONT_FAMILY.medium,
+    fontSize: FONT_SIZE.md,
+    lineHeight: LINE_HEIGHT.md,
+    color: COLORS.text.muted,
   },
 
   priceRow: {
     flexDirection: 'row',
     alignItems: 'baseline',
-    gap: SPACING.xs,
-    marginTop: SPACING.xs,
+    gap: SPACING.xs + 2,
+    marginTop: SPACING.xs / 2,
   },
 
   price: {
-    fontFamily: FONT_FAMILY.bold,
+    fontFamily: FONT_FAMILY.semiBold,
+    fontSize: FONT_SIZE.title,
+    lineHeight: LINE_HEIGHT.title,
+    color: COLORS.black,
   },
 
   oldPrice: {
     fontFamily: FONT_FAMILY.regular,
+    fontSize: FONT_SIZE.lg,
+    lineHeight: LINE_HEIGHT.md,
+    color: COLORS.text.muted,
     textDecorationLine: 'line-through',
   },
 
@@ -187,7 +207,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     backgroundColor: COLORS.orange.normal,
     borderRadius: RADIUS.pill,
-    paddingHorizontal: SPACING.xs,
+    paddingHorizontal: SPACING.xs + 2,
   },
 
   qtyButton: {
@@ -197,7 +217,9 @@ const styles = StyleSheet.create({
   },
 
   qtyText: {
-    fontFamily: FONT_FAMILY.bold,
-    color: COLORS.text.inverse,
+    fontFamily: FONT_FAMILY.medium,
+    fontSize: FONT_SIZE.sm,
+    lineHeight: LINE_HEIGHT.category,
+    color: COLORS.white,
   },
 });

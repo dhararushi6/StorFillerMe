@@ -4,7 +4,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 
 import creditCardIcon from '@/assets/icons/credit-card.png';
 import { AppText } from '@/components/common/AppText';
-import { COLORS, FONT_FAMILY, FONT_SIZE, RADIUS, SPACING } from '@/theme';
+import { COLORS, FONT_FAMILY, FONT_SIZE, LINE_HEIGHT, RADIUS, SPACING } from '@/theme';
 
 interface PaymentCardsSectionProps {
   title: string;
@@ -50,14 +50,16 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: COLORS.payment.card,
     borderRadius: RADIUS.lg,
-    paddingHorizontal: SPACING.md + 2,
+    paddingHorizontal: SPACING.md,
     paddingTop: SPACING.md,
     paddingBottom: SPACING.lg,
   },
 
   title: {
-    fontFamily: FONT_FAMILY.bold,
-    fontSize: FONT_SIZE.sm + 1,
+    fontFamily: FONT_FAMILY.medium,
+    fontSize: FONT_SIZE.sm,
+    lineHeight: LINE_HEIGHT.category,
+    color: COLORS.black,
   },
 
   dashedDivider: {
@@ -83,13 +85,13 @@ const styles = StyleSheet.create({
   },
 
   cardIcon: {
-    width: 24,
-    height: 24,
+    width: 28,
+    height: 28,
   },
 
   optionLabel: {
     fontFamily: FONT_FAMILY.medium,
-    fontSize: FONT_SIZE.sm + 1,
+    fontSize: FONT_SIZE.md,
   },
 
   pressed: {

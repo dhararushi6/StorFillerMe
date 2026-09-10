@@ -3,7 +3,7 @@ import { Pressable, StyleSheet, View } from 'react-native';
 
 import { AppText } from '@/components/common/AppText';
 import { type WalletTransaction } from '@/constants/wallet';
-import { COLORS, FONT_FAMILY, FONT_SIZE, RADIUS, SPACING } from '@/theme';
+import { COLORS, FONT_FAMILY, FONT_SIZE, LINE_HEIGHT, RADIUS, SPACING } from '@/theme';
 import { WalletTransactionItem } from './WalletTransactionItem';
 
 interface WalletRecentTransactionsProps {
@@ -60,7 +60,10 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    fontFamily: FONT_FAMILY.bold,
+    fontFamily: FONT_FAMILY.semiBold,
+    fontSize: FONT_SIZE.title,
+    lineHeight: LINE_HEIGHT.title,
+    color: COLORS.black,
   },
 
   viewAllButton: {

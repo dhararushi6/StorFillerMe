@@ -6,7 +6,16 @@ import { router, useLocalSearchParams } from 'expo-router';
 import processingIllustration from '@/assets/images/processing-payment.png';
 import { AppText } from '@/components/common/AppText';
 import { PAYMENTS_SCREEN, PROCESSING_PAYMENT_SCREEN } from '@/constants/payment';
-import { COLORS, FONT_FAMILY, FONT_SIZE, RADIUS, SIZES, SPACING, useResponsive } from '@/theme';
+import {
+  COLORS,
+  FONT_FAMILY,
+  FONT_SIZE,
+  LINE_HEIGHT,
+  RADIUS,
+  SIZES,
+  SPACING,
+  useResponsive,
+} from '@/theme';
 
 export default function BuyerProcessingPaymentScreen() {
   const insets = useSafeAreaInsets();
@@ -18,10 +27,10 @@ export default function BuyerProcessingPaymentScreen() {
   useEffect(() => {
     const timer = setTimeout(() => {
       router.replace({
-        pathname: '/(buyer)/payment-success',
+        pathname: '/(buyer)/wallet-success',
         params: { amount: totalAmount.toString() },
       });
-    }, 3000);
+    }, 2500);
 
     return () => clearTimeout(timer);
   }, [totalAmount]);
@@ -72,7 +81,7 @@ const styles = StyleSheet.create({
   },
 
   header: {
-    minHeight: SIZES.headerLargeHeight,
+    minHeight: SIZES.headerCompactHeight,
     backgroundColor: COLORS.header,
     borderBottomLeftRadius: RADIUS.header,
     borderBottomRightRadius: RADIUS.header,
@@ -92,22 +101,29 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    fontFamily: FONT_FAMILY.bold,
-    fontSize: FONT_SIZE.lg,
+    fontFamily: FONT_FAMILY.semiBold,
+    fontSize: FONT_SIZE.title,
+    lineHeight: LINE_HEIGHT.title,
+    color: COLORS.black,
     textAlign: 'center',
   },
 
   amount: {
-    fontFamily: FONT_FAMILY.bold,
+    fontFamily: FONT_FAMILY.semiBold,
     fontSize: FONT_SIZE.xxl,
+    lineHeight: LINE_HEIGHT.xxl,
+    color: COLORS.black,
     marginTop: SPACING.xs,
     marginBottom: SPACING.lg,
     textAlign: 'center',
   },
 
   description: {
+    fontFamily: FONT_FAMILY.regular,
+    fontSize: FONT_SIZE.lg,
+    lineHeight: LINE_HEIGHT.md,
+    color: COLORS.text.body,
     textAlign: 'center',
-    lineHeight: 20,
     maxWidth: 260,
   },
 });
