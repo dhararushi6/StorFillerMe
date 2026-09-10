@@ -1,12 +1,21 @@
 import React from 'react';
-import { Image, SafeAreaView, StyleSheet, View } from 'react-native';
+import { Image, SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
 import { router } from 'expo-router';
 
 import welcomeImage from '@/assets/auth/welcome.png';
 import { AppText } from '@/components/common/AppText';
 import { AppButton } from '@/components/ui/AppButton';
 import { AUTH_CONTENT } from '@/constants/auth';
-import { COLORS, FONT_FAMILY, RADIUS, SPACING } from '@/theme';
+import {
+  COLORS,
+  FONT_FAMILY,
+  FONT_SIZE,
+  LETTER_SPACING,
+  LINE_HEIGHT,
+  RADIUS,
+  SIZES,
+  SPACING,
+} from '@/theme';
 
 export default function WelcomeScreen() {
   const navigateToMobile = () => {
@@ -16,14 +25,23 @@ export default function WelcomeScreen() {
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
-        <View style={styles.content}>
+        <ScrollView
+          style={styles.scrollView}
+          contentContainerStyle={styles.content}
+          showsVerticalScrollIndicator={false}
+        >
           <Image source={welcomeImage} style={styles.image} resizeMode="contain" />
 
           <View style={styles.textContainer}>
-            <AppText style={styles.title}>{AUTH_CONTENT.welcome.title}</AppText>
-            <AppText style={styles.description}>{AUTH_CONTENT.welcome.description}</AppText>
+            <AppText variant="display" style={styles.title}>
+              {AUTH_CONTENT.welcome.title}
+            </AppText>
+
+            <AppText variant="body" color="secondary" style={styles.description}>
+              {AUTH_CONTENT.welcome.description}
+            </AppText>
           </View>
-        </View>
+        </ScrollView>
 
         <AppButton
           title={AUTH_CONTENT.welcome.button}
@@ -34,7 +52,6 @@ export default function WelcomeScreen() {
     </SafeAreaView>
   );
 }
-
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
@@ -43,44 +60,44 @@ const styles = StyleSheet.create({
 
   container: {
     flex: 1,
-    paddingHorizontal: 22,
+    paddingHorizontal: SPACING.xl,
     paddingBottom: SPACING.lg,
     justifyContent: 'space-between',
   },
 
-  content: {
+  scrollView: {
     flex: 1,
+  },
+
+  content: {
+    paddingBottom: SPACING.xl,
   },
 
   image: {
     width: '100%',
-    height: 300,
-    marginTop: 35,
+    height: SIZES.authWelcomeImageHeight,
+    marginTop: SIZES.authWelcomeImageTop,
   },
 
   textContainer: {
-    marginTop: SPACING.lg,
+    marginTop: SIZES.authWelcomeTextGap,
   },
 
   title: {
-    color: COLORS.text.primary,
     fontFamily: FONT_FAMILY.medium,
-    fontSize: 35,
-    lineHeight: 43,
-    letterSpacing: -0.7,
+    fontSize: FONT_SIZE.authTitle,
+    lineHeight: LINE_HEIGHT.authTitle,
+    letterSpacing: LETTER_SPACING.authTitle,
   },
 
   description: {
     marginTop: SPACING.sm,
-    color: COLORS.text.secondary,
-    fontFamily: FONT_FAMILY.regular,
-    fontSize: 16,
-    lineHeight: 22,
+    fontSize: FONT_SIZE.lg,
+    lineHeight: LINE_HEIGHT.authDescription,
   },
 
   button: {
-    height: 48,
-    borderRadius: RADIUS.xs + 2,
-    backgroundColor: COLORS.orange.normal,
+    height: SIZES.buttonHeight,
+    borderRadius: RADIUS.sm,
   },
 });

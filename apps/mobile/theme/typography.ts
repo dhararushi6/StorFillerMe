@@ -13,6 +13,7 @@ export const FONT_WEIGHT = {
 } as const;
 
 export const FONT_SIZE = {
+  authTitle: 40,
   micro: 8,
   tiny: 9,
   xxs: 10,
@@ -28,7 +29,6 @@ export const FONT_SIZE = {
   display: 32,
   badge: 13,
   extraLarge: 20,
-  heading: 26,
   code: 19,
 } as const;
 
@@ -45,6 +45,8 @@ export const LINE_HEIGHT = {
   heading: 29,
   xxl: 32,
   display: 38,
+  authTitle: 43,
+  authDescription: 22,
   hero: 53,
   category: 14.4,
   label: 16.8,
@@ -60,4 +62,7 @@ export const LINE_HEIGHT = {
   helper: 18.2,
   subtitle: 19.2,
   paragraph: 20.8,
+} as const;
+export const LETTER_SPACING = {
+  authTitle: -0.7,
 } as const;

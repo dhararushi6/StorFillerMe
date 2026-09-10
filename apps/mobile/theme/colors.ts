@@ -91,6 +91,7 @@ export const COLORS = {
   map: {
     background: '#E8E3D5',
     badge: '#FBE4C0',
+  },
   coupon: {
     border: '#CEE0FE',
   },

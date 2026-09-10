@@ -13,10 +13,10 @@ import {
   ICON_SIZES,
   LINE_HEIGHT,
   RADIUS,
+  SIZES,
   SPACING,
   useResponsive,
 } from '@/theme';
-import { INPUT_THEME } from '@/constants/theme';
 import { HOME_BEST_DEALS } from '@/constants/home';
 import microphoneIcon from '@/assets/icons/microphone.png';
 import storeIllustration from '@/assets/images/home/store-illustration.png';
@@ -279,11 +279,11 @@ const styles = StyleSheet.create({
   },
 
   searchPill: {
-    height: INPUT_THEME.height,
+    height: SIZES.inputHeight,
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: COLORS.background,
-    borderWidth: INPUT_THEME.borderWidth,
+    borderWidth: SIZES.borderWidth,
     borderColor: COLORS.border,
     borderRadius: RADIUS.pill,
     paddingHorizontal: SPACING.md,
@@ -336,7 +336,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: SPACING.md,
-    borderBottomWidth: INPUT_THEME.borderWidth,
+    borderBottomWidth: SIZES.borderWidth,
     borderBottomColor: COLORS.border,
     gap: SPACING.md,
   },
@@ -384,7 +384,7 @@ const styles = StyleSheet.create({
 
   trendingChip: {
     backgroundColor: COLORS.orange.light,
-    borderWidth: INPUT_THEME.borderWidth,
+    borderWidth: SIZES.borderStandard,
     borderColor: COLORS.orange.normal,
     borderRadius: RADIUS.pill,
     paddingHorizontal: SPACING.md,

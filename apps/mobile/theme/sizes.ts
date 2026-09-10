@@ -88,7 +88,10 @@ export const SIZES = {
   shopCardMinHeight: 62,
   progressTrackHeight: 8,
   borderThick: 3,
-
+  // --- Auth screens ---
+  authWelcomeImageHeight: 400,
+  authWelcomeImageTop: 0,
+  authWelcomeTextGap: 1,
   // --- Qurrath ---
   orderProductImage: 60,
   orderProductAsset: 64,
