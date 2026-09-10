@@ -54,6 +54,7 @@ export const PROFILE_MENU_ITEMS = [
     title: 'Write to us',
     subtitle: 'Share your feedback and suggestions',
     icon: PROFILE_FEEDBACK,
+    route: '/(buyer)/write-to-us',
   },
 ];
 
