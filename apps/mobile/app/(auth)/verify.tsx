@@ -42,7 +42,7 @@ export default function VerifyScreen() {
       return;
     }
 
-    router.push('/(auth)/shop-detail');
+    router.push('/(auth)/language');
   };
 
   const formattedTimer = `00:${String(timer).padStart(2, '0')}`;
