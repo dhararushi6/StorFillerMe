@@ -87,15 +87,7 @@ export const DEFAULT_SHOP_DETAILS = {
   shopAddress: 'opposite: petrol bunk, B.C.Road, Gajuwaka, Visakhapatnam.',
 } as const;
 
-// ============ Persistence ============
-// Single source of truth for shop photos + shop details. Any other screen
-// (e.g. the homepage or the address/location edit screen) that needs to
-// read or write these values should use these same keys/helpers so nothing
-// drifts out of sync.
-export const SHOP_PHOTO_STORAGE_KEYS = {
-  photos: 'shopPhoto:photos',
-  shopDetails: 'shopPhoto:shopDetails',
-} as const;
+export const SHOP_PHOTO_STORAGE_KEY = 'shopPhoto:photos';
 
 // Minimal storage shim so we don't require installing any extra package.
 // - Web: backed by the browser's localStorage, so it survives a real page refresh.
@@ -125,7 +117,7 @@ const storageSet = async (key: string, value: string): Promise<void> => {
 
 export const loadShopPhotos = async (): Promise<PhotoSlot[] | null> => {
   try {
-    const raw = await storageGet(SHOP_PHOTO_STORAGE_KEYS.photos);
+    const raw = await storageGet(SHOP_PHOTO_STORAGE_KEY);
     if (!raw) return null;
     const parsed = JSON.parse(raw);
     return Array.isArray(parsed) ? parsed : null;
@@ -137,28 +129,9 @@ export const loadShopPhotos = async (): Promise<PhotoSlot[] | null> => {
 
 export const saveShopPhotos = async (photos: PhotoSlot[]): Promise<void> => {
   try {
-    await storageSet(SHOP_PHOTO_STORAGE_KEYS.photos, JSON.stringify(photos));
+    await storageSet(SHOP_PHOTO_STORAGE_KEY, JSON.stringify(photos));
   } catch (error) {
     console.warn('Failed to save shop photos:', error);
-  }
-};
-
-export const loadShopDetails = async (): Promise<ShopDetails | null> => {
-  try {
-    const raw = await storageGet(SHOP_PHOTO_STORAGE_KEYS.shopDetails);
-    if (!raw) return null;
-    return JSON.parse(raw) as ShopDetails;
-  } catch (error) {
-    console.warn('Failed to load shop details:', error);
-    return null;
-  }
-};
-
-export const saveShopDetails = async (details: ShopDetails): Promise<void> => {
-  try {
-    await storageSet(SHOP_PHOTO_STORAGE_KEYS.shopDetails, JSON.stringify(details));
-  } catch (error) {
-    console.warn('Failed to save shop details:', error);
   }
 };
 

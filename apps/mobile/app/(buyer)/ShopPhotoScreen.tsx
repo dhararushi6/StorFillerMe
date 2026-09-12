@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -12,10 +12,11 @@ import {
   StatusBar,
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import { router, useFocusEffect } from 'expo-router';
+import { router } from 'expo-router';
 import { useResponsive, COLORS, SPACING, ICON_SIZES, FONT_SIZE, LINE_HEIGHT } from '../../theme';
 import { PhotoActionSheet } from './shopphotoaction';
 import { PhotoAddedModal } from './shopphotoadded';
+import { useAddresses } from './AddressContext';
 import backIcon from '../../assets/icons/Arrow 10 (1).png';
 import editIcon from '../../assets/icons/edit 1.png';
 import imageIcon from '../../assets/icons/image 2.png';
@@ -35,7 +36,6 @@ import {
   validateAsset,
   loadShopPhotos,
   saveShopPhotos,
-  loadShopDetails,
   shopPhotoScreenStyles as styles,
 } from '../../constants/ShopPhoto';
 
@@ -51,16 +51,24 @@ export function ShopPhotoScreen({
 
   const [photos, setPhotos] = useState(createInitialPhotoSlots());
   const [photosHydrated, setPhotosHydrated] = useState(false);
-  const [shopDetails, setShopDetails] = useState({
-    shopName: shopNameProp ?? DEFAULT_SHOP_DETAILS.shopName,
-    shopAddress: shopAddressProp ?? DEFAULT_SHOP_DETAILS.shopAddress,
-  });
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [actionSheetVisible, setActionSheetVisible] = useState(false);
   const [successVisible, setSuccessVisible] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [uploadError, setUploadError] = useState<string | null>(null);
+
+  // AddressContext is the single source of truth for the address shown on
+  // the homepage/profile. Reading it here (instead of a hardcoded default or
+  // a separate copy in storage) means this screen automatically re-renders
+  // whenever the user adds/selects/edits an address anywhere else in the
+  // app — no manual refetch-on-focus needed, React context does that for us.
+  const { addresses, selectedAddress } = useAddresses();
+  const currentAddress = selectedAddress ?? addresses?.[0];
+  const shopDetails = {
+    shopName: shopNameProp ?? currentAddress?.title ?? DEFAULT_SHOP_DETAILS.shopName,
+    shopAddress: shopAddressProp ?? currentAddress?.address ?? DEFAULT_SHOP_DETAILS.shopAddress,
+  };
 
   // Hydrate photos from persisted storage once on mount so they survive
   // navigation and refresh instead of always starting from 4 empty slots.
@@ -77,24 +85,6 @@ export function ShopPhotoScreen({
     if (!photosHydrated) return; // avoid overwriting storage with the initial empty state
     saveShopPhotos(photos);
   }, [photos, photosHydrated]);
-
-  // Re-read shop details every time this screen gains focus (e.g. returning
-  // from the address/location edit screen) so it can never show a stale or
-  // mismatched address. Explicit props still win if the caller passes them.
-  useFocusEffect(
-    useCallback(() => {
-      if (shopNameProp !== undefined && shopAddressProp !== undefined) return;
-      (async () => {
-        const stored = await loadShopDetails();
-        if (stored) {
-          setShopDetails({
-            shopName: shopNameProp ?? stored.shopName,
-            shopAddress: shopAddressProp ?? stored.shopAddress,
-          });
-        }
-      })();
-    }, [shopNameProp, shopAddressProp]),
-  );
 
   // Back handler – navigate to profile if no custom onBack is provided
   const handleBack = () => {
