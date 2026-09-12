@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 import {
   COLORS,
   SPACING,
@@ -35,6 +35,11 @@ export interface PhotoAddedModalProps {
   onDone: () => void;
   title?: string;
   message?: string;
+}
+
+export interface ShopDetails {
+  shopName: string;
+  shopAddress: string;
 }
 
 // ============ Constants ============
@@ -81,6 +86,81 @@ export const DEFAULT_SHOP_DETAILS = {
   shopName: 'Jagadeesh kirana shop',
   shopAddress: 'opposite: petrol bunk, B.C.Road, Gajuwaka, Visakhapatnam.',
 } as const;
+
+// ============ Persistence ============
+// Single source of truth for shop photos + shop details. Any other screen
+// (e.g. the homepage or the address/location edit screen) that needs to
+// read or write these values should use these same keys/helpers so nothing
+// drifts out of sync.
+export const SHOP_PHOTO_STORAGE_KEYS = {
+  photos: 'shopPhoto:photos',
+  shopDetails: 'shopPhoto:shopDetails',
+} as const;
+
+// Minimal storage shim so we don't require installing any extra package.
+// - Web: backed by the browser's localStorage, so it survives a real page refresh.
+// - Native: falls back to a plain in-memory module variable. This survives
+//   navigating between screens within the same app session (JS modules are
+//   singletons, so this object isn't recreated on navigation) but will NOT
+//   survive a full app restart/kill. Install
+//   `@react-native-async-storage/async-storage` and swap it in below if you
+//   need native values to survive an app restart too.
+const memoryStore: Record<string, string> = {};
+
+const hasLocalStorage = () =>
+  Platform.OS === 'web' && typeof window !== 'undefined' && !!window.localStorage;
+
+const storageGet = async (key: string): Promise<string | null> => {
+  if (hasLocalStorage()) return window.localStorage.getItem(key);
+  return memoryStore[key] ?? null;
+};
+
+const storageSet = async (key: string, value: string): Promise<void> => {
+  if (hasLocalStorage()) {
+    window.localStorage.setItem(key, value);
+    return;
+  }
+  memoryStore[key] = value;
+};
+
+export const loadShopPhotos = async (): Promise<PhotoSlot[] | null> => {
+  try {
+    const raw = await storageGet(SHOP_PHOTO_STORAGE_KEYS.photos);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : null;
+  } catch (error) {
+    console.warn('Failed to load shop photos:', error);
+    return null;
+  }
+};
+
+export const saveShopPhotos = async (photos: PhotoSlot[]): Promise<void> => {
+  try {
+    await storageSet(SHOP_PHOTO_STORAGE_KEYS.photos, JSON.stringify(photos));
+  } catch (error) {
+    console.warn('Failed to save shop photos:', error);
+  }
+};
+
+export const loadShopDetails = async (): Promise<ShopDetails | null> => {
+  try {
+    const raw = await storageGet(SHOP_PHOTO_STORAGE_KEYS.shopDetails);
+    if (!raw) return null;
+    return JSON.parse(raw) as ShopDetails;
+  } catch (error) {
+    console.warn('Failed to load shop details:', error);
+    return null;
+  }
+};
+
+export const saveShopDetails = async (details: ShopDetails): Promise<void> => {
+  try {
+    await storageSet(SHOP_PHOTO_STORAGE_KEYS.shopDetails, JSON.stringify(details));
+  } catch (error) {
+    console.warn('Failed to save shop details:', error);
+  }
+};
 
 // ============ Utility Functions ============
 export const createInitialPhotoSlots = (): PhotoSlot[] => Array(PHOTO_SLOTS).fill(null);

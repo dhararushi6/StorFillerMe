@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   View,
   Text,
@@ -12,7 +12,7 @@ import {
   StatusBar,
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import { router } from 'expo-router';
+import { router, useFocusEffect } from 'expo-router';
 import { useResponsive, COLORS, SPACING, ICON_SIZES, FONT_SIZE, LINE_HEIGHT } from '../../theme';
 import { PhotoActionSheet } from './shopphotoaction';
 import { PhotoAddedModal } from './shopphotoadded';
@@ -33,12 +33,15 @@ import {
   createInitialPhotoSlots,
   applyPhotoToSlots,
   validateAsset,
+  loadShopPhotos,
+  saveShopPhotos,
+  loadShopDetails,
   shopPhotoScreenStyles as styles,
 } from '../../constants/ShopPhoto';
 
 export function ShopPhotoScreen({
-  shopName = DEFAULT_SHOP_DETAILS.shopName,
-  shopAddress = DEFAULT_SHOP_DETAILS.shopAddress,
+  shopName: shopNameProp,
+  shopAddress: shopAddressProp,
   onBack,
   onEditShop,
   onUpload,
@@ -47,12 +50,51 @@ export function ShopPhotoScreen({
   const { width: screenWidth } = useWindowDimensions();
 
   const [photos, setPhotos] = useState(createInitialPhotoSlots());
+  const [photosHydrated, setPhotosHydrated] = useState(false);
+  const [shopDetails, setShopDetails] = useState({
+    shopName: shopNameProp ?? DEFAULT_SHOP_DETAILS.shopName,
+    shopAddress: shopAddressProp ?? DEFAULT_SHOP_DETAILS.shopAddress,
+  });
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [actionSheetVisible, setActionSheetVisible] = useState(false);
   const [successVisible, setSuccessVisible] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [uploadError, setUploadError] = useState<string | null>(null);
+
+  // Hydrate photos from persisted storage once on mount so they survive
+  // navigation and refresh instead of always starting from 4 empty slots.
+  React.useEffect(() => {
+    (async () => {
+      const stored = await loadShopPhotos();
+      if (stored) setPhotos(stored);
+      setPhotosHydrated(true);
+    })();
+  }, []);
+
+  // Persist photos any time they change (select, remove, or after upload).
+  React.useEffect(() => {
+    if (!photosHydrated) return; // avoid overwriting storage with the initial empty state
+    saveShopPhotos(photos);
+  }, [photos, photosHydrated]);
+
+  // Re-read shop details every time this screen gains focus (e.g. returning
+  // from the address/location edit screen) so it can never show a stale or
+  // mismatched address. Explicit props still win if the caller passes them.
+  useFocusEffect(
+    useCallback(() => {
+      if (shopNameProp !== undefined && shopAddressProp !== undefined) return;
+      (async () => {
+        const stored = await loadShopDetails();
+        if (stored) {
+          setShopDetails({
+            shopName: shopNameProp ?? stored.shopName,
+            shopAddress: shopAddressProp ?? stored.shopAddress,
+          });
+        }
+      })();
+    }, [shopNameProp, shopAddressProp]),
+  );
 
   // Back handler – navigate to profile if no custom onBack is provided
   const handleBack = () => {
@@ -145,6 +187,7 @@ export function ShopPhotoScreen({
           setTimeout(async () => {
             try {
               await onUpload?.(validPhotos);
+              await saveShopPhotos(photos);
               setIsUploading(false);
               setUploadProgress(0);
               setSuccessVisible(true);
@@ -205,9 +248,9 @@ export function ShopPhotoScreen({
             <Image source={storefrontIcon} style={styles.storefrontIcon} resizeMode="contain" />
             <View style={styles.shopTextWrap}>
               <Text style={styles.shopName} numberOfLines={1}>
-                {shopName}
+                {shopDetails.shopName}
               </Text>
-              <Text style={styles.shopAddress}>{shopAddress}</Text>
+              <Text style={styles.shopAddress}>{shopDetails.shopAddress}</Text>
             </View>
           </View>
           <TouchableOpacity
